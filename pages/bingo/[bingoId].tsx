@@ -18,10 +18,7 @@ export default function list(props) {
     return(
         <IntlProvider defaultLocale="en" locale={langSetting} messages={locale[langSetting]} onError={(e) => console.log(e)}>
             <Navbar />
-                <div style={{width: '100%', height: 'auto', backgroundImage: `url('/images/official-silhouette-background.jpg')`,
-                backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed'}}>
-                    {bingoId}
-                </div>
+                {bingoId}
             <Footer />
         </IntlProvider>
     )

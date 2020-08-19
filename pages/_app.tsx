@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 function MyApp({ Component, pageProps }: AppProps) {
   let langSetting = 'ko'
   useEffect(() => {
-    console.log('titmgig')
+    console.log('titmgig' + Math.random())
   },[])
 
   return (
