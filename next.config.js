@@ -1,6 +1,8 @@
 /* eslint-disable */
 const withLess = require('@zeit/next-less')
 const lessToJS = require('less-vars-to-js')
+const withCSS = require('@zeit/next-css')
+
 const fs = require('fs')
 const path = require('path')
 
@@ -9,7 +11,7 @@ const themeVariables = lessToJS(
   fs.readFileSync(path.resolve(__dirname, './assets/antd-custom.less'), 'utf8')
 )
 
-module.exports = withLess({
+module.exports = withCSS(withLess({
   lessLoaderOptions: {
     javascriptEnabled: true,
     modifyVars: themeVariables, // make your antd custom effective
@@ -37,4 +39,4 @@ module.exports = withLess({
     }
     return config
   },
-})
+}))
