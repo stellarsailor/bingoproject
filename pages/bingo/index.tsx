@@ -3,14 +3,13 @@ import Link from 'next/link'
 import styled from 'styled-components'
 import { Row, Col, BackTop } from 'antd';
 
+import { serverUrl } from '../../lib/serverUrl'
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 
 export default function list({ data }) {
 
-    const [ sample, setSample ] = useState(data.data)
-
-    // console.log(data.data)
+    const [ bingoList, setBingoList ] = useState(data.bingos)
 
     return(
         <>
@@ -19,7 +18,13 @@ export default function list({ data }) {
                 backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed'}}>
                     여긴 리스트 쭉 보여주고
                     검색 가능하고
-                    {sample.map(v => v.phrase)}
+                    {bingoList.map(v => {
+                        return (
+                            <div>
+                                <Link href={`/bingo/${v.id}`}><a>{v.title} / {v.size} {v.author}</a></Link>
+                            </div>
+                        )
+                    })}
                 </div>
             <Footer />
         </>
@@ -27,11 +32,13 @@ export default function list({ data }) {
 }
 
 
-export async function getServerSideProps() {
-    // Fetch data from external API
-    const res = await fetch(`https://api.brittea.uk/group/select?page=1`)
+export async function getServerSideProps({ req, query }) {
+
+    // const protocol = req ? `${req.headers['x-forwarded-proto']}:` : location.protocol
+    // const host = req ? req.headers['x-forwarded-host'] : location.host
+
+    const res = await fetch(`${serverUrl}/api/bingos`)
     const data = await res.json()
   
-    // Pass data to the page via props
     return { props: { data } }
 }

@@ -26,7 +26,7 @@ export default function Navbar() {
         <NavigationBar>
             <Link href="/"><a><div>마크랑 타이틀</div></a></Link>
             <Link href="/bingo"><a>{tr({id: 'NAV_BUTTON_1'})}</a></Link>
-            <Link href="/bingo/add"><a>{tr({id: 'NAV_BUTTON_2'})}</a></Link>
+            <Link href="/bingo/create"><a>{tr({id: 'NAV_BUTTON_2'})}</a></Link>
             <Search
             placeholder={tr({id: 'SEARCH_INPUT_PLACEHOLER'})}
             onSearch={value => console.log(value)}

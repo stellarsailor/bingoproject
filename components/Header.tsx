@@ -1,6 +1,9 @@
 import Head from 'next/head'
 
-function Header() {
+function Header(props) {
+    
+    const { title } = props
+
     return (
         <Head>
             <title>My page title</title>

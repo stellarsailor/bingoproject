@@ -9,17 +9,27 @@ import locale from '../../locale/translations'
 
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import Layout from '../../components/Layout';
+import { serverUrl } from '../../lib/serverUrl';
 
-export default function list(props) {
-    const router = useRouter()
-    const { bingoId } = router.query
-    let langSetting = 'ko'
+export default function list({ data }) {
+    // const router = useRouter()
+    // const { bingoId } = router.query
+
+    const [ sample, setSample ] = useState(data.bingo)
 
     return(
-        <IntlProvider defaultLocale="en" locale={langSetting} messages={locale[langSetting]} onError={(e) => console.log(e)}>
-            <Navbar />
-                {bingoId}
-            <Footer />
-        </IntlProvider>
+        <Layout>
+            {sample.title}
+            사이즈 : {sample.size} x {sample.size}
+        </Layout>
     )
+}
+
+export async function getServerSideProps({ params }) {
+
+    const res = await fetch(`${serverUrl}/api/bingos/${params.bingoId}`)
+    const data = await res.json()
+
+    return { props: { data } }
 }
