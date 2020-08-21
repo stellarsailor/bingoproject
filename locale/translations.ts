@@ -6,12 +6,12 @@ const TRANSLATIONS: {
     }
 } = {
     en: {
-        NAV_BUTTON_1: 'BINGO',
+        NAV_BUTTON_1: 'LIST',
         NAV_BUTTON_2: 'ADD',
         SEARCH_INPUT_PLACEHOLER: 'Search',
     },
     ko: {
-        NAV_BUTTON_1: '빙고',
+        NAV_BUTTON_1: '목록',
         NAV_BUTTON_2: '새로 등록',
         SEARCH_INPUT_PLACEHOLER: '검색',
     },
