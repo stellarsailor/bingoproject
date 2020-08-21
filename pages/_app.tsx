@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import Head from 'next/head'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  let langSetting = 'ko'
+  let langSetting = 'en'
   useEffect(() => {
     console.log('titmgig' + Math.random())
   },[])
