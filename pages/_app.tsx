@@ -1,25 +1,25 @@
-// import App from "next/app";
+import App from "next/app";
 import type { AppProps /*, AppContext */ } from 'next/app'
-import { IntlProvider, FormattedMessage, FormattedNumber, useIntl } from 'react-intl'
 import '../styles/style.css'
 import locale from '../locale/translations'
 import { useEffect } from 'react'
 import Head from 'next/head'
+import { appWithTranslation } from '../i18n'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  let langSetting = 'en'
-  useEffect(() => {
-    console.log('titmgig' + Math.random())
-  },[])
+//   useEffect(() => {
+//     console.log('titmgig' + Math.random())
+//   },[])
 
   return (
     <>
       <Head>
         <script src="https://www.google-analytics.com/analytics.js" async type="text/javascript"></script>
+        <link rel="shortcut icon" href="/static/favicon.ico" />
       </Head>
-    <IntlProvider defaultLocale="en" locale={langSetting} messages={locale[langSetting]} onError={(e) => console.log(e)}>
+    {/* <IntlProvider defaultLocale="en" locale={langSetting} messages={locale[langSetting]} onError={(e) => console.log(e)}> */}
       <Component {...pageProps} />
-    </IntlProvider>
+    {/* </IntlProvider> */}
     </>
   )
 }
@@ -36,4 +36,18 @@ function MyApp({ Component, pageProps }: AppProps) {
 //   return { ...appProps }
 // }
 
-export default MyApp
+
+// MyApp.getInitialProps = async (appContext) => ({ ...await App.getInitialProps(appContext) }) //i18n 파트
+
+MyApp.getInitialProps = async (appContext) => {
+    const appProps = await App.getInitialProps(appContext)
+    const defaultProps = appContext.Component.defaultProps
+    return {
+        ...appProps,
+        pageProps: {
+            namespacesRequired: [...(appProps.pageProps.namespacesRequired || []), ...(defaultProps?.i18nNamespaces || [])]
+        }
+    }
+}
+
+export default appWithTranslation(MyApp)

@@ -7,8 +7,10 @@ import { serverUrl } from '../../lib/serverUrl'
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import Layout from '../../components/Layout';
+import { useTranslation } from '../../i18n';
 
-export default function list({ data }) {
+export default function BingoCreate({ data }) {
+    const { t, i18n } = useTranslation();
 
     const [ bingoSize, setBingoSize ] = useState(3)
 
@@ -26,7 +28,7 @@ export default function list({ data }) {
     return(
         <Layout>
             <div>
-                생성하는 페이지
+                생성하는 페이지{t('SEARCH_INPUT_PLACEHOLER')}
             </div>
             제목
             <Input placeholder="Title" />

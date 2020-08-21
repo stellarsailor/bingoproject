@@ -1,0 +1,10 @@
+{
+    "NAV_BUTTON_1": "목록",
+    "NAV_BUTTON_2": "추가",
+    "SEARCH_INPUT_PLACEHOLER": "검색",
+    "h1": "간단ㅇ ㅖ제",
+    "change-locale": "언어 변경",
+    "to-second-page": "두번째페이지로",
+    "error-with-status": "에러코드 : {{statusCode}} 에러 발생 서버에서",
+    "error-without-status": "서버에서 에러 발생"
+}

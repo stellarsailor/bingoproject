@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { Menu, Row, Col, Input, Button } from 'antd';
+import { Link, useTranslation } from '../i18n'
 
 import Layout from '../components/Layout';
-import Link from 'next/link';
 
 const MainContent = styled.div`
     display: flex;
@@ -36,7 +36,8 @@ const MainButton = styled(Button)`
     background-color: ${props => props.theme === 'black' ? 'black' : 'white'};
 `
 
-export default function Home() {
+export default function Home({ }) {
+    const { t, i18n } = useTranslation();
 
     return (
         <Layout>
@@ -56,6 +57,7 @@ export default function Home() {
                         </a>
                     </Link>
                 </DisplayRow>
+                {t('SEARCH_INPUT_PLACEHOLER')}
             </MainContent>
         </Layout>
     )

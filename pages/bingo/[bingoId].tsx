@@ -1,20 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { Row, Col, BackTop } from 'antd';
-import { IntlProvider, FormattedMessage, FormattedNumber, useIntl } from 'react-intl'
-import locale from '../../locale/translations'
-
+import { Link, useTranslation } from '../../i18n';
 
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import Layout from '../../components/Layout';
 import { serverUrl } from '../../lib/serverUrl';
 
-export default function list({ data }) {
+export default function BingoDetail({ data }) {
     // const router = useRouter()
     // const { bingoId } = router.query
+    const { t, i18n } = useTranslation();
 
     const [ sample, setSample ] = useState(data.bingo)
 

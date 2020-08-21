@@ -1,3 +1,10 @@
+const { nextI18NextRewrites } = require('next-i18next/rewrites')
+
+const localeSubpaths = {
+  en: 'en',
+  ko: 'ko'
+}
+
 /* eslint-disable */
 const withLess = require('@zeit/next-less')
 const lessToJS = require('less-vars-to-js')
@@ -38,5 +45,10 @@ module.exports = withCSS(withLess({
       })
     }
     return config
+  },
+  //i18n below
+  rewrites: async () => nextI18NextRewrites(localeSubpaths),
+  publicRuntimeConfig: {
+    localeSubpaths,
   },
 }))

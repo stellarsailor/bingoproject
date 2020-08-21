@@ -1,0 +1,10 @@
+{
+    "NAV_BUTTON_1": "LIST",
+    "NAV_BUTTON_2": "ADD",
+    "SEARCH_INPUT_PLACEHOLER": "Search",
+    "h1": "A simple example",
+    "change-locale": "Change locale",
+    "to-second-page": "To second page",
+    "error-with-status": "A {{statusCode}} error occurred on server",
+    "error-without-status": "An error occurred on the server"
+}

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import Link from 'next/link'
 import styled from 'styled-components'
 import { Row, Col, BackTop, Radio } from 'antd';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons'
@@ -8,8 +7,10 @@ import { serverUrl } from '../../lib/serverUrl'
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import Layout from '../../components/Layout';
+import { Link, useTranslation } from '../../i18n';
 
-export default function list({ data }) {
+export default function List({ data }) {
+    const { t, i18n } = useTranslation();
 
     const [ bingoList, setBingoList ] = useState(data.bingos)
 
@@ -30,6 +31,7 @@ export default function list({ data }) {
             <div>
                 여긴 리스트 쭉 보여주고22
                 검색 가능하고
+                {t('SEARCH_INPUT_PLACEHOLER')}
                 {bingoList.map(v => {
                     return (
                         <div key={v.id}>
@@ -43,7 +45,6 @@ export default function list({ data }) {
         </Layout>
     )
 }
-
 
 export async function getServerSideProps({ req, query }) {
 
