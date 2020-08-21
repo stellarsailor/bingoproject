@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import { Menu, Row, Col, Input, Button } from 'antd';
 import { Link, useTranslation } from '../i18n'
 
-import Layout from '../components/Layout';
-
 const MainContent = styled.div`
     display: flex;
     flex-direction: column;
@@ -40,7 +38,7 @@ export default function Home({ }) {
     const { t, i18n } = useTranslation();
 
     return (
-        <Layout>
+        <>
             <MainContent>
                 <MainText>MAKE</MainText>
                 <MainText>YOUR</MainText>
@@ -59,6 +57,6 @@ export default function Home({ }) {
                 </DisplayRow>
                 {t('SEARCH_INPUT_PLACEHOLER')}
             </MainContent>
-        </Layout>
+        </>
     )
 }

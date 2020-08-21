@@ -4,9 +4,6 @@ import styled from 'styled-components'
 import { Row, Col, BackTop } from 'antd';
 import { Link, useTranslation } from '../../i18n';
 
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
-import Layout from '../../components/Layout';
 import { serverUrl } from '../../lib/serverUrl';
 
 export default function BingoDetail({ data }) {
@@ -17,7 +14,7 @@ export default function BingoDetail({ data }) {
     const [ sample, setSample ] = useState(data.bingo)
 
     return(
-        <Layout>
+        <>
             <div>
                 {sample.title}
             </div>
@@ -28,7 +25,7 @@ export default function BingoDetail({ data }) {
             </div>
             신고
             설정 - (체크 표시 모양 설정 / 배경색 / 줄색 설정 - 이걸 작성자입장으로 빼야될지?)
-        </Layout>
+        </>
     )
 }
 

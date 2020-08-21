@@ -4,9 +4,6 @@ import { Row, Col, BackTop, Radio } from 'antd';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons'
 
 import { serverUrl } from '../../lib/serverUrl'
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
-import Layout from '../../components/Layout';
 import { Link, useTranslation } from '../../i18n';
 
 export default function List({ data }) {
@@ -15,7 +12,7 @@ export default function List({ data }) {
     const [ bingoList, setBingoList ] = useState(data.bingos)
 
     return(
-        <Layout>
+        <>
             <Radio.Group defaultValue="a">
                 <Radio.Button value="a">인기도 순</Radio.Button>
                 <Radio.Button value="b">최신 순</Radio.Button>
@@ -42,7 +39,7 @@ export default function List({ data }) {
                     )
                 })}
             </div>
-        </Layout>
+        </>
     )
 }
 

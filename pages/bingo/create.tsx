@@ -4,9 +4,6 @@ import styled from 'styled-components'
 import { Row, Col, BackTop, Input, Checkbox, Radio } from 'antd';
 
 import { serverUrl } from '../../lib/serverUrl'
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
-import Layout from '../../components/Layout';
 import { useTranslation } from '../../i18n';
 
 export default function BingoCreate({ data }) {
@@ -26,7 +23,7 @@ export default function BingoCreate({ data }) {
     }
 
     return(
-        <Layout>
+        <>
             <div>
                 생성하는 페이지{t('SEARCH_INPUT_PLACEHOLER')}
             </div>
@@ -52,6 +49,6 @@ export default function BingoCreate({ data }) {
             </Radio.Group>
 
             {renderBingo(bingoSize)}
-        </Layout>
+        </>
     )
 }

@@ -5,23 +5,18 @@ import locale from '../locale/translations'
 import { useEffect } from 'react'
 import Head from 'next/head'
 import { appWithTranslation } from '../i18n'
+import Layout from "../components/Layout";
 
 function MyApp({ Component, pageProps }: AppProps) {
 //   useEffect(() => {
 //     console.log('titmgig' + Math.random())
 //   },[])
 
-  return (
-    <>
-      <Head>
-        <script src="https://www.google-analytics.com/analytics.js" async type="text/javascript"></script>
-        <link rel="shortcut icon" href="/static/favicon.ico" />
-      </Head>
-    {/* <IntlProvider defaultLocale="en" locale={langSetting} messages={locale[langSetting]} onError={(e) => console.log(e)}> */}
-      <Component {...pageProps} />
-    {/* </IntlProvider> */}
-    </>
-  )
+    return (
+        <Layout>
+            <Component {...pageProps} />
+        </Layout>
+    )
 }
 
 // Only uncomment this method if you have blocking data requirements for
