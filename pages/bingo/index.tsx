@@ -28,7 +28,7 @@ export default function list({ data }) {
                 </Radio.Group>
 
                 <div>
-                    여긴 리스트 쭉 보여주고
+                    여긴 리스트 쭉 보여주고22
                     검색 가능하고
                     {bingoList.map(v => {
                         return (
