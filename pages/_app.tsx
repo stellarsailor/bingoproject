@@ -4,6 +4,7 @@ import { IntlProvider, FormattedMessage, FormattedNumber, useIntl } from 'react-
 import '../styles/style.css'
 import locale from '../locale/translations'
 import { useEffect } from 'react'
+import Head from 'next/head'
 
 function MyApp({ Component, pageProps }: AppProps) {
   let langSetting = 'ko'
@@ -12,9 +13,14 @@ function MyApp({ Component, pageProps }: AppProps) {
   },[])
 
   return (
+    <>
+      <Head>
+        <script src="https://www.google-analytics.com/analytics.js" async type="text/javascript"></script>
+      </Head>
     <IntlProvider defaultLocale="en" locale={langSetting} messages={locale[langSetting]} onError={(e) => console.log(e)}>
-        <Component {...pageProps} />
+      <Component {...pageProps} />
     </IntlProvider>
+    </>
   )
 }
 

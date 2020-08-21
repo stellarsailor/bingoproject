@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Menu, Row, Col, Input, Button } from 'antd';
 
 import Layout from '../components/Layout';
+import Link from 'next/link';
 
 const MainContent = styled.div`
     display: flex;
@@ -42,30 +43,19 @@ export default function Home() {
             <MainContent>
                 <MainText>MAKE</MainText>
                 <MainText>YOUR</MainText>
-                <MainText>BINGO</MainText>
+                <MainText>THING</MainText>
                 <DisplayRow>
-                    <MainButton type="primary" size="large" theme='black'> Make My Own </MainButton>
-                    <MainButton size="large" theme='white'> View List </MainButton>
+                    <Link href="/bingo/create">
+                        <a>
+                            <MainButton type="primary" size="large" theme='black'> Make My Own </MainButton>    
+                        </a>
+                    </Link>
+                    <Link href="/bingo">
+                        <a>
+                            <MainButton size="large" theme='white'> View List </MainButton> 
+                        </a>
+                    </Link>
                 </DisplayRow>
-                {/* <table>
-                    <tbody>
-                        <tr>
-                            <td>지금 유행 빙고 1</td>
-                            <td>지금 유행 빙고 2</td>
-                            <td>지금 유행 빙고 3</td>
-                        </tr>
-                        <tr>
-                            <td>지금 유행 빙고 1</td>
-                            <td>지금 유행 빙고 2</td>
-                            <td>지금 유행 빙고 3</td>
-                        </tr>
-                        <tr>
-                            <td>지금 유행 빙고 1</td>
-                            <td>지금 유행 빙고 2</td>
-                            <td>지금 유행 빙고 3</td>
-                        </tr>
-                    </tbody>
-                </table> */}
             </MainContent>
         </Layout>
     )

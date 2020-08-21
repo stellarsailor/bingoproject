@@ -20,8 +20,16 @@ export default function list({ data }) {
 
     return(
         <Layout>
-            {sample.title}
-            사이즈 : {sample.size} x {sample.size}
+            <div>
+                {sample.title}
+            </div>
+            <div>
+                사이즈 : {sample.size} x {sample.size}
+
+                빙고렌더링
+            </div>
+            신고
+            설정 - (체크 표시 모양 설정 / 배경색 / 빙고줄색 설정 - 이걸 작성자입장으로 빼야될지?)
         </Layout>
     )
 }
