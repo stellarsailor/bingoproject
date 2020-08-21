@@ -6,7 +6,7 @@ import { Row, Col, BackTop, Input, Checkbox, Radio } from 'antd';
 import { serverUrl } from '../../lib/serverUrl'
 import { useTranslation } from '../../i18n';
 
-export default function BingoCreate({ data }) {
+export default function BingoCreate({ data, query, params }) {
     const { t, i18n } = useTranslation();
 
     const [ bingoSize, setBingoSize ] = useState(3)
@@ -24,6 +24,7 @@ export default function BingoCreate({ data }) {
 
     return(
         <>
+            현재 언어 : {i18n.language}
             <div>
                 생성하는 페이지{t('SEARCH_INPUT_PLACEHOLER')}
             </div>

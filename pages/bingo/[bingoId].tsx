@@ -13,6 +13,10 @@ export default function BingoDetail({ data }) {
 
     const [ sample, setSample ] = useState(data.bingo)
 
+    useEffect(() => {
+        console.log('렌더링 순서')
+    },[])
+
     return(
         <>
             <div>
@@ -29,9 +33,13 @@ export default function BingoDetail({ data }) {
     )
 }
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps({ params, query }) {
+    console.log(query.lang)
 
-    const res = await fetch(`${serverUrl}/api/bingos/${params.bingoId}`)
+    let url = `${serverUrl}/api/bingos/${params.bingoId}?lang=${query.lang}`
+    // console.log(url)
+
+    const res = await fetch(url)
     const data = await res.json()
 
     return { props: { data } }
