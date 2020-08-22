@@ -43,8 +43,8 @@ export default function List({ data }) {
     )
 }
 
-export async function getServerSideProps({query}) {
-    console.log(query.lng)
+export async function getServerSideProps({ req }) {
+    console.log(req.language)
 
     // const protocol = req ? `${req.headers['x-forwarded-proto']}:` : location.protocol
     // const host = req ? req.headers['x-forwarded-host'] : location.host

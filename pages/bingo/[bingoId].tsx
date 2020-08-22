@@ -33,10 +33,10 @@ export default function BingoDetail({ data }) {
     )
 }
 
-export async function getServerSideProps({ params, query }) {
-    console.log(query.lang)
+export async function getServerSideProps({ params, req }) {
+    console.log(req.language)
 
-    let url = `${serverUrl}/api/bingos/${params.bingoId}?lang=${query.lang}`
+    let url = `${serverUrl}/api/bingos/${params.bingoId}`
     // console.log(url)
 
     const res = await fetch(url)
