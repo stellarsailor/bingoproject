@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 
 import { ArrowRightOutlined } from '@ant-design/icons';
 import { serverUrl } from '../lib/serverUrl';
-import MakeBingoButton from '../components/sub/MakeBingoButton';
 
 export default function Home({ }) {
     const { t, i18n } = useTranslation();
