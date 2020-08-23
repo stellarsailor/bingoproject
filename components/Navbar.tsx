@@ -4,7 +4,8 @@ import { useIntl } from 'react-intl';
 import { Input, Row, Col, Popover, Button } from 'antd';
 import { i18n, Link, useTranslation, Router } from '../i18n'
 import { MenuOutlined, SearchOutlined } from '@ant-design/icons';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import Flag from 'react-world-flags'
 
 const { Search } = Input;
 
@@ -35,34 +36,41 @@ export default function NavBar({ }) {
     // const { formatMessage: tr } = useIntl();
     const { t, i18n } = useTranslation();
 
-    // const [ isMobile, setIsMobile ] = useState(false)
+    const [ isMobile, setIsMobile ] = useState(false)
+    const [ visibleRight, setVisibleRight ] = useState(false)
 
-    // useEffect(() => {
-    //     if(window.innerWidth < 600) setIsMobile(true)
-    // },[])
+    useEffect(() => {
+        if(window.innerWidth < 600) setIsMobile(true)
+    },[])
 
-    const contentSearch = (
-        <div style={{width: 200}}>
+    const contentOption = (
+    <div style={{width: 200}}>
+        {
+            !isMobile ? null :
             <Search
             placeholder={t('SEARCH_INPUT_PLACEHOLER')}
             onSearch={value => Router.push(`/bingo?search=${value}`)}
             style={{ width: '100%' }}
             />
-        </div>
-    )
-
-    const contentOption = (
-    <div style={{width: 200}}>
+        }
         <Link href="/bingo/create">
-            <a>ㅂㄱ 만들기</a>
+            <a>
+                <div>ㅂㄱ 만들기</div>
+            </a>
         </Link>
         <Link href="/setting">
-            <a>설정</a>
+            <a>
+                <div>설정</div>
+            </a>
         </Link>
-        <div onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ko' : 'en')}>언어 변경</div>
+        <div onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ko' : 'en')}>현재 언어 : <Flag code={i18n.language === 'en' ? 'gb' : 'kr'} height={16} /></div>
     </div>
     )
 
+    const toggleOption = useCallback(() => {
+        if(visibleRight) setVisibleRight(false)
+        else setVisibleRight(true)
+    },[visibleRight])
 
     return(
         <NavigationBar>
@@ -75,25 +83,16 @@ export default function NavBar({ }) {
                         onSearch={value => Router.push(`/bingo?search=${value}`)}
                         style={{ width: 250 }}
                         />
-                        <Popover placement="bottomRight" content={contentOption} trigger="click">
-                            <MenuOutlined style={{fontSize: '2em', color: 'gray'}} />
+                        <Popover placement="bottomRight" content={contentOption} visible={visibleRight}>
+                            <MenuOutlined style={{fontSize: '2em', color: 'gray'}} onClick={() => toggleOption()} />
                         </Popover>
                     </CenterAlign>
                 </Col>
                 <Col xs={24} sm={0} md={0} lg={0} xl={0} >
                     <CenterAlign>
-                        <Popover placement="bottomRight" content={contentSearch} trigger="click">
-                            <SearchOutlined style={{fontSize: '2rem'}} />
-                        </Popover>
                         <Link href="/"><a><img src="/static/images/logo.png" alt="my image" style={{height: 25}} /></a></Link>
-                        {/* <Link href="/bingo"><a><NavigationButton>{t('NAV_BUTTON_1')}</NavigationButton></a></Link> */}
-                        {/* <Search
-                        placeholder={t('SEARCH_INPUT_PLACEHOLER')}
-                        onSearch={value => console.log(value)}
-                        style={{ width: 200 }}
-                        /> */}
-                        <Popover placement="bottomRight" content={contentOption} trigger="click">
-                            <MenuOutlined style={{fontSize: '2em', color: 'gray'}} />
+                        <Popover placement="bottomRight" content={contentOption} visible={visibleRight}>
+                            <MenuOutlined style={{fontSize: '2em', color: 'gray'}} onClick={() => toggleOption()}/>
                         </Popover>
                     </CenterAlign>
                 </Col>

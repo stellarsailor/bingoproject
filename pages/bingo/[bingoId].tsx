@@ -14,7 +14,7 @@ export default function BingoDetail({ data }) {
     const [ sample, setSample ] = useState(data.bingo)
 
     useEffect(() => {
-        console.log('렌더링 순서')
+        // console.log('렌더링 순서')
     },[])
 
     return(
