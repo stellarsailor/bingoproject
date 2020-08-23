@@ -1,7 +1,6 @@
 import App from "next/app";
 import type { AppProps /*, AppContext */ } from 'next/app'
 import '../styles/style.css'
-import locale from '../locale/translations'
 import { useEffect } from 'react'
 import Head from 'next/head'
 import { appWithTranslation } from '../i18n'
