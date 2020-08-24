@@ -4,6 +4,8 @@ import '../styles/style.css'
 import { useEffect } from 'react'
 import Head from 'next/head'
 import { appWithTranslation } from '../i18n'
+
+import InitialContentsProvider from '../store/InitialContentsProvider'
 import Layout from "../components/Layout";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -12,9 +14,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     },[])
 
     return (
-        <Layout>
-            <Component {...pageProps} />
-        </Layout>
+        <InitialContentsProvider>
+            <Layout>
+                <Component {...pageProps} />
+            </Layout>
+        </InitialContentsProvider>
     )
 }
 
