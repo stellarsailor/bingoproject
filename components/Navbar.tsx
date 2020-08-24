@@ -5,7 +5,6 @@ import { Input, Row, Col, Popover, Button } from 'antd';
 import { i18n, Link, useTranslation, Router } from '../i18n'
 import { MenuOutlined, SearchOutlined } from '@ant-design/icons';
 import { useEffect, useState, useCallback } from 'react';
-import Flag from 'react-world-flags'
 
 const { Search } = Input;
 
@@ -55,15 +54,14 @@ export default function NavBar({ }) {
         }
         <Link href="/bingo/create">
             <a>
-                <div>ㅂㄱ 만들기</div>
+                <div onClick={() => toggleOption()}>ㅂㄱ 만들기</div>
             </a>
         </Link>
         <Link href="/setting">
             <a>
-                <div>설정</div>
+                <div onClick={() => toggleOption()}>설정</div>
             </a>
         </Link>
-        <div onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'ko' : 'en')}>현재 언어 : <Flag code={i18n.language === 'en' ? 'gb' : 'kr'} height={16} /></div>
     </div>
     )
 
@@ -74,7 +72,7 @@ export default function NavBar({ }) {
 
     return(
         <NavigationBar>
-            <Row type="flex" justify="center" style={{height: 50, display: 'flex', alignItems: 'center'}}>
+            <Row justify="center" style={{height: 50, display: 'flex', alignItems: 'center'}}>
                 <Col xs={0} sm={22} md={20} lg={20} xl={12} >
                     <CenterAlign>
                         <Link href="/"><a><img src="/static/images/icon.png" alt="my image" style={{height: 35}} /><img src="/static/images/logo.png" alt="my image" style={{height: 35}} /></a></Link>
@@ -84,15 +82,15 @@ export default function NavBar({ }) {
                         style={{ width: 250 }}
                         />
                         <Popover placement="bottomRight" content={contentOption} visible={visibleRight}>
-                            <MenuOutlined style={{fontSize: '2em', color: 'gray'}} onClick={() => toggleOption()} />
+                            <MenuOutlined style={{fontSize: '1.5rem', color: 'gray'}} onClick={() => toggleOption()} />
                         </Popover>
                     </CenterAlign>
                 </Col>
-                <Col xs={24} sm={0} md={0} lg={0} xl={0} >
+                <Col xs={23} sm={0} md={0} lg={0} xl={0} >
                     <CenterAlign>
                         <Link href="/"><a><img src="/static/images/logo.png" alt="my image" style={{height: 25}} /></a></Link>
                         <Popover placement="bottomRight" content={contentOption} visible={visibleRight}>
-                            <MenuOutlined style={{fontSize: '2em', color: 'gray'}} onClick={() => toggleOption()}/>
+                            <MenuOutlined style={{fontSize: '1.5rem', color: 'gray'}} onClick={() => toggleOption()}/>
                         </Popover>
                     </CenterAlign>
                 </Col>

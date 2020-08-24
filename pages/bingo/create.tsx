@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useContext } from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
 import { TwitterPicker, PhotoshopPicker, CompactPicker } from 'react-color';
@@ -8,10 +8,11 @@ const { Option } = Select;
 import { serverUrl } from '../../lib/serverUrl'
 import { useTranslation } from '../../i18n';
 import bingos from '../api/bingos';
+import { InitialContents } from '../../store/InitialContentsProvider';
 
 const CreatePage = styled.div`
     margin-top: 1rem;
-    background-color: ${(props) => props.bgColor};
+    background: ${(props) => `-webkit-linear-gradient(${props.bgMainColor}, ${props.bgSubColor})` };
     width: 100%;
     padding: 1rem;
     border: 1px solid var(--mono-2);
@@ -19,6 +20,7 @@ const CreatePage = styled.div`
 
 export default function BingoCreate({ data, query, params }) {
     const { t, i18n } = useTranslation();
+    const { categoryList } = useContext(InitialContents)
 
     const [ bingoSize, setBingoSize ] = useState(3)
     const [ bingoArr, setBingoArr ] = useState([])
@@ -27,7 +29,8 @@ export default function BingoCreate({ data, query, params }) {
     const [ modalWillChangeInput, setModalWillChangeInput ] = useState('')
     const [ modalWillChangeIndex, setModalWillChangeIndex ] = useState(0)
 
-    const [ bingoBgColor, setBingoBgColor ] = useState('#ffffff')
+    const [ bingoBgMainColor, setBingoBgMainColor ] = useState('#ffffff')
+    const [ bingoBgSubColor, setBingoBgSubColor ] = useState('#0693E3')
     const [ bingoFontColor, setBingoFontColor ] = useState('#000000')
     const [ bingoLineColor, setBingoLineColor ] = useState('#000000')
     const [ bingoLinePixel, setBingoLinePixel ] = useState(3)
@@ -81,11 +84,11 @@ export default function BingoCreate({ data, query, params }) {
 
     const handleSubmit = useCallback(() => {
         //fetch
-    },[bingoBgColor, bingoFontColor, bingoLineColor, bingoLinePixel, bingoCellColor])
+    },[bingoBgMainColor, bingoFontColor, bingoLineColor, bingoLinePixel, bingoCellColor])
 
     return(
         <>
-        <CreatePage bgColor={bingoBgColor}>
+        <CreatePage bgMainColor={bingoBgMainColor} bgSubColor={bingoBgSubColor}>
             제목
             <Input placeholder="Title" />
             설명
@@ -94,9 +97,8 @@ export default function BingoCreate({ data, query, params }) {
             비밀번호
             <Input.Password placeholder="input password" />
 
-            <Select defaultValue="lucy" style={{ width: 120 }} onChange={v => console.log(v)}>
-                <Option value="jack">Jack</Option>
-                <Option value="lucy">Lucy</Option>
+            <Select placeholder="Category" style={{ width: 120 }} onChange={v => console.log(v)}>
+                {categoryList.map((v, index) => <Option key={index} value={v.name_ko}>{v.name_ko}</Option>)}
             </Select>
 
             <Radio.Group defaultValue="a">
@@ -127,7 +129,7 @@ export default function BingoCreate({ data, query, params }) {
 
             배경색 설정
             <div>
-                <TwitterPicker color={bingoBgColor} onChangeComplete={(v) => setBingoBgColor(v.hex)} />
+                <TwitterPicker color={bingoBgMainColor} onChangeComplete={(v) => setBingoBgMainColor(v.hex)} />
             </div>
             선 색 설정
             <div>
@@ -135,7 +137,7 @@ export default function BingoCreate({ data, query, params }) {
             </div>
             선 두께 설정
             <div>
-                <InputNumber min={1} max={5} defaultValue={3} onChange={(v) => setBingoLinePixel(v)} />
+                <InputNumber min={1} max={5} defaultValue={3} onChange={(v: number) => setBingoLinePixel(v)} />
             </div>
             셀 배경색 설정
             <div>

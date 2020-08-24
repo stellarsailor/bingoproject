@@ -2,7 +2,8 @@
 
 * {
     font-family: 'Gothic A1', sans-serif;
-    font-size: 1rem;
+    /* font-size: 1rem; */
+    /* color: rgba(0, 0, 0, 0.65); */
     font-weight: 300;
     
     user-drag: none; 
