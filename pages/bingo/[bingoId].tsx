@@ -40,60 +40,60 @@ export default function BingoDetail({ data }) {
 
     return(
         <>
-            <Row>
-            <Col xs={24} sm={8} md={8} lg={8} xl={8} style={{marginTop: '1rem', paddingRight: '1rem'}}>
-                <ControllerPage>
-                    <div style={{width: '100%', backgroundColor: 'white', padding: '1rem'}}>
-                        <Link href="/">
-                            <a>
-                                <ArrowLeftOutlined /> Back To List
-                            </a>
-                        </Link>
-                    </div>
-                    <div style={{padding: '1rem', fontSize: '1rem'}}>
-                        <div>
-                            {bingo.title} - {bingo.author}({bingo.ipAddress})
+            <Row style={{paddingTop: 50}} gutter={16}>
+                <Col xs={24} sm={8} md={8} lg={8} xl={8} style={{marginTop: '1rem'}}>
+                    <ControllerPage>
+                        <div style={{width: '100%', backgroundColor: 'white', padding: '1rem'}}>
+                            <Link href="/">
+                                <a>
+                                    <ArrowLeftOutlined /> Back To List
+                                </a>
+                            </Link>
                         </div>
-                        <div>
-                            <LikeOutlined /> <DislikeOutlined />
+                        <div style={{padding: '1rem', fontSize: '1rem'}}>
+                            <div>
+                                {bingo.title} - {bingo.author}({bingo.ipAddress})
+                            </div>
+                            <div>
+                                <LikeOutlined /> <DislikeOutlined />
+                            </div>
+                            <div>
+                                <AlertOutlined />
+                            </div>
+                            <div>
+                                빙고 마크 표시 모양 설정
+                            </div>
+                            <div>
+                                <ShareAltOutlined />링크 공유
+                            </div>
+                            <CenteredCol>
+                                <Button onClick={takeScreenShot}>
+                                    <CameraOutlined />캡쳐 버튼
+                                </Button>
+                                <Button type="primary" onClick={() => console.log('submit')} style={{width: '50%'}}>통계 확인</Button>
+                            </CenteredCol>
                         </div>
-                        <div>
-                            <AlertOutlined />
-                        </div>
-                        <div>
-                            빙고 마크 표시 모양 설정
-                        </div>
-                        <div>
-                            <ShareAltOutlined />링크 공유
-                        </div>
-                        <CenteredCol>
-                            <Button onClick={takeScreenShot}>
-                                <CameraOutlined />캡쳐 버튼
-                            </Button>
-                            <Button type="primary" onClick={() => console.log('submit')} style={{width: '50%'}}>통계 확인</Button>
-                        </CenteredCol>
-                    </div>
 
-                </ControllerPage>
-            </Col>
-            <Col xs={24} sm={16} md={16} lg={16} xl={16} id="nodenode">
-                {/* <Checkbox onChange={e => console.log(e)}>NSFW</Checkbox> */}
-                <BingoRenderer 
-                title={bingo.title}
-                author={'asd'}
-                size={bingo.size}
-                elements={JSON.parse(bingo.elements)}
-                elementOnClickEvent={(i) => console.log(i)}
-                bgMainColor={bingo.bgMainColor}
-                bgSubColor={bingo.bgSubColor}
-                fontColor={bingo.fontColor}
-                cellColor={bingo.cellColor}
-                lineColor={bingo.lineColor}
-                linePixel={bingo.linePixel}
-                />
-                
-            </Col>
-        </Row>
+                    </ControllerPage>
+                </Col>
+                <Col xs={24} sm={16} md={16} lg={16} xl={16} id="nodenode">
+                    {/* <Checkbox onChange={e => console.log(e)}>NSFW</Checkbox> */}
+                    <BingoRenderer 
+                    title={bingo.title}
+                    author={'asd'}
+                    size={bingo.size}
+                    elements={JSON.parse(bingo.elements)}
+                    elementOnClickEvent={(i) => console.log(i)}
+                    bgMainColor={bingo.bgMainColor}
+                    bgSubColor={bingo.bgSubColor}
+                    fontColor={bingo.fontColor}
+                    cellColor={bingo.cellColor}
+                    lineColor={bingo.lineColor}
+                    linePixel={bingo.linePixel}
+                    />
+                    
+                </Col>
+            </Row>
         </>
     )
 }

@@ -23,6 +23,7 @@ export default function BingoCreate({ data, query, params }) {
     const { categoryList } = useContext(InitialContents)
 
     const [ bingoTitle, setBingoTitle ] = useState('Enter BINGO Title')
+    const [ bingoAuthor, setBingoAuthor ] = useState('')
     
     const [ bingoSize, setBingoSize ] = useState(3)
     const [ bingoArr, setBingoArr ] = useState([])
@@ -62,104 +63,100 @@ export default function BingoCreate({ data, query, params }) {
         setBingoArr(elements)
     },[bingoSize])
 
-    const changeInputTitle = useCallback((title) => {
-        setBingoTitle(title)
-    },[])
-
     const handleSubmit = useCallback(() => {
         //fetch
     },[bingoBgMainColor, bingoFontColor, bingoLineColor, bingoLinePixel, bingoCellColor])
 
     return(
         <>
-        <Row>
-            <Col xs={24} sm={8} md={8} lg={8} xl={8} style={{marginTop: '1rem', paddingRight: '1rem'}}>
-                <ControllerPage>
-                    <div style={{width: '100%', backgroundColor: 'white', padding: '1rem'}}>
-                        <Link href="/">
-                            <a>
-                                <ArrowLeftOutlined /> Back To List
-                            </a>
-                        </Link>
-                    </div>
-                    제목
-                    <Input placeholder="Title" onChange={ e => changeInputTitle(e.target.value)} />
-                    닉네임
-                    <Input placeholder="Name" />
-                    비밀번호
-                    <Input.Password placeholder="input password" />
+            <Row style={{paddingTop: 50}} gutter={16}>
+                <Col xs={24} sm={8} md={8} lg={8} xl={8} style={{marginTop: '1rem'}}>
+                    <ControllerPage>
+                        <div style={{width: '100%', backgroundColor: 'white', padding: '1rem'}}>
+                            <Link href="/">
+                                <a>
+                                    <ArrowLeftOutlined /> Back To List
+                                </a>
+                            </Link>
+                        </div>
+                        제목
+                        <Input placeholder="Title" onChange={e => setBingoTitle(e.target.value)} />
+                        닉네임
+                        <Input placeholder="Name" onChange={e => setBingoAuthor(e.target.value)} />
+                        비밀번호
+                        <Input.Password placeholder="input password" />
 
-                    <Select placeholder="Category" style={{ width: 120 }} onChange={v => console.log(v)}>
-                        {categoryList.map((v, index) => <Option key={index} value={v.name_ko}>{v.name_ko}</Option>)}
-                    </Select>
+                        <Select placeholder="Category" style={{ width: 120 }} onChange={v => console.log(v)}>
+                            {categoryList.map((v, index) => <Option key={index} value={v.name_ko}>{v.name_ko}</Option>)}
+                        </Select>
 
-                    <Radio.Group defaultValue="a">
-                        <Radio.Button value="a">공개</Radio.Button>
-                        <Radio.Button value="b">일부공개</Radio.Button>
-                    </Radio.Group>
+                        <Radio.Group defaultValue="a">
+                            <Radio.Button value="a">공개</Radio.Button>
+                            <Radio.Button value="b">일부공개</Radio.Button>
+                        </Radio.Group>
 
-                    Bingo Size
-                    <Radio.Group defaultValue="3" onChange={(e) => setBingoSize(e.target.value)}>
-                        <Radio.Button value="3">3</Radio.Button>
-                        <Radio.Button value="5">5</Radio.Button>
-                        <Radio.Button value="7">7</Radio.Button>
-                    </Radio.Group>
+                        Bingo Size
+                        <Radio.Group defaultValue="3" onChange={(e) => setBingoSize(e.target.value)}>
+                            <Radio.Button value="3">3</Radio.Button>
+                            <Radio.Button value="5">5</Radio.Button>
+                            <Radio.Button value="7">7</Radio.Button>
+                        </Radio.Group>
 
-                    배경색 설정
-                    <div>
-                        <TwitterPicker color={bingoBgMainColor} onChangeComplete={(v) => setBingoBgMainColor(v.hex)} />
-                    </div>
-                    서브 배경색 설정
-                    <div>
-                        <TwitterPicker color={bingoBgSubColor} onChangeComplete={(v) => setBingoBgSubColor(v.hex)} />
-                    </div>
-                    선 색 설정
-                    <div>
-                        <TwitterPicker color={bingoLineColor} onChangeComplete={(v) => setBingoLineColor(v.hex)} />
-                    </div>
-                    선 두께 설정
-                    <div>
-                        <InputNumber min={1} max={5} defaultValue={3} onChange={(v: number) => setBingoLinePixel(v)} />
-                    </div>
-                    셀 배경색 설정
-                    <div>
-                        <TwitterPicker color={bingoCellColor} onChangeComplete={(v) => setBingoCellColor(v.hex)} />
-                    </div>
-                    글씨 색 설정
-                    <div>
-                        <TwitterPicker color={bingoFontColor} onChangeComplete={(v) => setBingoFontColor(v.hex)} />
-                    </div>
+                        배경색 설정
+                        <div>
+                            <TwitterPicker color={bingoBgMainColor} onChangeComplete={(v) => setBingoBgMainColor(v.hex)} />
+                        </div>
+                        서브 배경색 설정
+                        <div>
+                            <TwitterPicker color={bingoBgSubColor} onChangeComplete={(v) => setBingoBgSubColor(v.hex)} />
+                        </div>
+                        선 색 설정
+                        <div>
+                            <TwitterPicker color={bingoLineColor} onChangeComplete={(v) => setBingoLineColor(v.hex)} />
+                        </div>
+                        선 두께 설정
+                        <div>
+                            <InputNumber min={1} max={5} defaultValue={3} onChange={(v: number) => setBingoLinePixel(v)} />
+                        </div>
+                        셀 배경색 설정
+                        <div>
+                            <TwitterPicker color={bingoCellColor} onChangeComplete={(v) => setBingoCellColor(v.hex)} />
+                        </div>
+                        글씨 색 설정
+                        <div>
+                            <TwitterPicker color={bingoFontColor} onChangeComplete={(v) => setBingoFontColor(v.hex)} />
+                        </div>
 
-                </ControllerPage>
-            </Col>
-            <Col xs={24} sm={16} md={16} lg={16} xl={16}>
-                {/* <Checkbox onChange={e => console.log(e)}>NSFW</Checkbox> */}
-                <BingoRenderer title={bingoTitle}
-                author={'asd'}
-                size={bingoSize}
-                elements={bingoArr}
-                elementOnClickEvent={openIndexedModal}
-                bgMainColor={bingoBgMainColor}
-                bgSubColor={bingoBgSubColor}
-                fontColor={bingoFontColor}
-                cellColor={bingoCellColor}
-                lineColor={bingoLineColor}
-                linePixel={bingoLinePixel}
-                />
-                <Modal
-                title="내용 변경"
-                visible={modalOpened}
-                onOk={() => changeElement(modalWillChangeInput, modalWillChangeIndex)}
-                onCancel={() => setModalOpened(false)}
-                >
-                    <Input value={modalWillChangeInput} onChange={e => setModalWillChangeInput(e.target.value)} />
-                </Modal>
+                    </ControllerPage>
+                </Col>
+                <Col xs={24} sm={16} md={16} lg={16} xl={16}>
+                    {/* <Checkbox onChange={e => console.log(e)}>NSFW</Checkbox> */}
+                    <BingoRenderer title={bingoTitle}
+                    author={bingoAuthor}
+                    size={bingoSize}
+                    elements={bingoArr}
+                    elementOnClickEvent={openIndexedModal}
+                    bgMainColor={bingoBgMainColor}
+                    bgSubColor={bingoBgSubColor}
+                    fontColor={bingoFontColor}
+                    cellColor={bingoCellColor}
+                    lineColor={bingoLineColor}
+                    linePixel={bingoLinePixel}
+                    />
+                    <Modal
+                    title="내용 변경"
+                    visible={modalOpened}
+                    onOk={() => changeElement(modalWillChangeInput, modalWillChangeIndex)}
+                    onCancel={() => setModalOpened(false)}
+                    >
+                        <Input value={modalWillChangeInput} onChange={e => setModalWillChangeInput(e.target.value)} />
+                    </Modal>
 
-                <CenteredCol>
-                    <Button type="primary" onClick={handleSubmit} style={{width: '50%'}}>Submit</Button>
-                </CenteredCol>
-            </Col>
-        </Row>
+                    <CenteredCol>
+                        <Button type="primary" onClick={handleSubmit} style={{width: '50%'}}>Submit</Button>
+                    </CenteredCol>
+                </Col>
+            </Row>
         </>
     )
 }

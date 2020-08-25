@@ -13,33 +13,35 @@ export default function List({ data }) {
 
     return(
         <>
-            <Radio.Group defaultValue="a">
-                <Radio.Button value="a">인기도 순</Radio.Button>
-                <Radio.Button value="b">최신 순</Radio.Button>
-            </Radio.Group>
+            <Row style={{paddingTop: 50}}>
+                <Radio.Group defaultValue="a">
+                    <Radio.Button value="a">인기도 순</Radio.Button>
+                    <Radio.Button value="b">최신 순</Radio.Button>
+                </Radio.Group>
 
-            <Radio.Group defaultValue="a">
-                <Radio.Button value="a">전체</Radio.Button>
-                <Radio.Button value="b">이번달</Radio.Button>
-                <Radio.Button value="c">이번주</Radio.Button>
-                <Radio.Button value="d">오늘</Radio.Button>
-            </Radio.Group>
+                <Radio.Group defaultValue="a">
+                    <Radio.Button value="a">전체</Radio.Button>
+                    <Radio.Button value="b">이번달</Radio.Button>
+                    <Radio.Button value="c">이번주</Radio.Button>
+                    <Radio.Button value="d">오늘</Radio.Button>
+                </Radio.Group>
 
-            <div>
-                여긴 검색 한 뒤에 나오는 리스트 정리 / 
-                좌측엔 제목만 검색, 제목+요소까지 포함하여 검색, 작성자 검색, 빙고 사이즈 설정 등 필터링 제공
-                언어 무관 선택 옵션 넣기
-                {t('SEARCH_INPUT_PLACEHOLER')}
-                {bingoList.map(v => {
-                    return (
-                        <div key={v.id}>
-                            <Link href={`/bingo/${v.id}`}><a>{v.title} / {v.size} {v.author}</a></Link>
-                            <ArrowUpOutlined />
-                            <ArrowDownOutlined />
-                        </div>
-                    )
-                })}
-            </div>
+                <div>
+                    여긴 검색 한 뒤에 나오는 리스트 정리 / 
+                    좌측엔 제목만 검색, 제목+요소까지 포함하여 검색, 작성자 검색, 빙고 사이즈 설정 등 필터링 제공
+                    언어 무관 선택 옵션 넣기
+                    {t('SEARCH_INPUT_PLACEHOLER')}
+                    {bingoList.map(v => {
+                        return (
+                            <div key={v.id}>
+                                <Link href={`/bingo/${v.id}`}><a>{v.title} / {v.size} {v.author}</a></Link>
+                                <ArrowUpOutlined />
+                                <ArrowDownOutlined />
+                            </div>
+                        )
+                    })}
+                </div>
+            </Row>
         </>
     )
 }

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Menu, Row, Col, Input, Button, Radio } from 'antd';
 import { Link, useTranslation } from '../i18n'
 import { useEffect, useState, useContext } from 'react';
+import Sticky from 'react-sticky-el';
 
 import { InitialContents } from '../store/InitialContentsProvider'
 
@@ -99,6 +100,7 @@ const SquareBingoIcon = styled.div`
 
 const CreateBingoButton = styled.div`
     width: 100%;
+    margin-top: 66px;
     height: 60px;
     background-color: white;
     border: 1px solid lightgray;
@@ -136,9 +138,9 @@ export default function Home({ }) {
 
     return (
         <>
-            <Row style={{paddingTop: '1rem', display: 'flex'}}>
+            <Row style={{display: 'flex'}} gutter={16}>
                 <Col xs={24} sm={16} md={16} lg={16} xl={16}>
-                    <div style={{width: '100%', height: 60, marginBottom: '1rem', backgroundColor: 'white', border: '1px solid lightgray', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                    <div style={{width: '100%', marginTop: 66, height: 60, marginBottom: '1rem', backgroundColor: 'white', border: '1px solid lightgray', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                         <CenteredRow>
                             <a>
                                 <FilterButton selected={true}>
@@ -178,7 +180,7 @@ export default function Home({ }) {
                         :
                         null
                     }
-                    <div style={{width: '100%', height: 900, backgroundColor: 'white', border: '1px solid lightgray'}}>
+                    <div style={{width: '100%', height: 2000, backgroundColor: 'white', border: '1px solid lightgray'}}>
                         {
                             bingoList.length === 0 ? 
                             <div>loading</div> 
@@ -191,11 +193,12 @@ export default function Home({ }) {
                                         </SquareBingoIcon>
                                         <BingoPaneText>
                                             <div>
-                                                <span style={{fontWeight: 'bold', fontSize: '1rem', marginRight: '1rem'}}>{v.title}</span>
-                                                <span style={{color: 'var(--mono-4)', textAlign: 'right'}}>{v.author}({v.ipAddress}) 4 days ago</span>
+                                                <span style={{fontWeight: 'bold', fontSize: '1rem', marginRight: '1rem'}}>
+                                                    {v.title} <span style={{color: 'dodgerblue', marginLeft: 10}}><LikeOutlined /> 4k</span>
+                                                </span>
                                             </div> 
+                                            <span style={{color: 'var(--mono-4)'}}>{v.author}({v.ipAddress}) 4 days ago</span>
                                             <div style={{overflow: 'hidden', color: 'var(--mono-4)'}}>
-                                                <span style={{color: 'dodgerblue', marginRight: 10}}><LikeOutlined /> 4k</span>
                                                 {JSON.parse(v.elements).sort(() => Math.random() - Math.random()).slice(0, 3).map((v, index) => 
                                                     <span key={index}> #{v} </span> )}
                                             </div>
@@ -206,50 +209,52 @@ export default function Home({ }) {
                         }
                     </div>
                 </Col>
-                <Col xs={0} sm={8} md={8} lg={8} xl={8} style={{paddingLeft: '1rem'}}>
-                    <CenteredCol>
-                        <Link href="/bingo/create">
-                            <a style={{width: '100%'}}>
-                                <CreateBingoButton>
-                                    <CenteredRow style={{padding: 10}}>
-                                        <div style={{margin: '0px 1rem'}}>
-                                            셀프빙고 만들기
-                                        </div>
-                                        <ArrowRightOutlined />
-                                    </CenteredRow>
-                                </CreateBingoButton>
-                            </a>
-                        </Link>
-                        <div style={{width: '100%', border: '1px solid lightgray', borderBottom: '0px', marginTop: '1rem' }}>
-                            {
-                                categoryList.length === 0 ? null :
-                                <>
-                                    {categoryList.map(v => (
-                                        <a key={v.id} onClick={() => setSelectedCategory(v.id)}>
-                                            <CategoryRenderer selected={selectedCategory === v.id} color={v.color}>
-                                                {v[`name_${i18n.language}`]}
-                                            </CategoryRenderer>
-                                        </a>
-                                    ))}
-                                </>
-                            }
+                <Col xs={0} sm={8} md={8} lg={8} xl={8}>
+                    <Sticky >
+                        <CenteredCol>
+                            <Link href="/bingo/create">
+                                <a style={{width: '100%'}}>
+                                    <CreateBingoButton>
+                                        <CenteredRow style={{padding: 10}}>
+                                            <div style={{margin: '0px 1rem'}}>
+                                                셀프빙고 만들기
+                                            </div>
+                                            <ArrowRightOutlined />
+                                        </CenteredRow>
+                                    </CreateBingoButton>
+                                </a>
+                            </Link>
+                            <div style={{width: '100%', border: '1px solid lightgray', borderBottom: '0px', marginTop: '1rem' }}>
+                                {
+                                    categoryList.length === 0 ? null :
+                                    <>
+                                        {categoryList.map(v => (
+                                            <a key={v.id} onClick={() => setSelectedCategory(v.id)}>
+                                                <CategoryRenderer selected={selectedCategory === v.id} color={v.color}>
+                                                    {v[`name_${i18n.language}`]}
+                                                </CategoryRenderer>
+                                            </a>
+                                        ))}
+                                    </>
+                                }
+                            </div>
+                        </CenteredCol>
+                        <div style={{color: 'gray', fontSize: '0.8rem', padding: '10px'}}>
+                            <Link href="/about">
+                                <GrayLittleLink>
+                                    소개
+                                </GrayLittleLink>
+                            </Link>
+                            <Link href="/privacy">
+                                <GrayLittleLink>
+                                개인정보처리방침
+                                </GrayLittleLink>
+                            </Link>
+                            <p>
+                                © 2020 SelfBingo
+                            </p>
                         </div>
-                    </CenteredCol>
-                    <div style={{color: 'gray', fontSize: '0.8rem', padding: '10px'}}>
-                        <Link href="/about">
-                            <GrayLittleLink>
-                                소개
-                            </GrayLittleLink>
-                        </Link>
-                        <Link href="/privacy">
-                            <GrayLittleLink>
-                            개인정보처리방침
-                            </GrayLittleLink>
-                        </Link>
-                        <p>
-                            © 2020 SelfBingo
-                        </p>
-                    </div>
+                    </Sticky>
                 </Col>
             </Row>
         </>
