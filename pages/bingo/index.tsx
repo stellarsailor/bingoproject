@@ -26,7 +26,9 @@ export default function List({ data }) {
             </Radio.Group>
 
             <div>
-                여긴 검색 한 뒤에 나오는 리스트 정리 / 좌측엔 제목만 검색, 설명까지 검색, 요소까지 포함하여 검색, 빙고 사이즈 설정 등 필터링 제공
+                여긴 검색 한 뒤에 나오는 리스트 정리 / 
+                좌측엔 제목만 검색, 제목+요소까지 포함하여 검색, 작성자 검색, 빙고 사이즈 설정 등 필터링 제공
+                언어 무관 선택 옵션 넣기
                 {t('SEARCH_INPUT_PLACEHOLER')}
                 {bingoList.map(v => {
                     return (

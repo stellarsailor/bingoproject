@@ -166,7 +166,7 @@ export default function Home({ }) {
                             <Col xs={24} sm={0} md={0} lg={0} xl={0}>
                                 <MobileCategoryContainer>
                                     {categoryList.map(v => (
-                                        <a key={v.id} onClick={() => setSelectedCategory(v.id)}>
+                                        <a key={v.id} onClick={() => { setSelectedCategory(v.id); setMobileCategoryListVisible(false) }}>
                                             <CategoryRenderer color={v.color} selected={selectedCategory === v.id}>
                                                 {v[`name_${i18n.language}`]}
                                             </CategoryRenderer>

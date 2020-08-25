@@ -41,7 +41,7 @@ export default function BingoRenderer( props ){
                         if( size * i <= index && index < size * (i+1) ){
                             return (
                                 <td key={index} style={{border: `${linePixel}px solid ${lineColor}`, backgroundColor: `${cellColor}`}} onClick={() => elementOnClickEvent(index)}>
-                                    <div style={{width: (cellWidth - 50) / size, height: (cellWidth - 50) / size, display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', color: `${fontColor}`, overflow: 'hidden'}}>
+                                    <div style={{width: (cellWidth - 50) / size, height: (cellWidth - 50) / size, display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', color: `${fontColor}`, overflow: 'hidden', fontSize: cellWidth / size / 10}}>
                                         {v}
                                     </div>
                                 </td>
