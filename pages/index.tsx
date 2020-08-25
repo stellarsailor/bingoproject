@@ -5,9 +5,10 @@ import { useEffect, useState, useContext } from 'react';
 
 import { InitialContents } from '../store/InitialContentsProvider'
 
-import { ArrowRightOutlined, PlusOutlined, FireOutlined, ThunderboltOutlined, FireFilled, ThunderboltFilled, MoreOutlined, RedoOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, PlusOutlined, FireOutlined, ThunderboltOutlined, FireFilled, ThunderboltFilled, MoreOutlined, RedoOutlined, LikeOutlined } from '@ant-design/icons';
 import { serverUrl } from '../lib/serverUrl';
 import { CenteredRow, CenteredCol } from '../components/sub/styled'
+import pickTextColorBasedOnBgColor from '../logics/pickTextColorBasedOnBgColor';
 
 const CategoryRenderer = styled.div`
     display: flex;
@@ -64,6 +65,7 @@ const BingoPane = styled.div`
     border-bottom: 1px solid var(--mono-2);
     display: flex;
     flex-direction: row;
+    align-items: center;
     width: 100%;
     padding: 10px;
     :hover {
@@ -73,13 +75,22 @@ const BingoPane = styled.div`
     }
 `
 
+const BingoPaneText = styled.div`
+    display: flex;
+    flex-direction: column; 
+    color: var(--mono-5);
+    overflow: hidden;
+`
+
 const SquareBingoIcon = styled.div`
     color: ${props => props.fontColor};
     /* background: ${props => `-webkit-linear-gradient(${props.bgMainColor}, ${props.bgSubColor})`}; */
     background-color: ${props => props.bgMainColor};
     border: 1px solid var(--mono-2);
     width: 80px;
+    min-width: 80px;
     height: 80px;
+    font-size: 1.6rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -113,7 +124,7 @@ export default function Home({ }) {
     const { t, i18n } = useTranslation();
     const { bingoList, categoryList, refreshInitialContents } = useContext(InitialContents)
 
-    const [ selectedCategory, setSelectedCategory ] = useState(-1)
+    const [ selectedCategory, setSelectedCategory ] = useState(0)
 
     const [ isMobile, setIsMobile ] = useState(false)
     const [ mobileCategoryListVisible, setMobileCategoryListVisible ] = useState(false)
@@ -154,11 +165,6 @@ export default function Home({ }) {
                         <Row>
                             <Col xs={24} sm={0} md={0} lg={0} xl={0}>
                                 <MobileCategoryContainer>
-                                    <a key='-1' onClick={() => setSelectedCategory(-1)}>
-                                        <CategoryRenderer selected={selectedCategory === -1}>
-                                            전체
-                                        </CategoryRenderer>
-                                    </a>
                                     {categoryList.map(v => (
                                         <a key={v.id} onClick={() => setSelectedCategory(v.id)}>
                                             <CategoryRenderer color={v.color} selected={selectedCategory === v.id}>
@@ -177,18 +183,23 @@ export default function Home({ }) {
                             bingoList.length === 0 ? 
                             <div>loading</div> 
                             :
-                            bingoList.map(v => (
+                            bingoList.filter(v => selectedCategory === 0 ? true : v.categoryId === selectedCategory).map(v => (
                                 <Link href={`/bingo/${v.id}`} key={v.id} ><a>
                                     <BingoPane>
-                                        <SquareBingoIcon bgMainColor={v.bgMainColor} bgSubColor={v.bgSubColor} fontColor={v.fontColor}>
-                                            <span style={{fontSize: '1.6rem'}}>
-                                                {v.size} X {v.size}
-                                            </span>
+                                        <SquareBingoIcon bgMainColor={v.bgMainColor} bgSubColor={v.bgSubColor} fontColor={pickTextColorBasedOnBgColor(v.bgMainColor, '#ffffff','#000000')}>
+                                            {v.size} X {v.size}
                                         </SquareBingoIcon>
-                                        <div style={{display: 'flex', flexDirection: 'column', color: 'var(--mono-5)'}}>
-                                            <div style={{fontWeight: 'bold'}}>{v.title} - {v.author}({v.ipAddress})</div> 
-                                            <div>{v.description}</div>
-                                        </div>
+                                        <BingoPaneText>
+                                            <div>
+                                                <span style={{fontWeight: 'bold', fontSize: '1rem', marginRight: '1rem'}}>{v.title}</span>
+                                                <span style={{color: 'var(--mono-4)', textAlign: 'right'}}>{v.author}({v.ipAddress}) 4 days ago</span>
+                                            </div> 
+                                            <div style={{overflow: 'hidden', color: 'var(--mono-4)'}}>
+                                                <span style={{color: 'dodgerblue', marginRight: 10}}><LikeOutlined /> 4k</span>
+                                                {JSON.parse(v.elements).sort(() => Math.random() - Math.random()).slice(0, 3).map((v, index) => 
+                                                    <span key={index}> #{v} </span> )}
+                                            </div>
+                                        </BingoPaneText>
                                     </BingoPane>
                                 </a></Link>
                             ))
@@ -213,11 +224,6 @@ export default function Home({ }) {
                             {
                                 categoryList.length === 0 ? null :
                                 <>
-                                    <a onClick={() => setSelectedCategory(-1)}>
-                                        <CategoryRenderer selected={selectedCategory === -1}>
-                                            전체 카테고리
-                                        </CategoryRenderer>
-                                    </a>
                                     {categoryList.map(v => (
                                         <a key={v.id} onClick={() => setSelectedCategory(v.id)}>
                                             <CategoryRenderer selected={selectedCategory === v.id} color={v.color}>

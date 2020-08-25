@@ -16,8 +16,8 @@ const NavigationBar = styled.div`
     /* justify-content: space-between; */
     /* align-items: center; */
     /* max-width: 100%; */
-    border-bottom: 1px solid #f5f5f5;
-    background-color: rgba(255,255,255, 0.98);
+    border-bottom: 1px solid lightgray;
+    background-color: rgba(255,255,255, 1);
     z-index: 101;
 `
 
