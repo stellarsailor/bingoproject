@@ -100,7 +100,7 @@ const SquareBingoIcon = styled.div`
 
 const CreateBingoButton = styled.div`
     width: 100%;
-    margin-top: 66px;
+    margin-top: 58px;
     height: 60px;
     background-color: white;
     border: 1px solid lightgray;
@@ -138,9 +138,9 @@ export default function Home({ }) {
 
     return (
         <>
-            <Row style={{display: 'flex'}} gutter={16}>
+            <Row style={{display: 'flex'}}>
                 <Col xs={24} sm={16} md={16} lg={16} xl={16}>
-                    <div style={{width: '100%', marginTop: 66, height: 60, marginBottom: '1rem', backgroundColor: 'white', border: '1px solid lightgray', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                    <div style={{width: '100%', marginTop: 58, height: 60, marginBottom: 8, backgroundColor: 'white', border: '1px solid lightgray', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                         <CenteredRow>
                             <a>
                                 <FilterButton selected={true}>
@@ -209,7 +209,7 @@ export default function Home({ }) {
                         }
                     </div>
                 </Col>
-                <Col xs={0} sm={8} md={8} lg={8} xl={8}>
+                <Col xs={0} sm={8} md={8} lg={8} xl={8} style={{paddingLeft: 8}}>
                     <Sticky >
                         <CenteredCol>
                             <Link href="/bingo/create">
@@ -224,7 +224,7 @@ export default function Home({ }) {
                                     </CreateBingoButton>
                                 </a>
                             </Link>
-                            <div style={{width: '100%', border: '1px solid lightgray', borderBottom: '0px', marginTop: '1rem' }}>
+                            <div style={{width: '100%', border: '1px solid lightgray', borderBottom: '0px', marginTop: 8 }}>
                                 {
                                     categoryList.length === 0 ? null :
                                     <>

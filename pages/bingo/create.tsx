@@ -9,7 +9,7 @@ import { serverUrl } from '../../lib/serverUrl'
 import { useTranslation } from '../../i18n';
 import bingos from '../api/bingos';
 import { InitialContents } from '../../store/InitialContentsProvider';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, LeftOutlined } from '@ant-design/icons';
 import BingoRenderer from '../../components/BingoRenderer';
 import { CenteredCol } from '../../components/sub/styled';
 
@@ -57,7 +57,7 @@ export default function BingoCreate({ data, query, params }) {
         let elements = []
 
         for(let i = 0; i < bingoSize*bingoSize; i++){
-            elements.push(' ')
+            elements.push( i +' ')
         }
 
         setBingoArr(elements)
@@ -69,13 +69,13 @@ export default function BingoCreate({ data, query, params }) {
 
     return(
         <>
-            <Row style={{paddingTop: 50}} gutter={16}>
-                <Col xs={24} sm={8} md={8} lg={8} xl={8} style={{marginTop: '1rem'}}>
+            <Row style={{paddingTop: 50}}>
+                <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{marginTop: 8, marginBottom: 8}}>
                     <ControllerPage>
                         <div style={{width: '100%', backgroundColor: 'white', padding: '1rem'}}>
                             <Link href="/">
-                                <a>
-                                    <ArrowLeftOutlined /> Back To List
+                                <a style={{fontSize: '1.1rem'}}>
+                                    <LeftOutlined /> Back
                                 </a>
                             </Link>
                         </div>
@@ -129,13 +129,14 @@ export default function BingoCreate({ data, query, params }) {
 
                     </ControllerPage>
                 </Col>
-                <Col xs={24} sm={16} md={16} lg={16} xl={16}>
+                <Col xs={24} sm={24} md={24} lg={24} xl={24} >
                     {/* <Checkbox onChange={e => console.log(e)}>NSFW</Checkbox> */}
                     <BingoRenderer title={bingoTitle}
                     author={bingoAuthor}
                     size={bingoSize}
                     elements={bingoArr}
                     elementOnClickEvent={openIndexedModal}
+                    selectedIndex={[]}
                     bgMainColor={bingoBgMainColor}
                     bgSubColor={bingoBgSubColor}
                     fontColor={bingoFontColor}

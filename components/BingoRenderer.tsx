@@ -4,9 +4,9 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { Input } from 'antd'
 import { CenteredRow, CenteredCol } from './sub/styled'
 import pickTextColorBasedOnBgColor from '../logics/pickTextColorBasedOnBgColor'
+import useWindowSize from '../logics/useWindowSize'
 
 const CreatePage = styled.div`
-    margin-top: 1rem;
     background: ${(props) => `-webkit-linear-gradient(${props.bgMainColor}, ${props.bgSubColor})` };
     width: 100%;
     padding: 1rem;
@@ -19,15 +19,23 @@ const TitleText = styled.div`
     font-size: 1.6rem;
 `
 
+const AuthorText = styled.div`
+    color: ${props => props.color};
+    font-weight: bold;
+    font-size: 0.8rem;
+`
+
 export default function BingoRenderer( props ){
 
-    const { title, author, size, elements, elementOnClickEvent, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, linePixel } = props
+    const { id, title, author, size, elements, elementOnClickEvent, selectedIndex, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, linePixel, ipAddress } = props
 
     const ref = useRef(null);
 
+    const [width, height] = useWindowSize();
+
     useEffect(() => {
-        setCellWidth(ref.current ? ref.current.offsetWidth : 0);
-    }, [ref.current]);
+        setCellWidth(ref.current ? ref.current.offsetWidth : 0)
+    }, [width])
 
     const [ cellWidth, setCellWidth ] = useState(0)
 
@@ -40,10 +48,12 @@ export default function BingoRenderer( props ){
                     {elements.map((v, index) => {
                         if( size * i <= index && index < size * (i+1) ){
                             return (
-                                <td key={index} style={{border: `${linePixel}px solid ${lineColor}`, backgroundColor: `${cellColor}`}} onClick={() => elementOnClickEvent(index)}>
-                                    <div style={{width: (cellWidth - 50) / size, height: (cellWidth - 50) / size, display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', color: `${fontColor}`, overflow: 'hidden', fontSize: cellWidth / size / 10}}>
-                                        {v}
-                                    </div>
+                                <td key={index} style={{border: `${linePixel}px solid ${lineColor}`, backgroundColor: `${selectedIndex.includes(index) ? 'gold' : cellColor}`}} onClick={() => elementOnClickEvent(index)}>
+                                    <a>
+                                        <div style={{width: (cellWidth - 50) / size, height: (cellWidth - 50) / size, display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', color: `${fontColor}`, overflow: 'hidden', fontSize: cellWidth / size / 9}}>
+                                            {v}
+                                        </div>
+                                    </a>
                                 </td>
                             )
                         }
@@ -56,17 +66,20 @@ export default function BingoRenderer( props ){
 
     return (
         <>
-            <CreatePage ref={ref} bgMainColor={bgMainColor} bgSubColor={bgSubColor}>
+            <CreatePage ref={ref} bgMainColor={bgMainColor} bgSubColor={bgSubColor} id={id}>
                 <CenteredCol>
                     <TitleText color={pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}>
-                        {title} <span style={{fontSize: '1rem'}}>({author})</span>
+                        {title} 
                     </TitleText>
+                    <AuthorText color={pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}>
+                        by {author} ({ipAddress})
+                    </AuthorText>
                     <table style={{}}>
                         <tbody>
                             {renderTable(size)}
                         </tbody>
                     </table>
-                    <div style={{color: `${pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}`, fontWeight: 'bold', fontSize: '1rem', marginTop: '1rem'}}>
+                    <div style={{color: `${pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}`, fontWeight: 'bold', fontSize: '1.4rem', marginTop: '1rem'}}>
                         selfbingo.com
                     </div>
                 </CenteredCol>
