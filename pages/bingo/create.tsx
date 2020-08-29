@@ -41,7 +41,7 @@ export default function BingoCreate({ data, query, params }) {
     const { t, i18n } = useTranslation();
     const { categoryList } = useContext(InitialContents)
 
-    const [ bingoCategory, setBingoCategory ] = useState(0)
+    const [ bingoCategory, setBingoCategory ] = useState<any>(0)
     const [ bingoPassword, setBingoPassword ] = useState('')
     const [ bingoTitle, setBingoTitle ] = useState('Enter BINGO Title')
     const [ bingoAuthor, setBingoAuthor ] = useState('')
