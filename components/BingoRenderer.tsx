@@ -72,7 +72,7 @@ export default function BingoRenderer( props ){
                         {title} 
                     </TitleText>
                     <AuthorText color={pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}>
-                        by {author} ({ipAddress})
+                        by {author}
                     </AuthorText>
                     <table style={{}}>
                         <tbody>

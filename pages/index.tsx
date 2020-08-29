@@ -201,16 +201,17 @@ export default function Home({ }) {
                             </BingoPane>
                             </>
                             :
-                            <InfiniteScroll
-                            dataLength={bingoList.length} //This is important field to render the next data
-                            next={fetchMainBingos}
-                            hasMore={true}
-                            loader={<h4>Loading...</h4>}
-                            endMessage={
-                                <p style={{textAlign: 'center'}}>
-                                <b>Yay! You have seen it all</b>
-                                </p>
-                            }>
+                            // <InfiniteScroll
+                            // dataLength={bingoList.length} //This is important field to render the next data
+                            // next={fetchMainBingos}
+                            // hasMore={true}
+                            // loader={<h4>Loading...</h4>}
+                            // endMessage={
+                            //     <p style={{textAlign: 'center'}}>
+                            //     <b>Yay! You have seen it all</b>
+                            //     </p>
+                            // }>
+                            <div>
                                 { bingoList.filter(v => selectedCategory === 0 ? true : v.categoryId === selectedCategory).map(v => (
                                     <Link href={`/bingo/${v.id}`} key={v.id} ><a>
                                         <BingoPane>
@@ -232,7 +233,8 @@ export default function Home({ }) {
                                         </BingoPane>
                                     </a></Link>
                                 )) }
-                            </InfiniteScroll>
+                            </div>
+                            // </InfiniteScroll>
                         }
                     </div>
                 </Col>

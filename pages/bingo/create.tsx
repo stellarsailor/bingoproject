@@ -1,32 +1,54 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
-import { TwitterPicker, PhotoshopPicker, CompactPicker } from 'react-color';
-import { Row, Col, BackTop, Input, Checkbox, Radio, Select, Modal, InputNumber, Button } from 'antd';
+import { TwitterPicker, PhotoshopPicker, CompactPicker, SketchPicker } from 'react-color';
+import { Row, Col, BackTop, Input, Checkbox, Radio, Select, Modal, InputNumber, Button, Tooltip } from 'antd';
 const { Option } = Select;
 
 import { serverUrl } from '../../lib/serverUrl'
 import { useTranslation } from '../../i18n';
 import bingos from '../api/bingos';
 import { InitialContents } from '../../store/InitialContentsProvider';
-import { ArrowLeftOutlined, LeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, LeftOutlined, LockOutlined, GlobalOutlined, TableOutlined } from '@ant-design/icons';
 import BingoRenderer from '../../components/BingoRenderer';
-import { CenteredCol } from '../../components/sub/styled';
+import { CenteredCol, CenteredRow } from '../../components/sub/styled';
 
 const ControllerPage = styled.div`
     background-color: white;
     border: 1px solid lightgray;
 `
 
+const ColorSquare = styled.div`
+    width: 20px;
+    height: 20px;
+    background-color: ${props => props.color};
+    border-radius: 4px;
+    border: 1px solid lightgray;
+`
+
+const ColorTab = styled.span`
+    display: flex;
+    flex-direction: row;
+    margin: 8px 0px;
+`
+
+const ColorLeftText = styled.span`
+    width: 120px;
+    margin-right: 16px;
+`
+
 export default function BingoCreate({ data, query, params }) {
     const { t, i18n } = useTranslation();
     const { categoryList } = useContext(InitialContents)
 
+    const [ bingoCategory, setBingoCategory ] = useState(0)
+    const [ bingoPassword, setBingoPassword ] = useState('')
     const [ bingoTitle, setBingoTitle ] = useState('Enter BINGO Title')
     const [ bingoAuthor, setBingoAuthor ] = useState('')
-    
     const [ bingoSize, setBingoSize ] = useState(3)
     const [ bingoArr, setBingoArr ] = useState([])
+
+    const [ colorPickerKey, setColorPickerKey ] = useState('')
 
     const [ bingoBgMainColor, setBingoBgMainColor ] = useState('#ffffff')
     const [ bingoBgSubColor, setBingoBgSubColor ] = useState('#0693E3')
@@ -52,81 +74,162 @@ export default function BingoCreate({ data, query, params }) {
         setModalOpened(true)
     },[])
 
-
     useEffect(() => {
         let elements = []
 
         for(let i = 0; i < bingoSize*bingoSize; i++){
-            elements.push( i +' ')
+            elements.push('')
         }
 
         setBingoArr(elements)
     },[bingoSize])
 
-    const handleSubmit = useCallback(() => {
-        //fetch
-    },[bingoBgMainColor, bingoFontColor, bingoLineColor, bingoLinePixel, bingoCellColor])
+    const handleSubmit = useCallback(async () => {
+        let url = `${serverUrl}/api/bingos?lang=${i18n.language}`
+        const settings = {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                lock: 0,
+                author: bingoAuthor,
+                password: bingoPassword,
+                category: bingoCategory,
+                title: bingoTitle,
+                size: bingoSize,
+                elements: bingoArr,
+                bgMainColor: bingoBgMainColor,
+                bgSubColor: bingoBgSubColor,
+                fontColor: bingoFontColor,
+                cellColor: bingoCellColor,
+                lineColor: bingoLineColor,
+                linePixel: bingoLinePixel,
+            })
+        }
+        try {
+            const fetchResponse = await fetch(url, settings);
+            const data = await fetchResponse.json();
+            return data;
+        } catch (e) {
+            return e;
+        }    
+    },[bingoPassword, bingoTitle, bingoAuthor, bingoCategory, bingoSize, bingoArr, bingoBgMainColor, bingoBgSubColor, bingoFontColor, bingoCellColor, bingoLineColor, bingoLinePixel])
 
     return(
         <>
             <Row style={{paddingTop: 50}}>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{marginTop: 8, marginBottom: 8}}>
                     <ControllerPage>
-                        <div style={{width: '100%', backgroundColor: 'white', padding: '1rem'}}>
+                        <div style={{width: '100%', backgroundColor: 'white', paddingTop: '1rem', paddingLeft: '1rem'}}>
                             <Link href="/">
                                 <a style={{fontSize: '1.1rem'}}>
                                     <LeftOutlined /> Back
                                 </a>
                             </Link>
                         </div>
-                        제목
-                        <Input placeholder="Title" onChange={e => setBingoTitle(e.target.value)} />
-                        닉네임
-                        <Input placeholder="Name" onChange={e => setBingoAuthor(e.target.value)} />
-                        비밀번호
-                        <Input.Password placeholder="input password" />
+                        <div style={{padding: '1rem'}}>
+                            <Input placeholder="Name" onChange={e => setBingoAuthor(e.target.value)} style={{width: '45%', marginRight: 16}} />
+                            <Input.Password placeholder="input password" onChange={e => setBingoPassword(e.target.value)} style={{width: '45%'}} />
 
-                        <Select placeholder="Category" style={{ width: 120 }} onChange={v => console.log(v)}>
-                            {categoryList.map((v, index) => <Option key={index} value={v.name_ko}>{v.name_ko}</Option>)}
-                        </Select>
+                            <Radio.Group defaultValue="a" style={{marginTop: 16}}>
+                                <Radio.Button value="a">
+                                    <GlobalOutlined /> 공개
+                                </Radio.Button>
+                                <Radio.Button value="b">
+                                    <LockOutlined /> 일부공개
+                                </Radio.Button>
+                            </Radio.Group>
 
-                        <Radio.Group defaultValue="a">
-                            <Radio.Button value="a">공개</Radio.Button>
-                            <Radio.Button value="b">일부공개</Radio.Button>
-                        </Radio.Group>
+                            <div>
+                                <Select placeholder="Category" style={{ width: 150, margin: '1rem 0px', marginRight: 16 }} onChange={v => setBingoCategory(v)}>
+                                    {categoryList.map((v, index) => <Option key={index} value={index}>{v.name_ko}</Option>)}
+                                </Select>
+                            </div>
 
-                        Bingo Size
-                        <Radio.Group defaultValue="3" onChange={(e) => setBingoSize(e.target.value)}>
-                            <Radio.Button value="3">3</Radio.Button>
-                            <Radio.Button value="5">5</Radio.Button>
-                            <Radio.Button value="7">7</Radio.Button>
-                        </Radio.Group>
+                            <Input placeholder="Title" onChange={e => setBingoTitle(e.target.value)} style={{width: '100%'}} />
+    
+                            <div style={{margin: '1rem 0px'}}>
+                                <span style={{marginRight: 16}}>
+                                    <TableOutlined /> Bingo Size
+                                </span>
+                                <Radio.Group defaultValue="3" onChange={(e) => setBingoSize(e.target.value)}>
+                                    <Radio.Button value="3">3x3</Radio.Button>
+                                    <Radio.Button value="5">5x5</Radio.Button>
+                                    {/* <Radio.Button value="7">7x7</Radio.Button> */}
+                                </Radio.Group>
+                            </div>
 
-                        배경색 설정
-                        <div>
-                            <TwitterPicker color={bingoBgMainColor} onChangeComplete={(v) => setBingoBgMainColor(v.hex)} />
-                        </div>
-                        서브 배경색 설정
-                        <div>
-                            <TwitterPicker color={bingoBgSubColor} onChangeComplete={(v) => setBingoBgSubColor(v.hex)} />
-                        </div>
-                        선 색 설정
-                        <div>
-                            <TwitterPicker color={bingoLineColor} onChangeComplete={(v) => setBingoLineColor(v.hex)} />
-                        </div>
-                        선 두께 설정
-                        <div>
-                            <InputNumber min={1} max={5} defaultValue={3} onChange={(v: number) => setBingoLinePixel(v)} />
-                        </div>
-                        셀 배경색 설정
-                        <div>
-                            <TwitterPicker color={bingoCellColor} onChangeComplete={(v) => setBingoCellColor(v.hex)} />
-                        </div>
-                        글씨 색 설정
-                        <div>
-                            <TwitterPicker color={bingoFontColor} onChangeComplete={(v) => setBingoFontColor(v.hex)} />
-                        </div>
+                            <ColorTab onClick={() => setColorPickerKey('bingoBgMainColor')}>
+                                <ColorLeftText>배경색 설정</ColorLeftText>
+                                <ColorSquare color={bingoBgMainColor} />
+                            </ColorTab>
+                            {
+                                colorPickerKey === 'bingoBgMainColor' ? 
+                                <CenteredCol>
+                                    <CompactPicker color={bingoBgMainColor} onChangeComplete={(v) => {setBingoBgMainColor(v.hex); setColorPickerKey('');}} />
+                                </CenteredCol>
+                                : null
+                            }
 
+                            <ColorTab onClick={() => setColorPickerKey('bingoBgSubColor')}>
+                                <ColorLeftText>서브 배경색 설정</ColorLeftText>
+                                <ColorSquare color={bingoBgSubColor} />
+                            </ColorTab>
+                            {
+                                colorPickerKey === 'bingoBgSubColor' ? 
+                                <CenteredCol>
+                                    <CompactPicker color={bingoBgSubColor} onChangeComplete={(v) => {setBingoBgSubColor(v.hex); setColorPickerKey('');}} />
+                                </CenteredCol>
+                                : null
+                            }
+
+                            <ColorTab onClick={() => setColorPickerKey('bingoLineColor')}>
+                                <ColorLeftText>선 색 설정</ColorLeftText>
+                                <ColorSquare color={bingoLineColor} />
+                            </ColorTab>
+                            {
+                                colorPickerKey === 'bingoLineColor' ? 
+                                <CenteredCol>
+                                    <CompactPicker color={bingoLineColor} onChangeComplete={(v) => {setBingoLineColor(v.hex); setColorPickerKey('');}} />
+                                </CenteredCol>
+                                : null
+                            }
+
+                            <ColorTab>
+                                <div style={{width: 120}}>
+                                    선 두께 설정
+                                </div>
+                                <div>
+                                    <InputNumber min={1} max={3} defaultValue={2} onChange={(v: number) => setBingoLinePixel(v)} style={{width: 60}} />
+                                </div>
+                            </ColorTab>
+
+                            <ColorTab onClick={() => setColorPickerKey('bingoCellColor')}>
+                                <ColorLeftText>셀 배경색 설정</ColorLeftText>
+                                <ColorSquare color={bingoCellColor} />
+                            </ColorTab>
+                            {
+                                colorPickerKey === 'bingoCellColor' ? 
+                                <CenteredCol>
+                                    <CompactPicker color={bingoCellColor} onChangeComplete={(v) => {setBingoCellColor(v.hex); setColorPickerKey('');}} />
+                                </CenteredCol>
+                                : null
+                            }
+
+                            <ColorTab onClick={() => setColorPickerKey('bingoFontColor')}>
+                                <ColorLeftText>글씨 색 설정</ColorLeftText>
+                                <ColorSquare color={bingoFontColor} />
+                            </ColorTab>
+                            {
+                                colorPickerKey === 'bingoFontColor' ? 
+                                <CenteredCol>
+                                    <CompactPicker color={bingoFontColor} onChangeComplete={(v) => {setBingoFontColor(v.hex); setColorPickerKey('');}} />
+                                </CenteredCol>
+                                : null
+                            }
+                        </div>
                     </ControllerPage>
                 </Col>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24} >
@@ -153,8 +256,10 @@ export default function BingoCreate({ data, query, params }) {
                         <Input value={modalWillChangeInput} onChange={e => setModalWillChangeInput(e.target.value)} />
                     </Modal>
 
-                    <CenteredCol>
-                        <Button type="primary" onClick={handleSubmit} style={{width: '50%'}}>Submit</Button>
+                    <CenteredCol style={{margin: '2rem', marginBottom: '3rem'}}>
+                        <Button type="primary" onClick={handleSubmit} style={{width: '50%', height: 50, borderRadius: 4}}>
+                            Create
+                        </Button>
                     </CenteredCol>
                 </Col>
             </Row>
