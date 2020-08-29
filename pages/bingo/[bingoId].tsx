@@ -38,6 +38,7 @@ export default function BingoDetail({ data }) {
 
     const [ bingo, setBingo ] = useState(data.bingo)
     const [ selectedIndex, setSelectedIndex ] = useState([])
+    const [ completedBingoLines, setCompletedBingoLines ] = useState(0) 
 
     useEffect(() => {
         
@@ -62,7 +63,7 @@ export default function BingoDetail({ data }) {
     },[selectedIndex])
 
     useEffect(() => {
-        let completedBingoLines = 0
+        let lines = 0
         let criteria = {
             3: [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]],
             5: [[0,1,2,3,4], [5,6,7,8,9], [10,11,12,13,14], [15,16,17,18,19], [20,21,22,23,24], 
@@ -80,9 +81,9 @@ export default function BingoDetail({ data }) {
                     flag = false
                 }
             }
-            if(flag) completedBingoLines++
+            if(flag) lines++
         }
-        console.log(completedBingoLines)
+        setCompletedBingoLines(lines)
 
     },[selectedIndex])
 
@@ -144,6 +145,7 @@ export default function BingoDetail({ data }) {
                     ipAddress={bingo.ipAddress}
                     />
                     <CenteredCol style={{margin: '1rem 0px'}}>
+                        현재 빙고갯수 : {completedBingoLines}
                         <Button type="primary" onClick={() => console.log('submit')} style={{width: '50%'}}>제출 및 통계 확인</Button>
                     </CenteredCol>
                 </Col>

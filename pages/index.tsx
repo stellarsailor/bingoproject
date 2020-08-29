@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Menu, Row, Col, Input, Button, Radio, Skeleton } from 'antd';
+import { Menu, Row, Col, Input, Button, Radio, Skeleton, Empty } from 'antd';
 import { Link, useTranslation } from '../i18n'
 import { useEffect, useState, useContext, useCallback } from 'react';
 import Sticky from 'react-sticky-el';
@@ -128,6 +128,7 @@ export default function Home({ }) {
     const { bingoList, bingoPage, bingoLoading, fetchMainBingos, categoryList } = useContext(InitialContents)
 
     const [ selectedCategory, setSelectedCategory ] = useState(0)
+    const [ sortBy, setSortBy ] = useState(0)
 
     const [ isMobile, setIsMobile ] = useState(false)
     const [ mobileCategoryListVisible, setMobileCategoryListVisible ] = useState(false)
@@ -137,9 +138,13 @@ export default function Home({ }) {
         else setIsMobile(false)
     },[])
 
-    const endOfScroll = () => { //context받은거 사용할땐 절대 useCallback 쓰지않기
-        fetchMainBingos(bingoPage) //bingoPage는 다음에 fetch할 페이지를 가르킴
-    }
+    useEffect(() => {
+        fetchMainBingos(selectedCategory, sortBy, 1)
+    },[selectedCategory, sortBy])
+
+    // const endOfScroll = () => { //context받은거 사용할땐 절대 useCallback 쓰지않기
+    //     fetchMainBingos(selectedCategory, bingoPage) //bingoPage는 다음에 fetch할 페이지를 가르킴
+    // }
 
     return (
         <>
@@ -147,21 +152,21 @@ export default function Home({ }) {
                 <Col xs={24} sm={16} md={16} lg={16} xl={16}>
                     <div style={{width: '100%', marginTop: 58, height: 60, marginBottom: 8, backgroundColor: 'white', border: '1px solid lightgray', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                         <CenteredRow>
-                            <a>
-                                <FilterButton selected={true}>
+                            <a onClick={() => setSortBy(0)}>
+                                <FilterButton selected={sortBy === 0}>
                                     <FireFilled style={{marginRight: 5}} />Best
                                 </FilterButton>
                             </a>
-                            <a>
-                                <FilterButton selected={false}>
+                            <a onClick={() => setSortBy(1)}>
+                                <FilterButton selected={sortBy === 1}>
                                     <ThunderboltFilled style={{marginRight: 5}} />최신 순
                                 </FilterButton>
                             </a>
-                        <Button onClick={() => endOfScroll()}>next</Button>
+                        {/* <Button onClick={() => endOfScroll()}>next</Button> */}
 
                         </CenteredRow>
                         <CenteredRow>
-                            <RefreshButton onClick={() => fetchMainBingos(1)} />
+                            <RefreshButton onClick={() => fetchMainBingos(selectedCategory, sortBy, 1)} />
                             {
                                 isMobile ?
                                 <MoreOutlined onClick={() => setMobileCategoryListVisible(mobileCategoryListVisible ? false : true)} style={{fontSize: '1.4rem', marginRight: '1rem'}} />
@@ -201,40 +206,47 @@ export default function Home({ }) {
                             </BingoPane>
                             </>
                             :
-                            // <InfiniteScroll
-                            // dataLength={bingoList.length} //This is important field to render the next data
-                            // next={fetchMainBingos}
-                            // hasMore={true}
-                            // loader={<h4>Loading...</h4>}
-                            // endMessage={
-                            //     <p style={{textAlign: 'center'}}>
-                            //     <b>Yay! You have seen it all</b>
-                            //     </p>
-                            // }>
-                            <div>
-                                { bingoList.filter(v => selectedCategory === 0 ? true : v.categoryId === selectedCategory).map(v => (
-                                    <Link href={`/bingo/${v.id}`} key={v.id} ><a>
-                                        <BingoPane>
-                                            <SquareBingoIcon bgMainColor={v.bgMainColor} bgSubColor={v.bgSubColor} fontColor={pickTextColorBasedOnBgColor(v.bgMainColor, '#ffffff','#000000')}>
-                                                {v.size} X {v.size}
-                                            </SquareBingoIcon>
-                                            <BingoPaneText>
-                                                <div>
-                                                    <span style={{fontWeight: 'bold', fontSize: '1rem', marginRight: '1rem'}}>
-                                                        {v.title} <span style={{color: 'dodgerblue', marginLeft: 10}}><LikeOutlined /> 4k</span>
-                                                    </span>
-                                                </div> 
-                                                {/* <span style={{color: 'var(--mono-4)'}}>{v.author}({v.ipAddress}) 4 days ago</span> */}
-                                                <div style={{overflow: 'hidden', color: 'var(--mono-4)', fontSize: '0.8rem'}}>
-                                                    {JSON.parse(v.elements).sort(() => Math.random() - Math.random()).slice(0, 3).map((v, index) => 
-                                                        <span key={index}> #{v} </span> )}
-                                                </div>
-                                            </BingoPaneText>
-                                        </BingoPane>
-                                    </a></Link>
-                                )) }
-                            </div>
-                            // </InfiniteScroll>
+                                bingoList.length === 0 ?
+                                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                                :
+                                // <InfiniteScroll
+                                // dataLength={bingoList.length} //This is important field to render the next data
+                                // next={fetchMainBingos}
+                                // hasMore={true}
+                                // loader={<h4>Loading...</h4>}
+                                // endMessage={
+                                //     <p style={{textAlign: 'center'}}>
+                                //     <b>Yay! You have seen it all</b>
+                                //     </p>
+                                // }>
+                                <div>
+                                    {/* { bingoList.filter(v => selectedCategory === 0 ? true : v.categoryId === selectedCategory).map(v => ( */}
+                                    { bingoList.map(v => (
+                                        <Link href={`/bingo/${v.id}`} key={v.id} ><a>
+                                            <BingoPane>
+                                                <SquareBingoIcon bgMainColor={v.bgMainColor} bgSubColor={v.bgSubColor} fontColor={pickTextColorBasedOnBgColor(v.bgMainColor, '#ffffff','#000000')}>
+                                                    {v.size} X {v.size}
+                                                </SquareBingoIcon>
+                                                <BingoPaneText>
+                                                    <div>
+                                                        {/* <div style={{borderLeft: `2px solid ${categoryList.filter(c => c.id === v.categoryId)[0].color}`}}>
+                                                            <span style={{fontSize: '0.8rem', marginLeft: 5}}>{categoryList.filter(c => c.id === v.categoryId)[0][`name_${i18n.language}`]}</span>
+                                                        </div> */}
+                                                        <span style={{fontWeight: 'bold', fontSize: '1rem', marginRight: '1rem'}}>
+                                                            {v.title} <span style={{color: 'dodgerblue', marginLeft: 10}}><LikeOutlined /> {v.likes}</span>
+                                                        </span>
+                                                    </div> 
+                                                    {/* <span style={{color: 'var(--mono-4)'}}>{v.author}({v.ipAddress}) 4 days ago</span> */}
+                                                    <div style={{overflow: 'hidden', color: 'var(--mono-4)', fontSize: '0.8rem'}}>
+                                                        {JSON.parse(v.elements).sort(() => Math.random() - Math.random()).slice(0, 3).map((v, index) => 
+                                                            <span key={index}> #{v} </span> )}
+                                                    </div>
+                                                </BingoPaneText>
+                                            </BingoPane>
+                                        </a></Link>
+                                    )) }
+                                </div>
+                                // </InfiniteScroll>
                         }
                     </div>
                 </Col>

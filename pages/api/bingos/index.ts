@@ -4,20 +4,34 @@ const escape = require('sql-template-strings')
 export default async (req, res) => {
     if(req.method === 'GET'){
         let lang = req.query.lang || 'en'
+        const category = parseInt(req.query.category) || 0
+        const sortBy = parseInt(req.query.sortBy) || 0
         let page = parseInt(req.query.page) || 1
         const limit = parseInt(req.query.limit) || 9
     
         if (page < 1) page = 1
-    
-        const bingos = await db.query(escape`
+
+        const query = escape`
             SELECT *
             FROM bingos
-            WHERE lang = ${lang}
-            ORDER BY id
-            LIMIT ${(page - 1) * limit}, ${limit}
-        `)
-        
+            WHERE lang = ${lang} 
+        `
+        if(category !== 0){
+            query.append(escape` AND categoryId = ${category}`)
+        }
+
+        if(sortBy === 0){
+            query.append(` ORDER BY likes DESC`)
+        } else if(sortBy === 1){
+            query.append(` ORDER BY createdAt DESC`)
+        }
+
+        query.append(escape` LIMIT ${(page - 1) * limit}, ${limit}`)
+    
+        const bingos = await db.query(query)
+
         res.status(200).json({ bingos })
+
     } else if(req.method === 'POST'){
         const lang = req.query.lang || 'en'
         const lock = req.body.lock

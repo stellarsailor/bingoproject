@@ -8,7 +8,7 @@ export const InitialContents = createContext({ //타입 표기, 최하단에 val
     bingoList: [],
     bingoPage: 0,
     bingoLoading: true,
-    fetchMainBingos: (page: number) => {},
+    fetchMainBingos: (categoryId: number, sortBy: number, page: number) => {},
 })
 
 const InitialContentsProvider = (props) => {
@@ -29,23 +29,23 @@ const InitialContentsProvider = (props) => {
 
     useEffect(() => {
         fetchMainCategories()
-        fetchMainBingos(1)
+        fetchMainBingos(0, 0, 1)
     }, [])
 
-    const fetchMainBingos = useCallback( async (page) => {
+    const fetchMainBingos = useCallback( async (categoryId, sortBy, page) => {
         setBingoLoading(true)
-        let url = `${serverUrl}/api/bingos?lang=${i18n.language}&page=${bingoPage}&limit=9`
+        let url = `${serverUrl}/api/bingos?lang=${i18n.language}&category=${categoryId}&sortBy=${sortBy}&page=${bingoPage}&limit=9`
 
         const res = await fetch(url)
         const data = await res.json()
 
         if(page === 1){
             setBingoList(data.bingos)
-            setBingoPage(bingoPage + 1)
+            // setBingoPage(bingoPage + 1)
             setBingoLoading(false)
         } else {
             setBingoList([...bingoList, ...data.bingos])
-            setBingoPage(bingoPage + 1)
+            // setBingoPage(bingoPage + 1)
             setBingoLoading(false)
         }
     },[bingoList, bingoPage]) 
