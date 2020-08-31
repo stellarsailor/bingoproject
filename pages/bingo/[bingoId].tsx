@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
-import { Row, Col, BackTop, Button } from 'antd';
+import { Row, Col, BackTop, Button, Spin } from 'antd';
 import { Link, useTranslation } from '../../i18n';
 import domtoimage from 'dom-to-image';
 
@@ -32,13 +32,17 @@ const MenuButton = styled.div`
 `
 
 export default function BingoDetail({ data }) {
-    // const router = useRouter()
-    // const { bingoId } = router.query
+    const router = useRouter()
+    const { bingoId } = router.query
     const { t, i18n } = useTranslation();
 
     const [ bingo, setBingo ] = useState(data.bingo)
     const [ selectedIndex, setSelectedIndex ] = useState([])
     const [ completedBingoLines, setCompletedBingoLines ] = useState(0) 
+
+    const [ resultStatus, setResultStatus ] = useState('idle')
+    const [ resultCount, setResultCount ] = useState([])
+    const [ resultPercent, setResultPercent ] = useState([])
 
     useEffect(() => {
         
@@ -59,7 +63,7 @@ export default function BingoDetail({ data }) {
     const addIndexToSelected = useCallback((indexToPushPop) => {
         let nextIndexArray = []
         nextIndexArray = selectedIndex.includes(indexToPushPop) ? selectedIndex.filter(t => t !== indexToPushPop) : [...selectedIndex, indexToPushPop]
-        setSelectedIndex(nextIndexArray);
+        setSelectedIndex(nextIndexArray)
     },[selectedIndex])
 
     useEffect(() => {
@@ -85,6 +89,53 @@ export default function BingoDetail({ data }) {
         }
         setCompletedBingoLines(lines)
 
+    },[selectedIndex])
+
+    const submitIndexToFlag = useCallback(async () => {
+        setResultStatus('saving')
+        let arr = []
+        for(let i = 0; i < bingo.size * bingo.size; i++){
+            arr.push(selectedIndex.includes(i) ? 1 : 0 )
+        }
+
+        let url = `${serverUrl}/api/bingos/${bingoId}`
+        const settings = {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                binaryResult: arr
+            })
+        }
+        try {
+            const fetchResponse = await fetch(url, settings);
+            const data = await fetchResponse.json();
+
+            setResultStatus('calculating')
+            let resultLength = data.results.length
+            let bingoLength = bingo.size * bingo.size //JSON.parse(data.results[0].binaryResult.length)
+
+            let countArr = []
+            for(let i = 0; i < bingoLength; i++ ){
+                countArr.push(0)
+            }
+
+            data.results.map((v) => {
+                JSON.parse(v.binaryResult).map((v, index) => {
+                    if(typeof(v) === 'number') countArr[index] += v
+                })
+            })
+
+            let percentArr = countArr.map(v => Math.round((v / resultLength) * 100))
+
+            setResultCount(countArr)
+            setResultPercent(percentArr)
+            setResultStatus('done')
+        } catch (e) {
+            return e;
+        }    
     },[selectedIndex])
 
     return(
@@ -146,8 +197,18 @@ export default function BingoDetail({ data }) {
                     />
                     <CenteredCol style={{margin: '1rem 0px'}}>
                         현재 빙고갯수 : {completedBingoLines}
-                        <Button type="primary" onClick={() => console.log('submit')} style={{width: '50%'}}>제출 및 통계 확인</Button>
+                        <Button type="primary" onClick={() => submitIndexToFlag()} style={{width: '50%'}}>제출 및 통계 확인</Button>
                     </CenteredCol>
+                    {
+                        resultStatus === 'idle' ? null 
+                        : resultStatus === 'saving' ? <div><Spin /> 데이터를 저장 중 입니다.</div>
+                        : resultStatus === 'calculating' ? <div><Spin /> 데이터를 계산 중 입니다.</div>
+                        : 
+                        <div>
+                            유저들이 선택한 횟수 : {resultCount.toString()}
+                            퍼센티지 비율 : {resultPercent.toString()}
+                        </div>
+                    }
                 </Col>
             </Row>
         </>
