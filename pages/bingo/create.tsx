@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react'
+import React, { useState, useEffect, useCallback, useContext, useRef } from 'react'
 import Link from 'next/link'
 import styled from 'styled-components'
-import { TwitterPicker, PhotoshopPicker, CompactPicker, SketchPicker } from 'react-color';
+import { SwatchesPicker } from 'react-color';
 import { Row, Col, BackTop, Input, Checkbox, Radio, Select, Modal, InputNumber, Button, Tooltip } from 'antd';
 const { Option } = Select;
 
 import { serverUrl } from '../../lib/serverUrl'
-import { useTranslation } from '../../i18n';
+import { useTranslation, Router } from '../../i18n';
 import bingos from '../api/bingos';
 import { InitialContents } from '../../store/InitialContentsProvider';
 import { ArrowLeftOutlined, LeftOutlined, LockOutlined, GlobalOutlined, TableOutlined } from '@ant-design/icons';
@@ -111,7 +111,13 @@ export default function BingoCreate({ data, query, params }) {
         try {
             const fetchResponse = await fetch(url, settings);
             const data = await fetchResponse.json();
-            return data;
+
+            if(data.insertResult.affectedRows === 1){
+                Router.push(`/bingo/${data.insertResult.insertId}`)
+            } else {
+                console.log('something wrong')
+            }
+
         } catch (e) {
             return e;
         }    
@@ -168,7 +174,7 @@ export default function BingoCreate({ data, query, params }) {
                             {
                                 colorPickerKey === 'bingoBgMainColor' ? 
                                 <CenteredCol>
-                                    <CompactPicker color={bingoBgMainColor} onChangeComplete={(v) => {setBingoBgMainColor(v.hex); setColorPickerKey('');}} />
+                                    <SwatchesPicker color={bingoBgMainColor} onChangeComplete={(v) => {setBingoBgMainColor(v.hex); setColorPickerKey('');}} />
                                 </CenteredCol>
                                 : null
                             }
@@ -180,7 +186,7 @@ export default function BingoCreate({ data, query, params }) {
                             {
                                 colorPickerKey === 'bingoBgSubColor' ? 
                                 <CenteredCol>
-                                    <CompactPicker color={bingoBgSubColor} onChangeComplete={(v) => {setBingoBgSubColor(v.hex); setColorPickerKey('');}} />
+                                    <SwatchesPicker color={bingoBgSubColor} onChangeComplete={(v) => {setBingoBgSubColor(v.hex); setColorPickerKey('');}} />
                                 </CenteredCol>
                                 : null
                             }
@@ -192,7 +198,7 @@ export default function BingoCreate({ data, query, params }) {
                             {
                                 colorPickerKey === 'bingoLineColor' ? 
                                 <CenteredCol>
-                                    <CompactPicker color={bingoLineColor} onChangeComplete={(v) => {setBingoLineColor(v.hex); setColorPickerKey('');}} />
+                                    <SwatchesPicker color={bingoLineColor} onChangeComplete={(v) => {setBingoLineColor(v.hex); setColorPickerKey('');}} />
                                 </CenteredCol>
                                 : null
                             }
@@ -213,7 +219,7 @@ export default function BingoCreate({ data, query, params }) {
                             {
                                 colorPickerKey === 'bingoCellColor' ? 
                                 <CenteredCol>
-                                    <CompactPicker color={bingoCellColor} onChangeComplete={(v) => {setBingoCellColor(v.hex); setColorPickerKey('');}} />
+                                    <SwatchesPicker color={bingoCellColor} onChangeComplete={(v) => {setBingoCellColor(v.hex); setColorPickerKey('');}} />
                                 </CenteredCol>
                                 : null
                             }
@@ -225,7 +231,7 @@ export default function BingoCreate({ data, query, params }) {
                             {
                                 colorPickerKey === 'bingoFontColor' ? 
                                 <CenteredCol>
-                                    <CompactPicker color={bingoFontColor} onChangeComplete={(v) => {setBingoFontColor(v.hex); setColorPickerKey('');}} />
+                                    <SwatchesPicker color={bingoFontColor} onChangeComplete={(v) => {setBingoFontColor(v.hex); setColorPickerKey('');}} />
                                 </CenteredCol>
                                 : null
                             }
@@ -253,7 +259,7 @@ export default function BingoCreate({ data, query, params }) {
                     onOk={() => changeElement(modalWillChangeInput, modalWillChangeIndex)}
                     onCancel={() => setModalOpened(false)}
                     >
-                        <Input value={modalWillChangeInput} onChange={e => setModalWillChangeInput(e.target.value)} />
+                        <Input key={Math.random()} placeholder={bingoArr[modalWillChangeIndex]} value={modalWillChangeInput} onChange={e => setModalWillChangeInput(e.target.value)} onPressEnter={() => changeElement(modalWillChangeInput, modalWillChangeIndex)} autoFocus />
                     </Modal>
 
                     <CenteredCol style={{margin: '2rem', marginBottom: '3rem'}}>

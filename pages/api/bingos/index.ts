@@ -58,8 +58,6 @@ export default async (req, res) => {
             VALUES (${lang}, ${category}, ${title}, ${author}, ${size}, ${JSON.stringify(elements)}, ${bgMainColor}, ${bgSubColor}, ${fontColor}, ${cellColor}, ${lineColor}, ${linePixel}, ${ipAddress});
         `)
 
-        console.log(insertResult)
-
         res.status(200).json({ insertResult })
     }
 }

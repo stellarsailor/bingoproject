@@ -54,12 +54,22 @@ export default function NavBar({ }) {
         }
         <Link href="/bingo/create">
             <a>
-                <div onClick={() => toggleOption()}>ㅂㄱ 만들기</div>
+                <div onClick={() => toggleOption()}>빙고 만들기</div>
+            </a>
+        </Link>
+        <Link href="/about">
+            <a>
+                <div onClick={() => toggleOption()}>소개</div>
+            </a>
+        </Link>
+        <Link href="/privacy">
+            <a>
+                <div onClick={() => toggleOption()}>개인정보처리방침</div>
             </a>
         </Link>
         <Link href="/setting">
             <a>
-                <div onClick={() => toggleOption()}>설정</div>
+                <div onClick={() => toggleOption()}>언어 설정</div>
             </a>
         </Link>
     </div>

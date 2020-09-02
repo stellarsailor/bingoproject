@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Menu, Row, Col, Input, Button, Radio, Skeleton, Empty } from 'antd';
+import { Menu, Row, Col, Input, Button, Radio, Skeleton, Empty, BackTop } from 'antd';
 import { Link, useTranslation } from '../i18n'
 import { useEffect, useState, useContext, useCallback } from 'react';
 import Sticky from 'react-sticky-el';
@@ -7,10 +7,11 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { InitialContents } from '../store/InitialContentsProvider'
 
-import { ArrowRightOutlined, PlusOutlined, FireOutlined, ThunderboltOutlined, FireFilled, ThunderboltFilled, MoreOutlined, RedoOutlined, LikeOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, PlusOutlined, FireOutlined, ThunderboltOutlined, FireFilled, ThunderboltFilled, MoreOutlined, RedoOutlined, LikeOutlined, BarChartOutlined } from '@ant-design/icons';
 import { serverUrl } from '../lib/serverUrl';
 import { CenteredRow, CenteredCol } from '../components/sub/styled'
 import pickTextColorBasedOnBgColor from '../logics/pickTextColorBasedOnBgColor';
+import numberToK from '../logics/numberToK'
 
 const CategoryRenderer = styled.div`
     display: flex;
@@ -93,6 +94,7 @@ const SquareBingoIcon = styled.div`
     min-width: 80px;
     height: 80px;
     font-size: 1.6rem;
+    font-weight: bold;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -149,6 +151,7 @@ export default function Home({ }) {
     return (
         <>
             <Row style={{display: 'flex'}}>
+                <BackTop />
                 <Col xs={24} sm={16} md={16} lg={16} xl={16}>
                     <div style={{width: '100%', marginTop: 58, height: 60, marginBottom: 8, backgroundColor: 'white', border: '1px solid lightgray', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                         <CenteredRow>
@@ -233,7 +236,9 @@ export default function Home({ }) {
                                                             <span style={{fontSize: '0.8rem', marginLeft: 5}}>{categoryList.filter(c => c.id === v.categoryId)[0][`name_${i18n.language}`]}</span>
                                                         </div> */}
                                                         <span style={{fontWeight: 'bold', fontSize: '1rem', marginRight: '1rem'}}>
-                                                            {v.title} <span style={{color: 'dodgerblue', marginLeft: 10}}><LikeOutlined /> {v.likes}</span>
+                                                            {v.title} 
+                                                            <span style={{color: 'dodgerblue', marginLeft: 20, fontSize: 14}}><LikeOutlined /> {numberToK(v.likes)}</span>
+                                                            <span style={{color: 'dodgerblue', marginLeft: 10, fontSize: 14}}><BarChartOutlined /> {numberToK(15434)}</span>
                                                         </span>
                                                     </div> 
                                                     {/* <span style={{color: 'var(--mono-4)'}}>{v.author}({v.ipAddress}) 4 days ago</span> */}
