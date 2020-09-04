@@ -1,12 +1,15 @@
 // import Link from 'next/link'
 import styled from 'styled-components'
 import { useIntl } from 'react-intl';
-import { Input, Row, Col, Popover, Button } from 'antd';
+import { Input, Row, Col, Popover, Button, message } from 'antd';
 import { i18n, Link, useTranslation, Router } from '../i18n'
 import { MenuOutlined, SearchOutlined } from '@ant-design/icons';
 import { useEffect, useState, useCallback } from 'react';
 
 const { Search } = Input;
+message.config({
+    top: 58,
+  });
 
 const NavigationBar = styled.div`
     width: 100%;
@@ -42,13 +45,21 @@ export default function NavBar({ }) {
         if(window.innerWidth < 600) setIsMobile(true)
     },[])
 
+    const handleSearch = useCallback((searchParam) => {
+        if(searchParam === ''){
+            message.warning('Please type search keyword')
+        } else {
+            Router.push(`/bingo?search=${searchParam}`)
+        }
+    },[])
+
     const contentOption = (
     <div style={{width: 200}}>
         {
             !isMobile ? null :
             <Search
             placeholder={t('SEARCH_INPUT_PLACEHOLER')}
-            onSearch={value => Router.push(`/bingo?search=${value}`)}
+            onSearch={value => handleSearch(value)}
             style={{ width: '100%' }}
             />
         }
@@ -88,7 +99,7 @@ export default function NavBar({ }) {
                         <Link href="/"><a><img src="/static/images/icon.png" alt="my image" style={{height: 35}} /><img src="/static/images/logo.png" alt="my image" style={{height: 35}} /></a></Link>
                         <Search
                         placeholder={t('SEARCH_INPUT_PLACEHOLER')}
-                        onSearch={value => Router.push(`/bingo?search=${value}`)}
+                        onSearch={value => handleSearch(value)}
                         style={{ width: 250 }}
                         />
                         <Popover placement="bottomRight" content={contentOption} visible={visibleRight}>

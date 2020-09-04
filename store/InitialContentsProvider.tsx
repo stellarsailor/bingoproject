@@ -8,7 +8,7 @@ export const InitialContents = createContext({ //타입 표기, 최하단에 val
     bingoList: [],
     bingoPage: 0,
     bingoLoading: true,
-    fetchMainBingos: (categoryId: number, sortBy: number, page: number) => {},
+    fetchMainBingos: (categoryId: number, sortBy: number, searchBy: string, searchTarget: string, period: string, page: number) => {},
 })
 
 const InitialContentsProvider = (props) => {
@@ -29,12 +29,37 @@ const InitialContentsProvider = (props) => {
 
     useEffect(() => {
         fetchMainCategories()
-        fetchMainBingos(0, 0, 1)
+        fetchMainBingos(0, 0, '', 'all', 'all' , 1)
     }, [])
 
-    const fetchMainBingos = useCallback( async (categoryId, sortBy, page) => {
+    const fetchMainBingos = useCallback( async (categoryId, sortBy, searchBy, searchTarget, period, page) => {
         setBingoLoading(true)
-        let url = `${serverUrl}/api/bingos?lang=${i18n.language}&category=${categoryId}&sortBy=${sortBy}&page=${bingoPage}&limit=9`
+
+        let url = `${serverUrl}/api/bingos?lang=${i18n.language}`
+
+        url += `&category=${categoryId}`
+
+        url += `&sortBy=${sortBy}`
+
+        if(searchBy === '') url += ''
+        else {
+            let searchByChunks = searchBy.split(' ')
+            searchByChunks.map(v => url += `&searchBy=${v}`)
+        }
+
+        if(period === 'all') url += ''
+        else if(period === 'month') url += '&period=month'
+        else if(period === 'week') url += '&period=week'
+        else if(period === 'today') url += '&period=today'
+        else url += ''
+        
+        if(searchTarget === 'all') url += ''
+        else if(searchTarget === 'title') url += '&searchTarget=title'
+        else if(searchTarget === 'elements') url += '&searchTarget=elements'
+        else if(searchTarget === 'author') url += '&searchTarget=author'
+        else url += ''
+
+        url += `&page=${bingoPage}&limit=9`
 
         const res = await fetch(url)
         const data = await res.json()
