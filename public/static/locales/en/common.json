@@ -2,13 +2,9 @@
     "CREATE_SELFBINGO": "Create SelfBingo",
     "FILTER_BEST": "BEST",
     "FILTER_RECENT": "NEW",
-    "EMPTY_TRY_OTHER": "or try another category/language!",
-    "NAV_BUTTON_1": "LIST",
-    "NAV_BUTTON_2": "ADD",
     "SEARCH_INPUT_PLACEHOLER": "Search",
-    "h1": "A simple example",
-    "change-locale": "Change locale",
-    "to-second-page": "To second page",
-    "error-with-status": "A {{statusCode}} error occurred on server",
-    "error-without-status": "An error occurred on the server"
+    "EMPTY_TRY_OTHER": "or try another category/language!",
+    "ETC_ABOUT": "About",
+    "ETC_PRIVACY_POLICY": "Privacy Policy",
+    "error-with-status": "A {{statusCode}} error occurred on server"
 }

@@ -38,10 +38,14 @@ const CenterAlign = styled.div`
     align-items: center;
 `
 
+const HamburgerMenuTab = styled.div`
+    color: rgba(0, 0, 0, 0.85);
+    margin: 5px 0px;
+`
+
 export default function NavBar({ }) {
     // const { formatMessage: tr } = useIntl();
-    const { t, i18n } = useTranslation();
-    const { fetchMainBingos } = useContext(InitialContents)
+    const { t, i18n } = useTranslation()
     const isMobile = useIsMobile()
 
     const [ visibleRight, setVisibleRight ] = useState(false)
@@ -55,44 +59,39 @@ export default function NavBar({ }) {
         }
     },[])
 
-    const contentOption = (
-    <div style={{width: 200}}>
-        <Link href="/bingo/create">
-            <a>
-                <div onClick={() => toggleOption()}>빙고 만들기</div>
-            </a>
-        </Link>
-        <Link href="/about">
-            <a>
-                <div onClick={() => toggleOption()}>소개</div>
-            </a>
-        </Link>
-        <Link href="/privacy">
-            <a>
-                <div onClick={() => toggleOption()}>개인정보처리방침</div>
-            </a>
-        </Link>
-        {/* <Link href="/setting">
-            <a>
-                <div onClick={() => changeLang()}>언어 설정</div>
-            </a>
-        </Link> */}
-    </div>
-    )
-
     const menu = (
         <Menu>
             {supportedLanguages.map((v, index) => {
                 if(index !== supportedLanguages.length - 1)
                 return (
-                    <Menu.Item key={index} onClick={() => i18n.changeLanguage(v)} style={{padding: '8px 16px'}}>
+                    <Menu.Item key={index} onClick={() => i18n.changeLanguage(v)} style={{padding: '8px 20px'}}>
                         {langCodeToLanguage(v)}
                     </Menu.Item>
                 )
                 })}
             {/* <Menu.Divider /> */}
         </Menu>
-      );
+    )
+
+    const contentOption = (
+        <div style={{width: 180}}>
+            <Link href="/bingo/create">
+                <a>
+                    <HamburgerMenuTab onClick={() => toggleOption()}>{t("CREATE_SELFBINGO")}</HamburgerMenuTab>
+                </a>
+            </Link>
+            <Link href="/about">
+                <a>
+                    <HamburgerMenuTab onClick={() => toggleOption()}>{t("ETC_ABOUT")}</HamburgerMenuTab>
+                </a>
+            </Link>
+            <Link href="/privacy">
+                <a>
+                    <HamburgerMenuTab onClick={() => toggleOption()}>{t("ETC_PRIVACY_POLICY")}</HamburgerMenuTab>
+                </a>
+            </Link>
+        </div>
+    )
 
     const toggleOption = useCallback(() => {
         if(visibleRight) setVisibleRight(false)

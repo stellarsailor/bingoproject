@@ -190,12 +190,12 @@ export default function Home({ }) {
                         <div style={{color: 'gray', fontSize: '0.8rem', padding: '10px'}}>
                             <Link href="/about">
                                 <GrayLittleLink>
-                                    소개
+                                    {t("ETC_ABOUT")}
                                 </GrayLittleLink>
                             </Link>
                             <Link href="/privacy">
                                 <GrayLittleLink>
-                                개인정보처리방침
+                                    {t("ETC_PRIVACY_POLICY")}
                                 </GrayLittleLink>
                             </Link>
                             <p>

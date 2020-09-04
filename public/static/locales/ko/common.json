@@ -2,13 +2,9 @@
     "CREATE_SELFBINGO": "셀프빙고 만들기",
     "FILTER_BEST": "인기 순",
     "FILTER_RECENT": "최신 순",
+    "SEARCH_INPUT_PLACEHOLER": "빙고 검색",
     "EMPTY_TRY_OTHER": "또는 다른 카테고리/언어를 시도해보세요!",
-    "NAV_BUTTON_1": "목록",
-    "NAV_BUTTON_2": "추가",
-    "SEARCH_INPUT_PLACEHOLER": "검색",
-    "h1": "간단ㅇ ㅖ제",
-    "change-locale": "언어 변경",
-    "to-second-page": "두번째페이지로",
-    "error-with-status": "에러코드 : {{statusCode}} 에러 발생 서버에서",
-    "error-without-status": "서버에서 에러 발생"
+    "ETC_ABOUT": "소개",
+    "ETC_PRIVACY_POLICY": "개인정보처리방침",
+    "error-with-status": "에러코드 : {{statusCode}} 에러 발생 서버에서"
 }
