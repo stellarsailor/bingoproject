@@ -12,7 +12,8 @@ export const InitialContents = createContext({ //타입 표기, 최하단에 val
 })
 
 const InitialContentsProvider = (props) => {
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
+    const router = useRouter()
     
     const [ categoryList, setCategoryList ] = useState([])
     const [ bingoList, setBingoList ] = useState([])
@@ -30,7 +31,7 @@ const InitialContentsProvider = (props) => {
     useEffect(() => {
         fetchMainCategories()
         fetchMainBingos(0, 0, '', 'all', 'all' , 1)
-    }, [])
+    }, [router])
 
     const fetchMainBingos = useCallback( async (categoryId, sortBy, searchBy, searchTarget, period, page) => {
         setBingoLoading(true)

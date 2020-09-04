@@ -1,15 +1,19 @@
 // import Link from 'next/link'
 import styled from 'styled-components'
-import { useIntl } from 'react-intl';
-import { Input, Row, Col, Popover, Button, message } from 'antd';
-import { i18n, Link, useTranslation, Router } from '../i18n'
-import { MenuOutlined, SearchOutlined } from '@ant-design/icons';
-import { useEffect, useState, useCallback } from 'react';
+import { Input, Row, Col, Popover, Button, message, Modal, Dropdown, Menu } from 'antd';
+import { Link, useTranslation, Router } from '../i18n'
+import { MenuOutlined, SearchOutlined, ExclamationCircleOutlined, DownOutlined, BehanceOutlined } from '@ant-design/icons';
+import { useEffect, useState, useCallback, useContext } from 'react';
+import { InitialContents } from '../store/InitialContentsProvider';
+import { CenteredRow } from './sub/styled';
+import langCodeToLanguage from '../logics/langCodeToLanguage'
+import useIsMobile from '../logics/useIsMobile';
 
-const { Search } = Input;
+const { Search } = Input
 message.config({
     top: 58,
-  });
+});
+const { confirm } = Modal
 
 const NavigationBar = styled.div`
     width: 100%;
@@ -37,13 +41,11 @@ const CenterAlign = styled.div`
 export default function NavBar({ }) {
     // const { formatMessage: tr } = useIntl();
     const { t, i18n } = useTranslation();
+    const { fetchMainBingos } = useContext(InitialContents)
+    const isMobile = useIsMobile()
 
-    const [ isMobile, setIsMobile ] = useState(false)
     const [ visibleRight, setVisibleRight ] = useState(false)
-
-    useEffect(() => {
-        if(window.innerWidth < 600) setIsMobile(true)
-    },[])
+    const [ supportedLanguages, setSupportedLanguages ] = useState(i18n.options.supportedLngs || [])
 
     const handleSearch = useCallback((searchParam) => {
         if(searchParam === ''){
@@ -55,14 +57,6 @@ export default function NavBar({ }) {
 
     const contentOption = (
     <div style={{width: 200}}>
-        {
-            !isMobile ? null :
-            <Search
-            placeholder={t('SEARCH_INPUT_PLACEHOLER')}
-            onSearch={value => handleSearch(value)}
-            style={{ width: '100%' }}
-            />
-        }
         <Link href="/bingo/create">
             <a>
                 <div onClick={() => toggleOption()}>빙고 만들기</div>
@@ -78,13 +72,27 @@ export default function NavBar({ }) {
                 <div onClick={() => toggleOption()}>개인정보처리방침</div>
             </a>
         </Link>
-        <Link href="/setting">
+        {/* <Link href="/setting">
             <a>
-                <div onClick={() => toggleOption()}>언어 설정</div>
+                <div onClick={() => changeLang()}>언어 설정</div>
             </a>
-        </Link>
+        </Link> */}
     </div>
     )
+
+    const menu = (
+        <Menu>
+            {supportedLanguages.map((v, index) => {
+                if(index !== supportedLanguages.length - 1)
+                return (
+                    <Menu.Item key={index} onClick={() => i18n.changeLanguage(v)} style={{padding: '8px 16px'}}>
+                        {langCodeToLanguage(v)}
+                    </Menu.Item>
+                )
+                })}
+            {/* <Menu.Divider /> */}
+        </Menu>
+      );
 
     const toggleOption = useCallback(() => {
         if(visibleRight) setVisibleRight(false)
@@ -94,25 +102,25 @@ export default function NavBar({ }) {
     return(
         <NavigationBar>
             <Row justify="center" style={{height: 50, display: 'flex', alignItems: 'center'}}>
-                <Col xs={0} sm={22} md={20} lg={20} xl={12} >
+                <Col xs={23} sm={22} md={20} lg={20} xl={12} >
                     <CenterAlign>
-                        <Link href="/"><a><img src="/static/images/icon.png" alt="my image" style={{height: 35}} /><img src="/static/images/logo.png" alt="my image" style={{height: 35}} /></a></Link>
+                        <Link href="/"><a>
+                            { isMobile ? null : <img src="/static/images/icon.png" alt="my image" style={{height: 35}} /> }
+                            <img src="/static/images/logo.png" alt="my image" style={{height: isMobile ? 22 : 35}} />
+                        </a></Link>
                         <Search
                         placeholder={t('SEARCH_INPUT_PLACEHOLER')}
                         onSearch={value => handleSearch(value)}
-                        style={{ width: 250 }}
+                        style={{ width: isMobile ? 150 : 250, height: isMobile ? 28 : 30 }}
                         />
-                        <Popover placement="bottomRight" content={contentOption} visible={visibleRight}>
-                            <MenuOutlined style={{fontSize: '1.5rem', color: 'gray'}} onClick={() => toggleOption()} />
-                        </Popover>
-                    </CenterAlign>
-                </Col>
-                <Col xs={23} sm={0} md={0} lg={0} xl={0} >
-                    <CenterAlign>
-                        <Link href="/"><a><img src="/static/images/logo.png" alt="my image" style={{height: 25}} /></a></Link>
-                        <Popover placement="bottomRight" content={contentOption} visible={visibleRight}>
-                            <MenuOutlined style={{fontSize: '1.5rem', color: 'gray'}} onClick={() => toggleOption()}/>
-                        </Popover>
+                        <CenteredRow>
+                            <Dropdown overlay={menu} placement="bottomRight" trigger={['click']}>
+                                <BehanceOutlined style={{fontSize: '1.5rem', color: 'gray', marginRight: isMobile ? 8 : 16}} />
+                            </Dropdown>
+                            <Popover placement="bottomRight" content={contentOption} visible={visibleRight}>
+                                <MenuOutlined style={{fontSize: '1.3rem', color: 'gray'}} onClick={() => toggleOption()} />
+                            </Popover>
+                        </CenteredRow>
                     </CenterAlign>
                 </Col>
             </Row>
