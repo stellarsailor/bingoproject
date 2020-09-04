@@ -29,13 +29,13 @@ export default function BingoRenderer( props ){
 
     const { id, title, author, size, elements, elementOnClickEvent, selectedIndex, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, linePixel, ipAddress } = props
 
-    const ref = useRef(null);
+    const ref = useRef(null)
 
-    const [width, height] = useWindowSize();
+    const [ width, height ] = useWindowSize()
 
     useEffect(() => {
         setCellWidth(ref.current ? ref.current.offsetWidth : 0)
-    }, [width])
+    }, [ width ])
 
     const [ cellWidth, setCellWidth ] = useState(0)
 

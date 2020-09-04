@@ -11,6 +11,7 @@ import { Link, useTranslation } from '../../i18n';
 import { useRouter } from 'next/router';
 import BingoListContainer from '../../components/BingoListContainer';
 import { CenteredCol } from '../../components/sub/styled';
+import useIsMobile from '../../logics/useIsMobile';
 
 const FilteringTab = styled.div`
     margin-top: ${(props) => props.isMobile ? '4px' : '8px'};
@@ -26,6 +27,7 @@ export default function List({ }) {
     const { t, i18n } = useTranslation()
     const { bingoLoading, bingoList, fetchMainBingos } = useContext(InitialContents)
     const router = useRouter()
+    const isMobile = useIsMobile()
 
     const [ sortBy, setSortBy ] = useState(0)
     const [ period, setPeriod ] = useState('all')
@@ -35,13 +37,6 @@ export default function List({ }) {
         // console.log(router.query.search)
         fetchMainBingos(0, sortBy, router.query.search.toString(), searchTarget, period, 1)
     },[sortBy, router.query.search, period, searchTarget])
-
-    const [ isMobile, setIsMobile ] = useState(false)
-    
-    useEffect(() => {
-        if(window.innerWidth < 600) setIsMobile(true)
-        else setIsMobile(false)
-    },[])
 
     return(
         <>
@@ -53,7 +48,7 @@ export default function List({ }) {
                                 <div style={{width: '100%', marginTop: isMobile ? 50 : 58, marginBottom: 8, padding: 8, backgroundColor: 'white', border: '1px solid lightgray'}}>
                                     <div>
                                         <span style={{fontWeight: 'bold', fontSize: '1rem', marginRight: 8}}>{router.query.search}</span> 
-                                        <span style={{color: 'gray'}}>Search Result</span>
+                                        <span style={{color: 'gray'}}> | Search Result</span>
                                     </div>
 
                                     <FilteringTab>

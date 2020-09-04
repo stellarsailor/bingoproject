@@ -13,6 +13,7 @@ import { CenteredRow, CenteredCol } from '../components/sub/styled'
 import pickTextColorBasedOnBgColor from '../logics/pickTextColorBasedOnBgColor';
 import numberToK from '../logics/numberToK'
 import BingoListContainer from '../components/BingoListContainer';
+import useIsMobile from '../logics/useIsMobile';
 
 const CategoryRenderer = styled.div`
     display: flex;
@@ -68,7 +69,7 @@ const MobileCategoryContainer = styled.div`
 const CreateBingoButton = styled.div`
     width: 100%;
     margin-top: 58px;
-    height: 60px;
+    height: 50px;
     background-color: white;
     border: 1px solid lightgray;
     display: flex;
@@ -90,19 +91,14 @@ const GrayLittleLink = styled.a`
 `
 
 export default function Home({ }) {
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     const { bingoList, bingoPage, bingoLoading, fetchMainBingos, categoryList } = useContext(InitialContents)
-
+    const isMobile = useIsMobile()
+    
     const [ selectedCategory, setSelectedCategory ] = useState(0)
     const [ sortBy, setSortBy ] = useState(0)
 
-    const [ isMobile, setIsMobile ] = useState(false)
     const [ mobileCategoryListVisible, setMobileCategoryListVisible ] = useState(false)
-
-    useEffect(() => {
-        if(window.innerWidth < 600) setIsMobile(true)
-        else setIsMobile(false)
-    },[])
 
     useEffect(() => {
         fetchMainBingos(selectedCategory, sortBy, '' , 'all', 'all', 1)
@@ -117,7 +113,7 @@ export default function Home({ }) {
             <Row style={{display: 'flex'}}>
                 <BackTop />
                 <Col xs={24} sm={16} md={16} lg={16} xl={16}>
-                    <div style={{width: '100%', marginTop: 58, height: 60, marginBottom: 8, backgroundColor: 'white', border: '1px solid lightgray', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                    <div style={{width: '100%', marginTop: 58, height: 50, marginBottom: 8, backgroundColor: 'white', border: '1px solid lightgray', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                         <CenteredRow>
                             <a onClick={() => setSortBy(0)}>
                                 <FilterButton selected={sortBy === 0}>
@@ -169,7 +165,7 @@ export default function Home({ }) {
                                     <CreateBingoButton>
                                         <CenteredRow style={{padding: 10}}>
                                             <div style={{margin: '0px 1rem'}}>
-                                                셀프빙고 만들기
+                                                {t("CREATE_SELFBINGO")}
                                             </div>
                                             <ArrowRightOutlined />
                                         </CenteredRow>
