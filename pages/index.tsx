@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Menu, Row, Col, Input, Button, Radio, Skeleton, Empty, BackTop } from 'antd';
+import { Menu, Row, Col, BackTop } from 'antd';
 import { Link, useTranslation } from '../i18n'
 import { useEffect, useState, useContext, useCallback } from 'react';
 import Sticky from 'react-sticky-el';
@@ -33,7 +33,7 @@ const CategoryRenderer = styled.div`
 const FilterButton = styled.div`
     border-radius: 20px;
     background-color: ${props => props.selected ? 'var(--mono-1)' : 'white' };
-    height: 35px;
+    height: 32px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -117,12 +117,12 @@ export default function Home({ }) {
                         <CenteredRow>
                             <a onClick={() => setSortBy(0)}>
                                 <FilterButton selected={sortBy === 0}>
-                                    <FireFilled style={{marginRight: 5}} />Best
+                                    <FireFilled style={{marginRight: 5}} />{t("FILTER_BEST")}
                                 </FilterButton>
                             </a>
                             <a onClick={() => setSortBy(1)}>
                                 <FilterButton selected={sortBy === 1}>
-                                    <ThunderboltFilled style={{marginRight: 5}} />최신 순
+                                    <ThunderboltFilled style={{marginRight: 5}} />{t("FILTER_RECENT")}
                                 </FilterButton>
                             </a>
                         {/* <Button onClick={() => endOfScroll()}>next</Button> */}

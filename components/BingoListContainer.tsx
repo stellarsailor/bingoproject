@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 import Modal from 'antd/lib/modal/Modal'
 import { useState, useCallback, useEffect, useRef } from 'react'
-import { Input, Skeleton, Empty } from 'antd'
+import { Input, Skeleton, Empty, Button } from 'antd'
 import { CenteredRow, CenteredCol } from './sub/styled'
 import pickTextColorBasedOnBgColor from '../logics/pickTextColorBasedOnBgColor'
-import { Link } from '../i18n'
+import { Link, useTranslation } from '../i18n'
 import { LikeOutlined, BarChartOutlined } from '@ant-design/icons'
 import numberToK from '../logics/numberToK'
 
@@ -46,7 +46,7 @@ const SquareBingoIcon = styled.div`
 `
 
 export default function BingoListContainer( props ){
-
+    const { t, i18n } = useTranslation()
     const { bingoLoading, bingoList } = props
 
     return (
@@ -65,7 +65,21 @@ export default function BingoListContainer( props ){
                 </>
                 :
                     bingoList.length === 0 ?
-                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                    <Empty 
+                    image={Empty.PRESENTED_IMAGE_SIMPLE} 
+                    description={
+                        <CenteredCol>
+                            <div>Empty</div>
+                            <Link href="/bingo/create">
+                                <a>
+                                    <Button type="primary" style={{margin: '8px 0px'}}>
+                                        {t("CREATE_SELFBINGO")}
+                                    </Button>
+                                </a>
+                            </Link>
+                            <div>{t("EMPTY_TRY_OTHER")}</div>
+                        </CenteredCol>
+                    } />
                     :
                     // <InfiniteScroll
                     // dataLength={bingoList.length} //This is important field to render the next data

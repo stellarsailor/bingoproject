@@ -56,8 +56,8 @@ export default function List({ }) {
                                             Sort By
                                         </TabLeftTitle> */}
                                         <Radio.Group defaultValue={sortBy} size="small">
-                                            <Radio.Button value={0} onClick={() => setSortBy(0)}>인기도 순</Radio.Button>
-                                            <Radio.Button value={1} onClick={() => setSortBy(1)}>최신 순</Radio.Button>
+                                            <Radio.Button value={0} onClick={() => setSortBy(0)}>{t("FILTER_BEST")}</Radio.Button>
+                                            <Radio.Button value={1} onClick={() => setSortBy(1)}>{t("FILTER_RECENT")}</Radio.Button>
                                         </Radio.Group>
                                     </FilteringTab>
                                     <FilteringTab>
