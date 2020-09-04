@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { Link, useTranslation } from '../../i18n'
+import { Link, useTranslation } from '../i18n'
 import { Button, Row } from 'antd';
-import { CenteredRow, CenteredCol } from '../../components/sub/styled';
 
 const MainContent = styled.div`
     display: flex;
@@ -34,28 +33,12 @@ const MainButton = styled(Button)`
     color: ${props => props.theme === 'white' ? 'black' : 'white'};
     background-color: ${props => props.theme === 'black' ? 'black' : 'white'};
 `
-export default function About() {
+export default function Privacy() {
 
     return (
         <>
             <Row style={{paddingTop: 50}}>
-                <CenteredCol>
-                    <MainText>MAKE</MainText>
-                    <MainText>YOUR</MainText>
-                    <MainText>THING</MainText>
-                </CenteredCol>
-                <DisplayRow>
-                    <Link href="/bingo/create">
-                        <a>
-                            <MainButton type="primary" size="large" theme='black'> Make My Own </MainButton>    
-                        </a>
-                    </Link>
-                    <Link href="/bingo">
-                        <a>
-                            <MainButton size="large" theme='white'> View List </MainButton> 
-                        </a>
-                    </Link>
-                </DisplayRow>
+                Privacy Policy
             </Row>
         </>
     )
