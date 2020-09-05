@@ -65,12 +65,3 @@ export default async (req, res) => {
         }
     }
 }
-
-
-// export default (req, res) => {
-//     console.log(req.headers['x-forwarded-for'] || req.connection.remoteAddress)
-//     // console.log(req.headers['x-real-ip'] || req.connection.remoteAddress)
-//     const { query: { id } } = req
-
-//     res.json({ user: { id, name: 'Test bingo' } })
-// }

@@ -100,9 +100,16 @@ export default function Home({ }) {
 
     const [ mobileCategoryListVisible, setMobileCategoryListVisible ] = useState(false)
 
-    useEffect(() => {
-        fetchMainBingos(selectedCategory, sortBy, '' , 'all', 'all', 1)
-    },[selectedCategory, sortBy])
+    const handleSortBy = useCallback((sortParam) => {
+        setSortBy(sortParam)
+        fetchMainBingos(selectedCategory, sortParam, '' , 'all', 'all', 1)
+    },[selectedCategory])
+
+    const handleCategory = useCallback((categoryParam) => {
+        setSelectedCategory(categoryParam)
+
+        fetchMainBingos(categoryParam, sortBy, '' , 'all', 'all', 1)
+    },[sortBy])
 
     // const endOfScroll = () => { //context받은거 사용할땐 절대 useCallback 쓰지않기
     //     fetchMainBingos(selectedCategory, bingoPage) //bingoPage는 다음에 fetch할 페이지를 가르킴
@@ -115,12 +122,12 @@ export default function Home({ }) {
                 <Col xs={24} sm={16} md={16} lg={16} xl={16}>
                     <div style={{width: '100%', marginTop: 58, height: 50, marginBottom: 8, backgroundColor: 'white', border: '1px solid lightgray', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                         <CenteredRow>
-                            <a onClick={() => setSortBy(0)}>
+                            <a onClick={() => handleSortBy(0)}>
                                 <FilterButton selected={sortBy === 0}>
                                     <FireFilled style={{marginRight: 5}} />{t("FILTER_BEST")}
                                 </FilterButton>
                             </a>
-                            <a onClick={() => setSortBy(1)}>
+                            <a onClick={() => handleSortBy(1)}>
                                 <FilterButton selected={sortBy === 1}>
                                     <ThunderboltFilled style={{marginRight: 5}} />{t("FILTER_RECENT")}
                                 </FilterButton>
@@ -143,7 +150,7 @@ export default function Home({ }) {
                             <Col xs={24} sm={0} md={0} lg={0} xl={0}>
                                 <MobileCategoryContainer>
                                     {categoryList.map(v => (
-                                        <a key={v.id} onClick={() => { setSelectedCategory(v.id); setMobileCategoryListVisible(false) }}>
+                                        <a key={v.id} onClick={() => { handleCategory(v.id); setMobileCategoryListVisible(false) }}>
                                             <CategoryRenderer color={v.color} selected={selectedCategory === v.id}>
                                                 {v[`name_${i18n.language}`]}
                                             </CategoryRenderer>
@@ -177,7 +184,7 @@ export default function Home({ }) {
                                     categoryList.length === 0 ? null :
                                     <>
                                         {categoryList.map(v => (
-                                            <a key={v.id} onClick={() => setSelectedCategory(v.id)}>
+                                            <a key={v.id} onClick={() => handleCategory(v.id)}>
                                                 <CategoryRenderer selected={selectedCategory === v.id} color={v.color}>
                                                     {v[`name_${i18n.language}`]}
                                                 </CategoryRenderer>
