@@ -1,5 +1,6 @@
 const db = require('../../../lib/db')
 const escape = require('sql-template-strings')
+const bcrypt = require('bcryptjs')
 
 export default async (req, res) => {
     if(req.method === 'GET'){
@@ -32,6 +33,29 @@ export default async (req, res) => {
             res.status(404)
         }
 
+    } else if(req.method === 'DELETE'){
+        const bingoId = parseInt(req.query.id)
+        const password = req.body.password
+
+        const hashFromDB = await db.query(escape`
+            SELECT password 
+            FROM bingos
+            WHERE id = ${bingoId}
+        `)
+
+        if (bcrypt.compareSync(password, hashFromDB[0].password) === true){
+            const deleteBingo = await db.query(escape`
+                DELETE FROM bingos
+                WHERE id = ${bingoId}
+            `)
+            if(deleteBingo.affectedRows === 1){
+                res.status(200).json({ results: 'success' })
+            } else {
+                res.status(200).json({ results: 'error' })
+            }
+        } else {
+            res.status(200).json({ results: 'wrong' })
+        }
     }
 }
 

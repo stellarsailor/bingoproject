@@ -109,8 +109,8 @@ export default function BingoCreate({ data, query, params }) {
             })
         }
         try {
-            const fetchResponse = await fetch(url, settings);
-            const data = await fetchResponse.json();
+            const fetchResponse = await fetch(url, settings)
+            const data = await fetchResponse.json()
 
             if(data.insertResult.affectedRows === 1){
                 Router.push(`/bingo/${data.insertResult.insertId}`)

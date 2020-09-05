@@ -12,7 +12,7 @@ import useIsMobile from '../logics/useIsMobile';
 const { Search } = Input
 message.config({
     top: 58,
-});
+})
 const { confirm } = Modal
 
 const NavigationBar = styled.div`

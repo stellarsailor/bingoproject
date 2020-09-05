@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
-import { Row, Col, BackTop, Button, Spin } from 'antd';
+import { Row, Col, BackTop, Button, Spin, Popconfirm, Input, message } from 'antd';
 import { Link, useTranslation } from '../../i18n';
 import domtoimage from 'dom-to-image';
 
 import { serverUrl } from '../../lib/serverUrl';
 import BingoRenderer from '../../components/BingoRenderer';
 import { CenteredCol, CenteredRow } from '../../components/sub/styled';
-import { ArrowLeftOutlined, LikeOutlined, DislikeOutlined, AlertOutlined, CameraOutlined, ShareAltOutlined, LeftOutlined, LikeFilled, DislikeFilled, AlertFilled, CameraFilled, CheckSquareOutlined } from '@ant-design/icons';
+import { ShareAltOutlined, LeftOutlined, LikeFilled, DislikeFilled, AlertFilled, CameraFilled, CheckSquareOutlined, DeleteOutlined, LockOutlined } from '@ant-design/icons';
+
+message.config({
+    top: 58,
+})
 
 const ControllerPage = styled.div`
     background-color: white;
@@ -34,7 +38,9 @@ const MenuButton = styled.div`
 export default function BingoDetail({ data }) {
     const router = useRouter()
     const { bingoId } = router.query
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
+
+    const [ passwordInput, setPasswordInput ] = useState('')
 
     const [ bingo, setBingo ] = useState(data.bingo)
     const [ selectedIndex, setSelectedIndex ] = useState([])
@@ -48,16 +54,46 @@ export default function BingoDetail({ data }) {
         
     },[])
 
+    const deleteBingo = async (passwordInput) => {
+        let url = `${serverUrl}/api/bingos/${bingoId}`
+        const settings = {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                password: passwordInput
+            })
+        }
+        try {
+            const fetchResponse = await fetch(url, settings)
+            const data = await fetchResponse.json()
+
+            if(data.results === 'success'){
+                router.push('/')
+                message.success('Bingo is successfully deleted.')
+            } else if(data.results === 'wrong'){
+                message.warning('Please check password.')
+            } else {
+                message.error('Error!')
+            }
+
+        } catch (e) {
+            return e
+        }    
+    }
+
     const takeScreenShot = useCallback(() => {
-        let node = document.getElementById('nodenode');
+        let node = document.getElementById('nodenode')
 
         domtoimage.toJpeg(node)
         .then(function (dataUrl) {
-            let link = document.createElement('a');
-            link.download = `selfbingo.com-${bingo.title}.jpg`;
-            link.href = dataUrl;
-            link.click();
-        });
+            let link = document.createElement('a')
+            link.download = `selfbingo.com-${bingo.title}.jpg`
+            link.href = dataUrl
+            link.click()
+        })
     },[])
 
     const addIndexToSelected = useCallback((indexToPushPop) => {
@@ -110,8 +146,8 @@ export default function BingoDetail({ data }) {
             })
         }
         try {
-            const fetchResponse = await fetch(url, settings);
-            const data = await fetchResponse.json();
+            const fetchResponse = await fetch(url, settings)
+            const data = await fetchResponse.json()
 
             setResultStatus('calculating')
             let resultLength = data.results.length
@@ -153,24 +189,41 @@ export default function BingoDetail({ data }) {
                         <div style={{paddingBottom: '1rem', fontSize: '1rem'}}>
                             <CenteredRow>
                                 <MenuButton>
-                                    <LikeFilled /> Up
+                                    <span><LikeFilled /> Up</span>
                                 </MenuButton>
                                 <MenuButton>
-                                    <DislikeFilled /> Down
+                                    <span><DislikeFilled /> Down</span>
                                 </MenuButton>
                             </CenteredRow>
                             <CenteredRow>
                                 <MenuButton>
-                                    <CheckSquareOutlined /> Style
+                                    <span><CheckSquareOutlined /> Style</span>
                                 </MenuButton>
                                 <MenuButton>
-                                    <AlertFilled /> Report
+                                    <span><AlertFilled /> Report</span>
                                 </MenuButton>
                                 <MenuButton>
-                                    <ShareAltOutlined /> Share
+                                    <span><ShareAltOutlined /> Share</span>
+                                </MenuButton>
+                                <MenuButton>
+                                    <Popconfirm
+                                        title={
+                                            <div> 
+                                                <Input.Password placeholder="input password" onChange={(e) => setPasswordInput(e.target.value)} style={{width: 200}} />
+                                            </div>
+                                        }
+                                        onConfirm={() => deleteBingo(passwordInput)}
+                                        onCancel={() => console.log('cancelled')}
+                                        okText="Delete"
+                                        cancelText="Cancel"
+                                        icon={<LockOutlined style={{fontSize: 20}} />}
+                                        placement="bottom"
+                                    >
+                                        <span><DeleteOutlined /> Delete</span>
+                                    </Popconfirm>
                                 </MenuButton>
                                 <MenuButton onClick={takeScreenShot}>
-                                    <CameraFilled /> Capture
+                                    <span><CameraFilled /> Capture</span>
                                 </MenuButton>
                             </CenteredRow>
                         </div>

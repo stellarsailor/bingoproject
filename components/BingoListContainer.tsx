@@ -68,18 +68,17 @@ export default function BingoListContainer( props ){
                     <Empty 
                     image={Empty.PRESENTED_IMAGE_SIMPLE} 
                     description={
-                        <CenteredCol>
-                            <div>Empty</div>
-                            <Link href="/bingo/create">
-                                <a>
-                                    <Button type="primary" style={{margin: '8px 0px'}}>
-                                        {t("CREATE_SELFBINGO")}
-                                    </Button>
-                                </a>
-                            </Link>
-                            <div>{t("EMPTY_TRY_OTHER")}</div>
-                        </CenteredCol>
-                    } />
+                        <span>Empty</span>
+                    }>
+                        <Link href="/bingo/create">
+                            <a>
+                                <Button type="primary" style={{margin: '8px 0px'}}>
+                                    {t("CREATE_SELFBINGO")}
+                                </Button>
+                            </a>
+                        </Link>
+                        <div>{t("EMPTY_TRY_OTHER")}</div>
+                    </Empty>
                     :
                     // <InfiniteScroll
                     // dataLength={bingoList.length} //This is important field to render the next data
