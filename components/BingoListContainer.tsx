@@ -105,8 +105,8 @@ export default function BingoListContainer( props ){
                                             </div> */}
                                             <span style={{fontWeight: 'bold', fontSize: '1rem', marginRight: '1rem'}}>
                                                 {v.title} 
-                                                <span style={{color: 'dodgerblue', marginLeft: 20, fontSize: 14}}><LikeOutlined /> {numberToK(v.likes)}</span>
-                                                <span style={{color: 'dodgerblue', marginLeft: 10, fontSize: 14}}><BarChartOutlined /> {numberToK(15434)}</span>
+                                                {/* <span style={{color: 'dodgerblue', marginLeft: 20, fontSize: 14}}><LikeOutlined /> {numberToK(v.likes)}</span> */}
+                                                <span style={{color: 'dodgerblue', marginLeft: 10, fontSize: 14}}><BarChartOutlined /> {numberToK(v.popularity)}</span>
                                             </span>
                                         </div> 
                                         {/* <span style={{color: 'var(--mono-4)'}}>{v.author}({v.ipAddress}) 4 days ago</span> */}

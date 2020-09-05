@@ -23,6 +23,13 @@ export default async (req, res) => {
 
         // console.log(insertResult) 이때 모든 요소가 숫자인지 검사하고 예외처리가 필요한가?
         if(insertResult.affectedRows === 1){
+            const updateBingoPopularity = await db.query(escape`
+                UPDATE bingos
+                SET popularity = popularity + 1
+                WHERE id = ${bingoId};
+            `)
+
+            //all results of that bingo after added one of user's
             const results = await db.query(escape`
             SELECT binaryResult
             FROM results

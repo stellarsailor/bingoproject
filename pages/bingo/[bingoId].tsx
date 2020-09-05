@@ -9,6 +9,7 @@ import { serverUrl } from '../../lib/serverUrl';
 import BingoRenderer from '../../components/BingoRenderer';
 import { CenteredCol, CenteredRow } from '../../components/sub/styled';
 import { ShareAltOutlined, LeftOutlined, LikeFilled, DislikeFilled, AlertFilled, CameraFilled, CheckSquareOutlined, DeleteOutlined, LockOutlined } from '@ant-design/icons';
+import useIsMobile from '../../logics/useIsMobile';
 
 message.config({
     top: 58,
@@ -38,7 +39,9 @@ const MenuButton = styled.div`
 export default function BingoDetail({ data }) {
     const router = useRouter()
     const { bingoId } = router.query
+    let id = typeof bingoId === 'string' ? parseInt(bingoId) : null
     const { t, i18n } = useTranslation()
+    const isMobile = useIsMobile()
 
     const [ passwordInput, setPasswordInput ] = useState('')
 
@@ -49,10 +52,6 @@ export default function BingoDetail({ data }) {
     const [ resultStatus, setResultStatus ] = useState('idle')
     const [ resultCount, setResultCount ] = useState([])
     const [ resultPercent, setResultPercent ] = useState([])
-
-    useEffect(() => {
-        
-    },[])
 
     const deleteBingo = async (passwordInput) => {
         let url = `${serverUrl}/api/bingos/${bingoId}`
@@ -187,23 +186,23 @@ export default function BingoDetail({ data }) {
                             </Link>
                         </div>
                         <div style={{paddingBottom: '1rem', fontSize: '1rem'}}>
+                            {/* <CenteredRow>
+                                <MenuButton onClick={() => handleVote(1)}>
+                                    <span><LikeFilled style={{color: upvoteFlag ? 'dodgerblue' : null}} />{isMobile ? null : 'Up'}</span>
+                                </MenuButton>
+                                <MenuButton onClick={() => handleVote(0)}>
+                                    <span><DislikeFilled style={{color: downvoteFlag ? 'dodgerblue' : null}} /> {isMobile ? null : 'Down'}</span>
+                                </MenuButton>
+                            </CenteredRow> */}
                             <CenteredRow>
                                 <MenuButton>
-                                    <span><LikeFilled /> Up</span>
+                                    <span><CheckSquareOutlined /> {isMobile ? null : 'Style'}</span>
                                 </MenuButton>
                                 <MenuButton>
-                                    <span><DislikeFilled /> Down</span>
-                                </MenuButton>
-                            </CenteredRow>
-                            <CenteredRow>
-                                <MenuButton>
-                                    <span><CheckSquareOutlined /> Style</span>
+                                    <span><AlertFilled /> {isMobile ? null : 'Report'}</span>
                                 </MenuButton>
                                 <MenuButton>
-                                    <span><AlertFilled /> Report</span>
-                                </MenuButton>
-                                <MenuButton>
-                                    <span><ShareAltOutlined /> Share</span>
+                                    <span><ShareAltOutlined /> {isMobile ? null : 'Share'}</span>
                                 </MenuButton>
                                 <MenuButton>
                                     <Popconfirm
@@ -219,11 +218,11 @@ export default function BingoDetail({ data }) {
                                         icon={<LockOutlined style={{fontSize: 20}} />}
                                         placement="bottom"
                                     >
-                                        <span><DeleteOutlined /> Delete</span>
+                                        <span><DeleteOutlined /> {isMobile ? null : 'Delete'}</span>
                                     </Popconfirm>
                                 </MenuButton>
                                 <MenuButton onClick={takeScreenShot}>
-                                    <span><CameraFilled /> Capture</span>
+                                    <span><CameraFilled /> {isMobile ? null : 'Capture'}</span>
                                 </MenuButton>
                             </CenteredRow>
                         </div>

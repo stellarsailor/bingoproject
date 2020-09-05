@@ -52,7 +52,7 @@ export default async (req, res) => {
         }
 
         if(sortBy === 0){
-            query.append(` ORDER BY likes DESC`)
+            query.append(` ORDER BY popularity DESC`)
         } else if(sortBy === 1){
             query.append(` ORDER BY createdAt DESC`)
         }
