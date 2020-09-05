@@ -45,7 +45,7 @@ export default function BingoCreate({ data, query, params }) {
     const [ bingoPassword, setBingoPassword ] = useState('')
     const [ bingoTitle, setBingoTitle ] = useState('Enter BINGO Title')
     const [ bingoAuthor, setBingoAuthor ] = useState('')
-    const [ bingoSize, setBingoSize ] = useState(3)
+    const [ bingoSize, setBingoSize ] = useState(5)
     const [ bingoArr, setBingoArr ] = useState([])
 
     const [ colorPickerKey, setColorPickerKey ] = useState('')
@@ -54,7 +54,7 @@ export default function BingoCreate({ data, query, params }) {
     const [ bingoBgSubColor, setBingoBgSubColor ] = useState('#0693E3')
     const [ bingoFontColor, setBingoFontColor ] = useState('#000000')
     const [ bingoLineColor, setBingoLineColor ] = useState('#000000')
-    const [ bingoLinePixel, setBingoLinePixel ] = useState(3)
+    const [ bingoLinePixel, setBingoLinePixel ] = useState(2)
     const [ bingoCellColor, setBingoCellColor ] = useState('#ffffff')
 
     const [ modalOpened, setModalOpened ] = useState(false)
@@ -160,9 +160,9 @@ export default function BingoCreate({ data, query, params }) {
                                 <span style={{marginRight: 16}}>
                                     <TableOutlined /> Bingo Size
                                 </span>
-                                <Radio.Group defaultValue="3" onChange={(e) => setBingoSize(e.target.value)}>
-                                    <Radio.Button value="3">3x3</Radio.Button>
-                                    <Radio.Button value="5">5x5</Radio.Button>
+                                <Radio.Group defaultValue={bingoSize} onChange={(e) => setBingoSize(e.target.value)}>
+                                    <Radio.Button value={3}>3x3</Radio.Button>
+                                    <Radio.Button value={5}>5x5</Radio.Button>
                                     {/* <Radio.Button value="7">7x7</Radio.Button> */}
                                 </Radio.Group>
                             </div>
@@ -259,7 +259,14 @@ export default function BingoCreate({ data, query, params }) {
                     onOk={() => changeElement(modalWillChangeInput, modalWillChangeIndex)}
                     onCancel={() => setModalOpened(false)}
                     >
-                        <Input key={Math.random()} placeholder={bingoArr[modalWillChangeIndex]} value={modalWillChangeInput} onChange={e => setModalWillChangeInput(e.target.value)} onPressEnter={() => changeElement(modalWillChangeInput, modalWillChangeIndex)} autoFocus />
+                        <Input 
+                        key={modalWillChangeIndex} 
+                        placeholder={bingoArr[modalWillChangeIndex]} 
+                        value={modalWillChangeInput} 
+                        onChange={e => setModalWillChangeInput(e.target.value)} 
+                        onPressEnter={() => changeElement(modalWillChangeInput, modalWillChangeIndex)} 
+                        autoFocus 
+                        />
                     </Modal>
 
                     <CenteredCol style={{margin: '2rem', marginBottom: '3rem'}}>
