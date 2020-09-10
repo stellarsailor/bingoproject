@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useContext, useRef } from 'rea
 import Link from 'next/link'
 import styled from 'styled-components'
 import { SwatchesPicker } from 'react-color';
-import { Row, Col, BackTop, Input, Checkbox, Radio, Select, Modal, InputNumber, Button, Tooltip } from 'antd';
+import { Row, Col, BackTop, Input, Checkbox, Radio, Select, Modal, InputNumber, Button, Tooltip, message } from 'antd';
 const { Option } = Select;
 
 import { serverUrl } from '../../lib/serverUrl'
@@ -43,7 +43,8 @@ export default function BingoCreate({ data, query, params }) {
 
     const [ bingoCategory, setBingoCategory ] = useState<any>(0)
     const [ bingoPassword, setBingoPassword ] = useState('')
-    const [ bingoTitle, setBingoTitle ] = useState('Enter BINGO Title')
+    const [ bingoTitle, setBingoTitle ] = useState('')
+    const [ bingoDescription, setBingoDescription ] = useState('')
     const [ bingoAuthor, setBingoAuthor ] = useState('')
     const [ bingoSize, setBingoSize ] = useState(5)
     const [ bingoArr, setBingoArr ] = useState([])
@@ -57,6 +58,7 @@ export default function BingoCreate({ data, query, params }) {
     const [ bingoLinePixel, setBingoLinePixel ] = useState(2)
     const [ bingoCellColor, setBingoCellColor ] = useState('#ffffff')
 
+    const [ disableSubmitButton, setDisableSubmitButton ] = useState(false)
     const [ modalOpened, setModalOpened ] = useState(false)
     const [ modalWillChangeInput, setModalWillChangeInput ] = useState('')
     const [ modalWillChangeIndex, setModalWillChangeIndex ] = useState(0)
@@ -85,43 +87,59 @@ export default function BingoCreate({ data, query, params }) {
     },[bingoSize])
 
     const handleSubmit = useCallback(async () => {
-        let url = `${serverUrl}/api/bingos?lang=${i18n.language}`
-        const settings = {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                lock: 0,
-                author: bingoAuthor,
-                password: bingoPassword,
-                category: bingoCategory,
-                title: bingoTitle,
-                size: bingoSize,
-                elements: bingoArr,
-                bgMainColor: bingoBgMainColor,
-                bgSubColor: bingoBgSubColor,
-                fontColor: bingoFontColor,
-                cellColor: bingoCellColor,
-                lineColor: bingoLineColor,
-                linePixel: bingoLinePixel,
-            })
-        }
-        try {
-            const fetchResponse = await fetch(url, settings)
-            const data = await fetchResponse.json()
+        console.log(bingoTitle)
+        let blankError = []
+        if(bingoTitle === '') blankError.push('제목을 입력해주세요.')
+        if(bingoPassword === '') blankError.push('비밀번호를 입력해주세요.')
+        if(bingoAuthor === '') blankError.push('Please enter author name')
+        bingoArr.map(v => {if(v === '') blankError.push('there is empty element')})
 
-            if(data.insertResult.affectedRows === 1){
-                Router.push(`/bingo/${data.insertResult.insertId}`)
-            } else {
-                console.log('something wrong')
+        if(blankError.length !== 0){
+            message.error(blankError.pop())
+        } else {
+            setDisableSubmitButton(true)
+            let url = `${serverUrl}/api/bingos?lang=${i18n.language}`
+            const settings = {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    lock: 0,
+                    author: bingoAuthor,
+                    password: bingoPassword,
+                    category: bingoCategory,
+                    title: bingoTitle,
+                    description: bingoDescription,
+                    size: bingoSize,
+                    elements: bingoArr,
+                    bgMainColor: bingoBgMainColor,
+                    bgSubColor: bingoBgSubColor,
+                    fontColor: bingoFontColor,
+                    cellColor: bingoCellColor,
+                    lineColor: bingoLineColor,
+                    linePixel: bingoLinePixel,
+                })
             }
-
-        } catch (e) {
-            return e;
-        }    
-    },[bingoPassword, bingoTitle, bingoAuthor, bingoCategory, bingoSize, bingoArr, bingoBgMainColor, bingoBgSubColor, bingoFontColor, bingoCellColor, bingoLineColor, bingoLinePixel])
+            try {
+                const fetchResponse = await fetch(url, settings)
+                const data = await fetchResponse.json()
+    
+                if(data.error === 'duplicated'){
+                    message.error('Something wrong! try few minutes later.')
+                    setDisableSubmitButton(false)
+                } else if (data.insertResult.affectedRows === 1){
+                    Router.push(`/bingo/${data.insertResult.insertId}`)
+                } else {
+                    setDisableSubmitButton(false)
+                }
+    
+            } catch (e) {
+                return e;
+            }
+        }
+    },[bingoPassword, bingoTitle, bingoDescription, bingoAuthor, bingoCategory, bingoSize, bingoArr, bingoBgMainColor, bingoBgSubColor, bingoFontColor, bingoCellColor, bingoLineColor, bingoLinePixel])
 
     return(
         <>
@@ -136,17 +154,19 @@ export default function BingoCreate({ data, query, params }) {
                             </Link>
                         </div>
                         <div style={{padding: '1rem'}}>
-                            <Input placeholder="Name" onChange={e => setBingoAuthor(e.target.value)} style={{width: '45%', marginRight: 16}} />
-                            <Input.Password placeholder="input password" onChange={e => setBingoPassword(e.target.value)} style={{width: '45%'}} />
+                            <div style={{borderBottom: '1px solid var(--mono-2)', paddingBottom: '1rem'}}>
+                                <Input placeholder="Name" onChange={e => setBingoAuthor(e.target.value)} style={{width: '45%', marginRight: 16}} />
+                                <Input.Password placeholder="input password" onChange={e => setBingoPassword(e.target.value)} style={{width: '45%'}} />
+                            </div>
 
-                            <Radio.Group defaultValue="a" style={{marginTop: 16}}>
+                            {/* <Radio.Group defaultValue="a" style={{marginTop: 16}}>
                                 <Radio.Button value="a">
                                     <GlobalOutlined /> 공개
                                 </Radio.Button>
                                 <Radio.Button value="b">
                                     <LockOutlined /> 일부공개
                                 </Radio.Button>
-                            </Radio.Group>
+                            </Radio.Group> */}
 
                             <div>
                                 <Select placeholder="Category" style={{ width: 150, margin: '1rem 0px', marginRight: 16 }} onChange={v => setBingoCategory(v)}>
@@ -155,6 +175,8 @@ export default function BingoCreate({ data, query, params }) {
                             </div>
 
                             <Input placeholder="Title" onChange={e => setBingoTitle(e.target.value)} style={{width: '100%'}} />
+                            
+                            <Input placeholder="Enter description of Your Bingo, how to play it" onChange={e => setBingoDescription(e.target.value)} style={{width: '100%', margin: '1rem 0px'}} />
     
                             <div style={{margin: '1rem 0px'}}>
                                 <span style={{marginRight: 16}}>
@@ -240,7 +262,8 @@ export default function BingoCreate({ data, query, params }) {
                 </Col>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24} >
                     {/* <Checkbox onChange={e => console.log(e)}>NSFW</Checkbox> */}
-                    <BingoRenderer title={bingoTitle}
+                    <BingoRenderer 
+                    title={bingoTitle}
                     author={bingoAuthor}
                     size={bingoSize}
                     elements={bingoArr}
@@ -270,7 +293,7 @@ export default function BingoCreate({ data, query, params }) {
                     </Modal>
 
                     <CenteredCol style={{margin: '2rem', marginBottom: '3rem'}}>
-                        <Button type="primary" onClick={handleSubmit} style={{width: '50%', height: 50, borderRadius: 4}}>
+                        <Button type="primary" onClick={handleSubmit} style={{width: '50%', height: 50, borderRadius: 4}} disabled={disableSubmitButton}>
                             Create
                         </Button>
                     </CenteredCol>

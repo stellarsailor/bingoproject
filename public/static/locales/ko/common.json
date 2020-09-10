@@ -5,6 +5,7 @@
     "SEARCH_INPUT_PLACEHOLER": "빙고 검색",
     "EMPTY_TRY_OTHER": "또는 다른 카테고리/언어를 시도해보세요!",
     "ETC_ABOUT": "소개",
+    "ETC_TERMS_OF_SERVICE": "이용약관",
     "ETC_PRIVACY_POLICY": "개인정보처리방침",
     "error-with-status": "에러코드 : {{statusCode}} 에러 발생 서버에서"
 }

@@ -29,9 +29,10 @@ const InitialContentsProvider = (props) => {
     }
 
     useEffect(() => {
+        console.log('initial fetching...')
         fetchMainCategories()
         fetchMainBingos(0, 0, '', 'all', 'all' , 1)
-    }, [router])
+    }, [])
 
     const fetchMainBingos = useCallback( async (categoryId, sortBy, searchBy, searchTarget, period, page) => {
         setBingoLoading(true)

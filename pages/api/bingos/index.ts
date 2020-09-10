@@ -72,6 +72,7 @@ export default async (req, res) => {
         const password = bcrypt.hashSync(req.body.password, salt)
         const category = req.body.category
         const title = req.body.title
+        const description = req.body.description
         const size = req.body.size
         const elements = req.body.elements
         const bgMainColor = req.body.bgMainColor
@@ -86,11 +87,19 @@ export default async (req, res) => {
         // console.log(elements)
         // console.log(req.headers['x-real-ip'] || req.connection.remoteAddress)
 
-        const insertResult = await db.query(escape`
-            INSERT INTO bingos (lang, categoryId, title, author, size, elements, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, linePixel, ipAddress, password)
-            VALUES (${lang}, ${category}, ${title}, ${author}, ${size}, ${JSON.stringify(elements)}, ${bgMainColor}, ${bgSubColor}, ${fontColor}, ${cellColor}, ${lineColor}, ${linePixel}, ${ipAddress}, ${password});
+        const spamCheck = await db.query(escape`
+            SELECT count(*) as spamCount FROM bingos WHERE createdAt > date_sub(now(), interval 5 minute) AND ipAddress=${ipAddress}
         `)
 
-        res.status(200).json({ insertResult })
+        if(spamCheck[0].spamCount > 0){
+            res.status(200).json({ error: 'duplicated' })
+        } else {
+            const insertResult = await db.query(escape`
+                INSERT INTO bingos (lang, categoryId, title, description, author, size, elements, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, linePixel, ipAddress, password)
+                VALUES (${lang}, ${category}, ${title}, ${description}, ${author}, ${size}, ${JSON.stringify(elements)}, ${bgMainColor}, ${bgSubColor}, ${fontColor}, ${cellColor}, ${lineColor}, ${linePixel}, ${ipAddress}, ${password});
+            `)
+    
+            res.status(200).json({ insertResult })
+        }
     }
 }

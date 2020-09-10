@@ -27,7 +27,7 @@ const AuthorText = styled.div`
 
 export default function BingoRenderer( props ){
 
-    const { id, title, author, size, elements, elementOnClickEvent, selectedIndex, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, linePixel, ipAddress } = props
+    const { id, title, description, author, size, elements, elementOnClickEvent, selectedIndex, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, linePixel, ipAddress } = props
 
     const ref = useRef(null)
 
@@ -74,6 +74,7 @@ export default function BingoRenderer( props ){
                     <AuthorText color={pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}>
                         by {author}
                     </AuthorText>
+                    {description}
                     <table style={{}}>
                         <tbody>
                             {renderTable(size)}

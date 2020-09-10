@@ -5,6 +5,7 @@
     "SEARCH_INPUT_PLACEHOLER": "Search",
     "EMPTY_TRY_OTHER": "or try another category/language!",
     "ETC_ABOUT": "About",
+    "ETC_TERMS_OF_SERVICE": "Terms of Service",
     "ETC_PRIVACY_POLICY": "Privacy Policy",
     "error-with-status": "A {{statusCode}} error occurred on server"
 }

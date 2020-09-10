@@ -100,18 +100,17 @@ export default function BingoListContainer( props ){
                                     </SquareBingoIcon>
                                     <BingoPaneText>
                                         <div>
-                                            {/* <div style={{borderLeft: `2px solid ${categoryList.filter(c => c.id === v.categoryId)[0].color}`}}>
-                                                <span style={{fontSize: '0.8rem', marginLeft: 5}}>{categoryList.filter(c => c.id === v.categoryId)[0][`name_${i18n.language}`]}</span>
-                                            </div> */}
                                             <span style={{fontWeight: 'bold', fontSize: '1rem', marginRight: '1rem'}}>
-                                                {v.title} 
-                                                {/* <span style={{color: 'dodgerblue', marginLeft: 20, fontSize: 14}}><LikeOutlined /> {numberToK(v.likes)}</span> */}
-                                                <span style={{color: 'dodgerblue', marginLeft: 10, fontSize: 14}}><BarChartOutlined /> {numberToK(v.popularity)}</span>
+                                                {v.title} <span style={{color: 'dodgerblue', marginLeft: 10, fontSize: 14}}><BarChartOutlined /> {numberToK(v.popularity)}</span>
                                             </span>
+                                            <div>
+                                                {/* <span style={{color: 'var(--mono-4)', fontSize: '0.8rem'}}>by {v.author}({v.ipAddress})</span> */}
+                                                {/* <span style={{color: 'dodgerblue', marginLeft: 10, fontSize: 14}}><BarChartOutlined /> {numberToK(v.popularity)}</span> */}
+                                            </div>
                                         </div> 
-                                        {/* <span style={{color: 'var(--mono-4)'}}>{v.author}({v.ipAddress}) 4 days ago</span> */}
+                                        <span style={{color: 'var(--mono-4)'}}>{v.description}</span>
                                         <div style={{overflow: 'hidden', color: 'var(--mono-4)', fontSize: '0.8rem'}}>
-                                            {JSON.parse(v.elements).sort(() => Math.random() - Math.random()).slice(0, 3).map((v, index) => 
+                                            {JSON.parse(v.elements).sort(() => Math.random() - Math.random()).slice(0, 2).map((v, index) => 
                                                 <span key={index}> #{v} </span> )}
                                         </div>
                                     </BingoPaneText>

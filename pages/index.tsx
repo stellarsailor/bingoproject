@@ -11,7 +11,7 @@ import { ArrowRightOutlined, PlusOutlined, FireOutlined, ThunderboltOutlined, Fi
 import { serverUrl } from '../lib/serverUrl';
 import { CenteredRow, CenteredCol } from '../components/sub/styled'
 import pickTextColorBasedOnBgColor from '../logics/pickTextColorBasedOnBgColor';
-import numberToK from '../logics/numberToK'
+import dynamicSort from '../logics/dynamicSort'
 import BingoListContainer from '../components/BingoListContainer';
 import useIsMobile from '../logics/useIsMobile';
 
@@ -149,7 +149,7 @@ export default function Home({ }) {
                         <Row>
                             <Col xs={24} sm={0} md={0} lg={0} xl={0}>
                                 <MobileCategoryContainer>
-                                    {categoryList.map(v => (
+                                    {categoryList.slice(0).sort(dynamicSort(`name_${i18n.language}`)).map(v => (
                                         <a key={v.id} onClick={() => { handleCategory(v.id); setMobileCategoryListVisible(false) }}>
                                             <CategoryRenderer color={v.color} selected={selectedCategory === v.id}>
                                                 {v[`name_${i18n.language}`]}
@@ -183,7 +183,7 @@ export default function Home({ }) {
                                 {
                                     categoryList.length === 0 ? null :
                                     <>
-                                        {categoryList.map(v => (
+                                        {categoryList.slice(0).sort(dynamicSort(`name_${i18n.language}`)).map(v => (
                                             <a key={v.id} onClick={() => handleCategory(v.id)}>
                                                 <CategoryRenderer selected={selectedCategory === v.id} color={v.color}>
                                                     {v[`name_${i18n.language}`]}
@@ -198,6 +198,11 @@ export default function Home({ }) {
                             <Link href="/about">
                                 <GrayLittleLink>
                                     {t("ETC_ABOUT")}
+                                </GrayLittleLink>
+                            </Link>
+                            <Link href="/terms">
+                                <GrayLittleLink>
+                                    {t("ETC_TERMS_OF_SERVICE")}
                                 </GrayLittleLink>
                             </Link>
                             <Link href="/privacy">

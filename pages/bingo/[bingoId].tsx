@@ -5,6 +5,7 @@ import { useCookies } from 'react-cookie'
 import { Row, Col, BackTop, Button, Spin, Popconfirm, Input, message } from 'antd'
 import { Link, useTranslation } from '../../i18n'
 import { Element , scroller } from 'react-scroll'
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import domtoimage from 'dom-to-image'
 
 import { serverUrl } from '../../lib/serverUrl'
@@ -22,7 +23,7 @@ const ControllerPage = styled.div`
     border: 1px solid lightgray;
 `
 
-const MenuButton = styled.div`
+const MenuButton = styled.a`
     border-radius: 3px;
     background-color: ${props => props.selected ? 'var(--mono-1)' : 'white' };
     height: 25px;
@@ -79,7 +80,6 @@ export default function BingoDetail({ data }) {
             } else {
                 message.error('Error!')
             }
-
         } catch (e) {
             return e
         }    
@@ -130,6 +130,13 @@ export default function BingoDetail({ data }) {
 
     const submitIndexToFlag = useCallback(async () => {
         setResultStatus('saving')
+
+        scroller.scrollTo('scroll-to-element', {
+            duration: 800,
+            delay: 0,
+            smooth: 'easeInOutQuart'
+        })
+
         let arr = []
         for(let i = 0; i < bingo.size * bingo.size; i++){
             arr.push(selectedIndex.includes(i) ? 1 : 0 )
@@ -150,12 +157,10 @@ export default function BingoDetail({ data }) {
             const fetchResponse = await fetch(url, settings)
             const data = await fetchResponse.json()
 
-            scroller.scrollTo('scroll-to-element', {
-                duration: 800,
-                delay: 0,
-                smooth: 'easeInOutQuart'
-            })
-
+            if(data.error === 'duplicated') {
+                message.error('something wrong while inserting! try few minutes later!')
+                // throw 'duplicated!'
+            }
             setResultStatus('calculating')
             let resultLength = data.results.length
             let bingoLength = bingo.size * bingo.size //JSON.parse(data.results[0].binaryResult.length)
@@ -202,7 +207,10 @@ export default function BingoDetail({ data }) {
                                     <span><AlertFilled /> {isMobile ? null : 'Report'}</span>
                                 </MenuButton>
                                 <MenuButton>
-                                    <span><ShareAltOutlined /> {isMobile ? null : 'Share'}</span>
+                                    <CopyToClipboard text={serverUrl + router.asPath}
+                                    onCopy={() => message.success('Link url is copied!')}>
+                                        <span><ShareAltOutlined /> {isMobile ? null : 'Share'}</span>
+                                    </CopyToClipboard>
                                 </MenuButton>
                                 <MenuButton>
                                     <Popconfirm
@@ -234,6 +242,7 @@ export default function BingoDetail({ data }) {
                     <BingoRenderer 
                     id="nodenode"
                     title={bingo.title}
+                    description={bingo.description}
                     author={bingo.author}
                     size={bingo.size}
                     elements={JSON.parse(bingo.elements)}
@@ -249,7 +258,13 @@ export default function BingoDetail({ data }) {
                     />
                     <CenteredCol style={{margin: '1rem 0px'}}>
                         현재 빙고갯수 : {completedBingoLines}
-                        <Button type="primary" onClick={() => submitIndexToFlag()} style={{width: '50%'}}>제출 및 통계 확인</Button>
+                        <Button 
+                        type="primary" 
+                        onClick={() => submitIndexToFlag()} style={{width: '50%'}}
+                        disabled={resultStatus === 'saving' || resultStatus === 'calculating'}
+                        >
+                            제출 및 통계 확인
+                        </Button>
                     </CenteredCol>
                     <Element name="scroll-to-element">
                     {

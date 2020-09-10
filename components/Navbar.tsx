@@ -47,8 +47,8 @@ export default function NavBar({ }) {
     // const { formatMessage: tr } = useIntl();
     const { t, i18n } = useTranslation()
     const isMobile = useIsMobile()
+    const { fetchMainBingos } = useContext(InitialContents)
 
-    const [ visibleRight, setVisibleRight ] = useState(false)
     const [ supportedLanguages, setSupportedLanguages ] = useState(i18n.options.supportedLngs || [])
 
     const handleSearch = useCallback((searchParam) => {
@@ -59,12 +59,12 @@ export default function NavBar({ }) {
         }
     },[])
 
-    const menu = (
+    const langMenu = (
         <Menu>
             {supportedLanguages.map((v, index) => {
                 if(index !== supportedLanguages.length - 1)
                 return (
-                    <Menu.Item key={index} onClick={() => i18n.changeLanguage(v)} style={{padding: '8px 20px'}}>
+                    <Menu.Item key={index} onClick={() => {i18n.changeLanguage(v)}} style={{padding: '8px 20px'}}>
                         {langCodeToLanguage(v)}
                     </Menu.Item>
                 )
@@ -73,30 +73,30 @@ export default function NavBar({ }) {
         </Menu>
     )
 
-    const contentOption = (
-        <div style={{width: 180}}>
-            <Link href="/bingo/create">
-                <a>
-                    <HamburgerMenuTab onClick={() => toggleOption()}>{t("CREATE_SELFBINGO")}</HamburgerMenuTab>
-                </a>
-            </Link>
-            <Link href="/about">
-                <a>
-                    <HamburgerMenuTab onClick={() => toggleOption()}>{t("ETC_ABOUT")}</HamburgerMenuTab>
-                </a>
-            </Link>
-            <Link href="/privacy">
-                <a>
-                    <HamburgerMenuTab onClick={() => toggleOption()}>{t("ETC_PRIVACY_POLICY")}</HamburgerMenuTab>
-                </a>
-            </Link>
-        </div>
+    const hamburgerMenu = (
+        <Menu>
+            <Menu.Item style={{padding: '8px 20px'}}>
+                <Link href="/bingo/create">
+                    <a> {t("CREATE_SELFBINGO")} </a>
+                </Link>
+            </Menu.Item>
+            <Menu.Item style={{padding: '8px 20px'}}>
+                <Link href="/about">
+                    <a> {t("ETC_ABOUT")} </a>
+                </Link>
+            </Menu.Item>
+            <Menu.Item style={{padding: '8px 20px'}}>
+                <Link href="/terms">
+                    <a> {t("ETC_TERMS_OF_SERVICE")} </a>
+                </Link>
+            </Menu.Item>
+            <Menu.Item style={{padding: '8px 20px'}}>
+                <Link href="/privacy">
+                    <a> {t("ETC_PRIVACY_POLICY")} </a>
+                </Link>
+            </Menu.Item>
+        </Menu>
     )
-
-    const toggleOption = useCallback(() => {
-        if(visibleRight) setVisibleRight(false)
-        else setVisibleRight(true)
-    },[visibleRight])
 
     return(
         <NavigationBar>
@@ -113,12 +113,12 @@ export default function NavBar({ }) {
                         style={{ width: isMobile ? 150 : 250, height: isMobile ? 28 : 30 }}
                         />
                         <CenteredRow>
-                            <Dropdown overlay={menu} placement="bottomRight" trigger={['click']}>
+                            <Dropdown overlay={langMenu} placement="bottomRight" trigger={['click']} arrow>
                                 <BehanceOutlined style={{fontSize: '1.5rem', color: 'gray', marginRight: isMobile ? 8 : 16}} />
                             </Dropdown>
-                            <Popover placement="bottomRight" content={contentOption} visible={visibleRight}>
-                                <MenuOutlined style={{fontSize: '1.3rem', color: 'gray'}} onClick={() => toggleOption()} />
-                            </Popover>
+                            <Dropdown overlay={hamburgerMenu} placement="bottomRight" trigger={['click']} arrow>
+                                <MenuOutlined style={{fontSize: '1.3rem', color: 'gray'}} />
+                            </Dropdown>
                         </CenteredRow>
                     </CenterAlign>
                 </Col>
