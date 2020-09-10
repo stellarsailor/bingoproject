@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
-import { Row, Col, BackTop, Button, Spin, Popconfirm, Input, message } from 'antd';
-import { Link, useTranslation } from '../../i18n';
-import domtoimage from 'dom-to-image';
+import { useCookies } from 'react-cookie'
+import { Row, Col, BackTop, Button, Spin, Popconfirm, Input, message } from 'antd'
+import { Link, useTranslation } from '../../i18n'
+import { Element , scroller } from 'react-scroll'
+import domtoimage from 'dom-to-image'
 
-import { serverUrl } from '../../lib/serverUrl';
-import BingoRenderer from '../../components/BingoRenderer';
-import { CenteredCol, CenteredRow } from '../../components/sub/styled';
-import { ShareAltOutlined, LeftOutlined, LikeFilled, DislikeFilled, AlertFilled, CameraFilled, CheckSquareOutlined, DeleteOutlined, LockOutlined } from '@ant-design/icons';
-import useIsMobile from '../../logics/useIsMobile';
+import { serverUrl } from '../../lib/serverUrl'
+import BingoRenderer from '../../components/BingoRenderer'
+import { CenteredCol, CenteredRow } from '../../components/sub/styled'
+import { ShareAltOutlined, LeftOutlined, LikeFilled, DislikeFilled, AlertFilled, CameraFilled, CheckSquareOutlined, DeleteOutlined, LockOutlined } from '@ant-design/icons'
+import useIsMobile from '../../logics/useIsMobile'
 
 message.config({
     top: 58,
@@ -148,6 +150,12 @@ export default function BingoDetail({ data }) {
             const fetchResponse = await fetch(url, settings)
             const data = await fetchResponse.json()
 
+            scroller.scrollTo('scroll-to-element', {
+                duration: 800,
+                delay: 0,
+                smooth: 'easeInOutQuart'
+            })
+
             setResultStatus('calculating')
             let resultLength = data.results.length
             let bingoLength = bingo.size * bingo.size //JSON.parse(data.results[0].binaryResult.length)
@@ -186,14 +194,6 @@ export default function BingoDetail({ data }) {
                             </Link>
                         </div>
                         <div style={{paddingBottom: '1rem', fontSize: '1rem'}}>
-                            {/* <CenteredRow>
-                                <MenuButton onClick={() => handleVote(1)}>
-                                    <span><LikeFilled style={{color: upvoteFlag ? 'dodgerblue' : null}} />{isMobile ? null : 'Up'}</span>
-                                </MenuButton>
-                                <MenuButton onClick={() => handleVote(0)}>
-                                    <span><DislikeFilled style={{color: downvoteFlag ? 'dodgerblue' : null}} /> {isMobile ? null : 'Down'}</span>
-                                </MenuButton>
-                            </CenteredRow> */}
                             <CenteredRow>
                                 <MenuButton>
                                     <span><CheckSquareOutlined /> {isMobile ? null : 'Style'}</span>
@@ -251,16 +251,18 @@ export default function BingoDetail({ data }) {
                         현재 빙고갯수 : {completedBingoLines}
                         <Button type="primary" onClick={() => submitIndexToFlag()} style={{width: '50%'}}>제출 및 통계 확인</Button>
                     </CenteredCol>
+                    <Element name="scroll-to-element">
                     {
                         resultStatus === 'idle' ? null 
-                        : resultStatus === 'saving' ? <div><Spin /> 데이터를 저장 중 입니다.</div>
-                        : resultStatus === 'calculating' ? <div><Spin /> 데이터를 계산 중 입니다.</div>
+                        : resultStatus === 'saving' ? <CenteredRow style={{height: 300}}><Spin /> 데이터를 저장 중 입니다.</CenteredRow>
+                        : resultStatus === 'calculating' ? <CenteredRow style={{height: 300}}><Spin /> 데이터를 계산 중 입니다.</CenteredRow>
                         : 
-                        <div>
+                        <div style={{height: 300}}>
                             유저들이 선택한 횟수 : {resultCount.toString()}
                             퍼센티지 비율 : {resultPercent.toString()}
                         </div>
                     }
+                    </Element>
                 </Col>
             </Row>
         </>
