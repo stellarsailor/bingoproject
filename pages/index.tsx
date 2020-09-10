@@ -148,6 +148,18 @@ export default function Home({ }) {
                         mobileCategoryListVisible ?
                         <Row>
                             <Col xs={24} sm={0} md={0} lg={0} xl={0}>
+                                <Link href="/bingo/create">
+                                    <a style={{width: '100%'}}>
+                                        <CreateBingoButton style={{marginTop: 0, marginBottom: 8}}>
+                                            <CenteredRow style={{padding: 10}}>
+                                                <div style={{margin: '0px 1rem'}}>
+                                                    {t("CREATE_SELFBINGO")}
+                                                </div>
+                                                <ArrowRightOutlined />
+                                            </CenteredRow>
+                                        </CreateBingoButton>
+                                    </a>
+                                </Link>
                                 <MobileCategoryContainer>
                                     {categoryList.slice(0).sort(dynamicSort(`name_${i18n.language}`)).map(v => (
                                         <a key={v.id} onClick={() => { handleCategory(v.id); setMobileCategoryListVisible(false) }}>

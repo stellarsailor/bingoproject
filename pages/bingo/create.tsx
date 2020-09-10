@@ -92,7 +92,7 @@ export default function BingoCreate({ data, query, params }) {
         if(bingoTitle === '') blankError.push('제목을 입력해주세요.')
         if(bingoPassword === '') blankError.push('비밀번호를 입력해주세요.')
         if(bingoAuthor === '') blankError.push('Please enter author name')
-        bingoArr.map(v => {if(v === '') blankError.push('there is empty element')})
+        bingoArr.map(v => {if(v === '' || v === null) blankError.push('there is empty element')})
 
         if(blankError.length !== 0){
             message.error(blankError.pop())
