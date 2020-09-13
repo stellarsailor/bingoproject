@@ -81,6 +81,7 @@ export default async (req, res) => {
         const cellColor = req.body.cellColor
         const lineColor = req.body.lineColor
         const linePixel = req.body.linePixel
+        const achievements = req.body.achievements
         const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress
 
         // console.log(lock + ' ' + password+ ' ' + title+ ' ' + author+ ' ' + size+ ' ' + elements+ ' ' + bgMainColor+ ' ' + bgSubColor+ ' ' + fontColor+ ' ' + cellColor+ ' ' + lineColor+ ' ' + linePixel)
@@ -95,8 +96,8 @@ export default async (req, res) => {
             res.status(200).json({ error: 'duplicated' })
         } else {
             const insertResult = await db.query(escape`
-                INSERT INTO bingos (lang, categoryId, title, description, author, size, elements, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, linePixel, ipAddress, password)
-                VALUES (${lang}, ${category}, ${title}, ${description}, ${author}, ${size}, ${JSON.stringify(elements)}, ${bgMainColor}, ${bgSubColor}, ${fontColor}, ${cellColor}, ${lineColor}, ${linePixel}, ${ipAddress}, ${password});
+                INSERT INTO bingos (lang, categoryId, title, description, author, size, elements, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, linePixel, achievements, ipAddress, password)
+                VALUES (${lang}, ${category}, ${title}, ${description}, ${author}, ${size}, ${JSON.stringify(elements)}, ${bgMainColor}, ${bgSubColor}, ${fontColor}, ${cellColor}, ${lineColor}, ${linePixel}, ${JSON.stringify(achievements)}, ${ipAddress}, ${password});
             `)
     
             res.status(200).json({ insertResult })

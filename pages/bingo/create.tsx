@@ -2,8 +2,18 @@ import React, { useState, useEffect, useCallback, useContext, useRef } from 'rea
 import Link from 'next/link'
 import styled from 'styled-components'
 import { SwatchesPicker } from 'react-color';
-import { Row, Col, BackTop, Input, Checkbox, Radio, Select, Modal, InputNumber, Button, Tooltip, message } from 'antd';
+import { Row, Col, BackTop, Input, Checkbox, Radio, Select, Modal, InputNumber, Button, Tooltip, message, Slider } from 'antd';
 const { Option } = Select;
+const marks = {
+    0: '0',
+    // 1: '1',
+    2: '2',
+    // 3: '3',
+    4: '4',
+    // 5: '5',
+    6: '6',
+    // 7: '7',
+};
 
 import { serverUrl } from '../../lib/serverUrl'
 import { useTranslation, Router } from '../../i18n';
@@ -38,7 +48,7 @@ const ColorLeftText = styled.span`
 `
 
 export default function BingoCreate({ data, query, params }) {
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation()
     const { categoryList } = useContext(InitialContents)
 
     const [ bingoCategory, setBingoCategory ] = useState<any>(0)
@@ -57,6 +67,11 @@ export default function BingoCreate({ data, query, params }) {
     const [ bingoLineColor, setBingoLineColor ] = useState('#000000')
     const [ bingoLinePixel, setBingoLinePixel ] = useState(2)
     const [ bingoCellColor, setBingoCellColor ] = useState('#ffffff')
+
+    const [ bingoAchievement, setBingoAchievement ] = useState([])
+    const [ achievementInput, setAchievementInput ] = useState('')
+    const [ achievementMinimumPointer, setAchievementMinimumPointer ] = useState(0)
+    const [ achievementPointer, setAchievementPointer ] = useState(3)
 
     const [ disableSubmitButton, setDisableSubmitButton ] = useState(false)
     const [ modalOpened, setModalOpened ] = useState(false)
@@ -78,21 +93,38 @@ export default function BingoCreate({ data, query, params }) {
 
     useEffect(() => {
         let elements = []
+        let acheievements = []
 
         for(let i = 0; i < bingoSize*bingoSize; i++){
             elements.push('')
         }
 
+        for(let i = 0; i < (bingoSize * 2 + 2) + 1; i++){
+            acheievements.push('')
+        }
+
         setBingoArr(elements)
+        setBingoAchievement(acheievements)
     },[bingoSize])
 
+    const handleAcheievement = useCallback((rangeMin, rangeMax, value) => {
+        for(let i = rangeMin; i < rangeMax; i++){
+            bingoAchievement[i] = value
+        }
+        setBingoAchievement([...bingoAchievement])
+        setAchievementMinimumPointer(rangeMax)
+        setAchievementPointer(bingoSize * 2 + 2)
+        setAchievementInput('')
+    },[bingoAchievement])
+
     const handleSubmit = useCallback(async () => {
-        console.log(bingoTitle)
-        let blankError = []
-        if(bingoTitle === '') blankError.push('제목을 입력해주세요.')
-        if(bingoPassword === '') blankError.push('비밀번호를 입력해주세요.')
-        if(bingoAuthor === '') blankError.push('Please enter author name')
+        // console.log(bingoAchievement)
+        let blankError = [] //에러는 역순으로
+        bingoAchievement.map(v => {if(v === '' || v === null) blankError.push('there is empty acheievement')})
         bingoArr.map(v => {if(v === '' || v === null) blankError.push('there is empty element')})
+        if(bingoAuthor === '') blankError.push('Please enter author name')
+        if(bingoPassword === '') blankError.push('비밀번호를 입력해주세요.')
+        if(bingoTitle === '') blankError.push('제목을 입력해주세요.')
 
         if(blankError.length !== 0){
             message.error(blankError.pop())
@@ -120,6 +152,7 @@ export default function BingoCreate({ data, query, params }) {
                     cellColor: bingoCellColor,
                     lineColor: bingoLineColor,
                     linePixel: bingoLinePixel,
+                    achievements: bingoAchievement
                 })
             }
             try {
@@ -139,7 +172,7 @@ export default function BingoCreate({ data, query, params }) {
                 return e;
             }
         }
-    },[bingoPassword, bingoTitle, bingoDescription, bingoAuthor, bingoCategory, bingoSize, bingoArr, bingoBgMainColor, bingoBgSubColor, bingoFontColor, bingoCellColor, bingoLineColor, bingoLinePixel])
+    },[bingoPassword, bingoTitle, bingoDescription, bingoAuthor, bingoCategory, bingoSize, bingoArr, bingoBgMainColor, bingoBgSubColor, bingoFontColor, bingoCellColor, bingoLineColor, bingoLinePixel, bingoAchievement])
 
     return(
         <>
@@ -291,6 +324,60 @@ export default function BingoCreate({ data, query, params }) {
                         autoFocus 
                         />
                     </Modal>
+
+                    <ControllerPage style={{marginTop: 8, padding: '1rem'}}>
+                        <div>
+                            빙고 라인 갯수 업적
+                        </div>
+                        {bingoAchievement.map((v, index) => <div key={index}>{index} bingo: {v}</div>)}
+                        <div>
+                            {
+                                achievementMinimumPointer === 0 ?
+                                <div>
+                                    <Slider 
+                                    defaultValue={achievementPointer} 
+                                    min={0} max={(bingoSize * 2 + 2) + 1} 
+                                    onChange={v => setAchievementPointer(v)} 
+                                    marks={marks}
+                                    />
+                                    <Input 
+                                    style={{width: '70%'}} 
+                                    value={achievementInput}
+                                    onChange={e => setAchievementInput(e.target.value)} 
+                                    onPressEnter={() => {handleAcheievement(0, achievementPointer, achievementInput)}}
+                                    />
+                                    <Button 
+                                    style={{marginLeft: '1rem'}} 
+                                    onClick={() => {handleAcheievement(0, achievementPointer, achievementInput)}}
+                                    > 
+                                        추가 
+                                    </Button>
+                                </div>
+                                :
+                                <div>
+                                    <Slider 
+                                    range 
+                                    value={[achievementMinimumPointer, achievementPointer]} 
+                                    min={0} max={(bingoSize * 2 + 2) + 1} 
+                                    onChange={v => {setAchievementMinimumPointer(v[0]); setAchievementPointer(v[1])}} 
+                                    marks={marks}
+                                    />
+                                    <Input 
+                                    style={{width: '70%'}}
+                                    value={achievementInput}
+                                    onChange={e => setAchievementInput(e.target.value)} 
+                                    onPressEnter={() => {handleAcheievement(achievementMinimumPointer, achievementPointer, achievementInput)}}
+                                    />
+                                    <Button 
+                                    style={{marginLeft: '1rem'}} 
+                                    onClick={() => {handleAcheievement(achievementMinimumPointer, achievementPointer, achievementInput)}}
+                                    > 
+                                        추가 
+                                    </Button>
+                                </div>
+                            }
+                        </div>
+                    </ControllerPage>
 
                     <CenteredCol style={{margin: '2rem', marginBottom: '3rem'}}>
                         <Button type="primary" onClick={handleSubmit} style={{width: '50%', height: 50, borderRadius: 4}} disabled={disableSubmitButton}>

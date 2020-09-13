@@ -42,7 +42,7 @@ const MenuButton = styled.a`
 export default function BingoDetail({ data }) {
     const router = useRouter()
     const { bingoId } = router.query
-    let id = typeof bingoId === 'string' ? parseInt(bingoId) : null
+    // let id = typeof bingoId === 'string' ? parseInt(bingoId) : null
     const { t, i18n } = useTranslation()
     const isMobile = useIsMobile()
 
@@ -272,9 +272,17 @@ export default function BingoDetail({ data }) {
                         : resultStatus === 'saving' ? <CenteredRow style={{height: 300}}><Spin /> 데이터를 저장 중 입니다.</CenteredRow>
                         : resultStatus === 'calculating' ? <CenteredRow style={{height: 300}}><Spin /> 데이터를 계산 중 입니다.</CenteredRow>
                         : 
-                        <div style={{height: 300}}>
-                            유저들이 선택한 횟수 : {resultCount.toString()}
-                            퍼센티지 비율 : {resultPercent.toString()}
+                        <div style={{height: 300, display: 'flex', flexWrap: 'wrap'}}>
+                            {
+                                resultPercent.map((v, index) => (
+                                    <div key={index} style={{flex: `0 0 ${100 / bingo.size}%`, height: 50, border: '1px solid lightgray', display: 'flex', justifyContent: 'center', alignItems: 'center'}} >
+                                        {resultCount[index]}회 ({v}%) 
+                                    </div>
+                                ))
+                            }
+                            <CenteredCol>
+                                <span style={{fontWeight: 'bold', fontSize: '1.4rem'}}>결과 스트링 : {JSON.parse(bingo.achievements)[completedBingoLines]}</span>
+                            </CenteredCol>
                         </div>
                     }
                     </Element>
