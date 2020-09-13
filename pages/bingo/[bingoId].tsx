@@ -255,9 +255,11 @@ export default function BingoDetail({ data }) {
                     lineColor={bingo.lineColor}
                     linePixel={bingo.linePixel}
                     ipAddress={bingo.ipAddress}
+
+                    completedBingoLines={completedBingoLines}
+                    resultString={JSON.parse(bingo.achievements)[completedBingoLines]}
                     />
                     <CenteredCol style={{margin: '1rem 0px'}}>
-                        현재 빙고갯수 : {completedBingoLines}
                         <Button 
                         type="primary" 
                         onClick={() => submitIndexToFlag()} style={{width: '50%'}}
@@ -280,9 +282,6 @@ export default function BingoDetail({ data }) {
                                     </div>
                                 ))
                             }
-                            <CenteredCol>
-                                <span style={{fontWeight: 'bold', fontSize: '1.4rem'}}>결과 스트링 : {JSON.parse(bingo.achievements)[completedBingoLines]}</span>
-                            </CenteredCol>
                         </div>
                     }
                     </Element>

@@ -27,7 +27,7 @@ const AuthorText = styled.div`
 
 export default function BingoRenderer( props ){
 
-    const { id, title, description, author, size, elements, elementOnClickEvent, selectedIndex, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, linePixel, ipAddress } = props
+    const { id, title, description, author, size, elements, elementOnClickEvent, selectedIndex, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, linePixel, ipAddress, completedBingoLines, resultString } = props
 
     const ref = useRef(null)
 
@@ -80,8 +80,14 @@ export default function BingoRenderer( props ){
                             {renderTable(size)}
                         </tbody>
                     </table>
-                    <div style={{color: `${pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}`, fontWeight: 'bold', fontSize: '1.4rem', marginTop: '1rem'}}>
+                    <div style={{color: `${pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}`, fontWeight: 'bold', fontSize: '1.3rem', marginTop: '0.5rem'}}>
                         selfbingo.com
+                    </div>
+                    <div style={{color: `${pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}`, fontWeight: 'bold', fontSize: '1rem', marginTop: '1rem'}}>
+                        완성된 빙고 개수 : {completedBingoLines}
+                    </div>
+                    <div style={{color: `${pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}`, fontWeight: 'bold', fontSize: '1.4rem', marginTop: '0.3rem'}}>
+                        "{resultString}"
                     </div>
                 </CenteredCol>
             </CreatePage>
