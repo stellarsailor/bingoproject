@@ -1,8 +1,11 @@
+import { cors } from '../../../lib/cors'
 const db = require('../../../lib/db')
 const escape = require('sql-template-strings')
 const bcrypt = require('bcryptjs')
 
 export default async (req, res) => {
+    await cors(req, res)
+
     if(req.method === 'GET'){
         const [bingo] = await db.query(escape`
         SELECT *
