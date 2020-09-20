@@ -17,7 +17,7 @@ export default async (req, res) => {
         const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress
 
         const spamCheck = await db.query(escape`
-            SELECT count(*) as spamCount FROM results WHERE createdAt > date_sub(now(), interval 1 minute) AND ipAddress=${ipAddress}
+            SELECT count(*) as spamCount FROM results WHERE bingoId=${bingoId} AND createdAt > date_sub(now(), interval 1 minute) AND ipAddress=${ipAddress}
         `)
 
         if(spamCheck[0].spamCount > 0){

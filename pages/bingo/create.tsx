@@ -380,7 +380,7 @@ export default function BingoCreate({ data, query, params }) {
                     </ControllerPage>
 
                     <CenteredCol style={{margin: '2rem', marginBottom: '3rem'}}>
-                        <Button type="primary" onClick={handleSubmit} style={{width: '50%', height: 50, borderRadius: 4}} disabled={disableSubmitButton}>
+                        <Button type="primary" onClick={handleSubmit} style={{width: 300, height: 45, borderRadius: 8}} disabled={disableSubmitButton}>
                             Create
                         </Button>
                     </CenteredCol>
