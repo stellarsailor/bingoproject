@@ -2,7 +2,7 @@
 import styled from 'styled-components'
 import { Input, Row, Col, Popover, Button, message, Modal, Dropdown, Menu } from 'antd';
 import { Link, useTranslation, Router } from '../i18n'
-import { MenuOutlined, SearchOutlined, ExclamationCircleOutlined, DownOutlined, BehanceOutlined } from '@ant-design/icons';
+import { MenuOutlined, SearchOutlined, ExclamationCircleOutlined, DownOutlined, BehanceOutlined, GlobalOutlined } from '@ant-design/icons';
 import { useEffect, useState, useCallback, useContext } from 'react';
 import { InitialContents } from '../store/InitialContentsProvider';
 import { CenteredRow } from './sub/styled';
@@ -114,7 +114,7 @@ export default function NavBar({ }) {
                         />
                         <CenteredRow>
                             <Dropdown overlay={langMenu} placement="bottomRight" trigger={['click']} arrow>
-                                <BehanceOutlined style={{fontSize: '1.5rem', color: 'gray', marginRight: isMobile ? 8 : 16}} />
+                                <GlobalOutlined style={{fontSize: '1.2rem', color: 'gray', marginRight: isMobile ? 8 : 16}} />
                             </Dropdown>
                             <Dropdown overlay={hamburgerMenu} placement="bottomRight" trigger={['click']} arrow>
                                 <MenuOutlined style={{fontSize: '1.3rem', color: 'gray'}} />
