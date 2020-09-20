@@ -61,7 +61,6 @@ export default async (req, res) => {
         }
 
         query.append(escape` LIMIT ${(page - 1) * limit}, ${limit}`)
-        console.log(query)
 
         const bingos = await db.query(query)
 

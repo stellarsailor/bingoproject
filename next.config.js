@@ -18,7 +18,11 @@ const themeVariables = lessToJS(
   fs.readFileSync(path.resolve(__dirname, './assets/antd-custom.less'), 'utf8')
 )
 
-module.exports = withCSS(withLess({
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
+module.exports = withBundleAnalyzer(withCSS(withLess({
   lessLoaderOptions: {
     javascriptEnabled: true,
     modifyVars: themeVariables, // make your antd custom effective
@@ -51,4 +55,4 @@ module.exports = withCSS(withLess({
   publicRuntimeConfig: {
     localeSubpaths,
   },
-}))
+})))
