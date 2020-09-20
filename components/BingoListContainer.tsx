@@ -1,12 +1,14 @@
 import styled from 'styled-components'
 import Modal from 'antd/lib/modal/Modal'
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect, useRef, useContext } from 'react'
 import { Input, Skeleton, Empty, Button } from 'antd'
 import { CenteredRow, CenteredCol } from './sub/styled'
 import pickTextColorBasedOnBgColor from '../logics/pickTextColorBasedOnBgColor'
 import { Link, useTranslation } from '../i18n'
 import { LikeOutlined, BarChartOutlined } from '@ant-design/icons'
 import numberToK from '../logics/numberToK'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import { InitialContents } from '../store/InitialContentsProvider'
 
 const BingoPane = styled.div`
     border-bottom: 1px solid var(--mono-2);
@@ -47,22 +49,37 @@ const SquareBingoIcon = styled.div`
 
 export default function BingoListContainer( props ){
     const { t, i18n } = useTranslation()
-    const { bingoLoading, bingoList } = props
+    const { selectedCategory, sortBy } = props
+    const { bingoList, bingoPage, bingoLoading, bingoHasMore, fetchMainBingos, categoryList } = useContext(InitialContents)
+
+    const skeletonGroup = () => (
+        <>
+            <BingoPane>
+                <Skeleton.Avatar active={true} size={80} shape="square" style={{marginRight: '1rem'}} />
+                <Skeleton paragraph={{ rows: 1 }} />
+            </BingoPane>
+            <BingoPane>
+                <Skeleton.Avatar active={true} size={80} shape="square" style={{marginRight: '1rem'}} />
+                <Skeleton paragraph={{ rows: 1 }} />
+            </BingoPane>
+            <BingoPane>
+                <Skeleton.Avatar active={true} size={80} shape="square" style={{marginRight: '1rem'}} />
+                <Skeleton paragraph={{ rows: 1 }} />
+            </BingoPane>
+        </>
+    )
+
+    const endMessage = () => (
+        <p style={{textAlign: 'center', marginTop: 16, color: 'lightgray'}}>
+            <b>더 이상 불러올 빙고가 없습니다.</b>
+        </p>
+    )
 
     return (
         <div style={{width: '100%', minHeight: 1200, backgroundColor: 'white', border: '1px solid lightgray'}}>
             {
                 bingoLoading ? 
-                <>
-                <BingoPane>
-                    <Skeleton.Avatar active={true} size={80} shape="square" style={{marginRight: '1rem'}} />
-                    <Skeleton paragraph={{ rows: 1 }} />
-                </BingoPane>
-                <BingoPane>
-                    <Skeleton.Avatar active={true} size={80} shape="square" style={{marginRight: '1rem'}} />
-                    <Skeleton paragraph={{ rows: 1 }} />
-                </BingoPane>
-                </>
+                skeletonGroup()
                 :
                     bingoList.length === 0 ?
                     <Empty 
@@ -80,45 +97,37 @@ export default function BingoListContainer( props ){
                         <div>{t("EMPTY_TRY_OTHER")}</div>
                     </Empty>
                     :
-                    // <InfiniteScroll
-                    // dataLength={bingoList.length} //This is important field to render the next data
-                    // next={fetchMainBingos}
-                    // hasMore={true}
-                    // loader={<h4>Loading...</h4>}
-                    // endMessage={
-                    //     <p style={{textAlign: 'center'}}>
-                    //     <b>Yay! You have seen it all</b>
-                    //     </p>
-                    // }>
-                    <div>
-                        {/* { bingoList.filter(v => selectedCategory === 0 ? true : v.categoryId === selectedCategory).map(v => ( */}
-                        { bingoList.map(v => (
-                            <Link href={`/bingo/${v.id}`} key={v.id} ><a>
-                                <BingoPane>
-                                    <SquareBingoIcon bgMainColor={v.bgMainColor} bgSubColor={v.bgSubColor} fontColor={pickTextColorBasedOnBgColor(v.bgMainColor, '#ffffff','#000000')}>
-                                        {v.size} X {v.size}
-                                    </SquareBingoIcon>
-                                    <BingoPaneText>
-                                        <div>
-                                            <span style={{fontWeight: 'bold', fontSize: '1rem', marginRight: '1rem'}}>
-                                                {v.title} <span style={{color: 'dodgerblue', marginLeft: 10, fontSize: 14}}><BarChartOutlined /> {numberToK(v.popularity)}</span>
-                                            </span>
+                    <InfiniteScroll
+                    dataLength={bingoList.length} //This is important field to render the next data
+                    next={() => fetchMainBingos(bingoPage)}
+                    hasMore={bingoHasMore}
+                    loader={skeletonGroup()}
+                    endMessage={endMessage()}
+                    >
+                        <div>
+                            { bingoList.map( (v, index) => (
+                                <Link href={`/bingo/${v.id}`} key={index} ><a>
+                                    <BingoPane>
+                                        <SquareBingoIcon bgMainColor={v.bgMainColor} bgSubColor={v.bgSubColor} fontColor={pickTextColorBasedOnBgColor(v.bgMainColor, '#ffffff','#000000')}>
+                                            {v.size} X {v.size}
+                                        </SquareBingoIcon>
+                                        <BingoPaneText>
                                             <div>
-                                                {/* <span style={{color: 'var(--mono-4)', fontSize: '0.8rem'}}>by {v.author}({v.ipAddress})</span> */}
-                                                {/* <span style={{color: 'dodgerblue', marginLeft: 10, fontSize: 14}}><BarChartOutlined /> {numberToK(v.popularity)}</span> */}
+                                                <span style={{fontWeight: 'bold', fontSize: '1rem', marginRight: '1rem'}}>
+                                                    {v.title} <span style={{color: 'dodgerblue', marginLeft: 10, fontSize: 14}}><BarChartOutlined /> {numberToK(v.popularity)}</span>
+                                                </span>
+                                            </div> 
+                                            <span style={{color: 'var(--mono-4)'}}>{v.description}</span>
+                                            <div style={{overflow: 'hidden', color: 'var(--mono-4)', fontSize: '0.8rem'}}>
+                                                {JSON.parse(v.elements).sort(() => Math.random() - Math.random()).slice(0, 2).map((v, index) => 
+                                                    <span key={index}> #{v} </span> )}
                                             </div>
-                                        </div> 
-                                        <span style={{color: 'var(--mono-4)'}}>{v.description}</span>
-                                        <div style={{overflow: 'hidden', color: 'var(--mono-4)', fontSize: '0.8rem'}}>
-                                            {JSON.parse(v.elements).sort(() => Math.random() - Math.random()).slice(0, 2).map((v, index) => 
-                                                <span key={index}> #{v} </span> )}
-                                        </div>
-                                    </BingoPaneText>
-                                </BingoPane>
-                            </a></Link>
-                        )) }
-                    </div>
-                    // </InfiniteScroll>
+                                        </BingoPaneText>
+                                    </BingoPane>
+                                </a></Link>
+                            )) }
+                        </div>
+                    </InfiniteScroll>
             }
         </div>
     )

@@ -6,9 +6,19 @@ import { useTranslation } from '../i18n'
 export const InitialContents = createContext({ //타입 표기, 최하단에 value 전달필요
     categoryList: [],
     bingoList: [],
-    bingoPage: 0,
+    bingoPage: 1,
+    setBingoPage: (pageNumber) => {},
     bingoLoading: true,
-    fetchMainBingos: (categoryId: number, sortBy: number, searchBy: string, searchTarget: string, period: string, page: number) => {},
+    bingoHasMore: true,
+
+    selectedCategory: 0,
+    setSelectedCategory: (category: number) => {},
+    sortBy: 0,
+    setSortBy: (sortBy: 0 | 1) => {},
+    searchBy: '',
+    searchTarget: 'all',
+    period: 'all',
+    fetchMainBingos: (pageParam) => {},
 })
 
 const InitialContentsProvider = (props) => {
@@ -18,7 +28,15 @@ const InitialContentsProvider = (props) => {
     const [ categoryList, setCategoryList ] = useState([])
     const [ bingoList, setBingoList ] = useState([])
     const [ bingoPage, setBingoPage ] = useState(1)
+    const [ bingoLimit, setBingoLimit ] = useState(15)
     const [ bingoLoading, setBingoLoading ] = useState(true)
+    const [ bingoHasMore, setBingoHasMore ] = useState(true)
+
+    const [ selectedCategory, setSelectedCategory ] = useState(0)
+    const [ sortBy, setSortBy ] = useState(0)
+    const [ searchBy, setSearchBy ] = useState('')
+    const [ searchTarget, setSearchTarget ] = useState('all')
+    const [ period, setPeriod ] = useState('all')
 
     async function fetchMainCategories() {
         let url = `${serverUrl}/api/categories?lang=${i18n.language}`
@@ -29,17 +47,19 @@ const InitialContentsProvider = (props) => {
     }
 
     useEffect(() => {
-        console.log('initial fetching...')
         fetchMainCategories()
-        fetchMainBingos(0, 0, '', 'all', 'all' , 1)
     }, [])
 
-    const fetchMainBingos = useCallback( async (categoryId, sortBy, searchBy, searchTarget, period, page) => {
+    useEffect(() => {
         setBingoLoading(true)
+        setBingoPage(1) // when either category or sortBy changed, need to sync bingoPage state
+        fetchMainBingos(1)
+    },[selectedCategory, sortBy])
 
+    const fetchMainBingos = useCallback( async (pageParam) => {
         let url = `${serverUrl}/api/bingos?lang=${i18n.language}`
 
-        url += `&category=${categoryId}`
+        url += `&category=${selectedCategory}`
 
         url += `&sortBy=${sortBy}`
 
@@ -61,28 +81,48 @@ const InitialContentsProvider = (props) => {
         else if(searchTarget === 'author') url += '&searchTarget=author'
         else url += ''
 
-        url += `&page=${bingoPage}&limit=9`
+        url += `&page=${pageParam}&limit=${bingoLimit}`
+
+        console.log(url)
 
         const res = await fetch(url)
         const data = await res.json()
 
-        if(page === 1){
+        console.log(data)
+        if(data.bingos.length === 0 || data.bingos.length < bingoLimit) {
+            setBingoHasMore(false)
+        } else {
+            setBingoHasMore(true)
+        }
+
+        if(pageParam === 1){
             setBingoList(data.bingos)
-            // setBingoPage(bingoPage + 1)
+            setBingoPage(pageParam + 1)
             setBingoLoading(false)
         } else {
             setBingoList([...bingoList, ...data.bingos])
-            // setBingoPage(bingoPage + 1)
+            setBingoPage(pageParam + 1)
             setBingoLoading(false)
         }
-    },[bingoList, bingoPage]) 
+    },[bingoList, selectedCategory, sortBy, searchBy, searchTarget, period]) 
 
     return (
         <InitialContents.Provider value={{ 
             categoryList: categoryList,
             bingoList: bingoList,
             bingoPage: bingoPage,
+            setBingoPage: setBingoPage,
             bingoLoading: bingoLoading,
+            bingoHasMore: bingoHasMore,
+
+            selectedCategory: selectedCategory,
+            setSelectedCategory: setSelectedCategory,
+            sortBy: sortBy,
+            setSortBy: setSortBy,
+            searchBy: searchBy,
+            searchTarget: searchTarget,
+            period: period,
+
             fetchMainBingos: fetchMainBingos
         }}>
             {props.children}

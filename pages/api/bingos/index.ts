@@ -52,12 +52,13 @@ export default async (req, res) => {
         }
 
         if(sortBy === 0){
-            query.append(` ORDER BY popularity DESC`)
+            query.append(` ORDER BY popularity DESC, id DESC`)
         } else if(sortBy === 1){
-            query.append(` ORDER BY createdAt DESC`)
+            query.append(` ORDER BY createdAt DESC, id DESC`)
         }
 
         query.append(escape` LIMIT ${(page - 1) * limit}, ${limit}`)
+        console.log(query)
 
         const bingos = await db.query(query)
 
