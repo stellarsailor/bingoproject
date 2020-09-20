@@ -20,15 +20,19 @@ message.config({
 })
 
 const ControllerPage = styled.div`
+    height: 50px;
     background-color: white;
     border: 1px solid lightgray;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 16px;
 `
 
 const MenuButton = styled.a`
-    font-size: 16px;
+    font-size: 18px;
     border-radius: 3px;
     background-color: ${props => props.selected ? 'var(--mono-1)' : 'white' };
-    height: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -213,60 +217,55 @@ export default function BingoDetail({ data }) {
             <Row style={{paddingTop: 50,width: '100%', maxWidth: height - 100}} >
                 <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{marginTop: 8, marginBottom: 8}}>
                     <ControllerPage>
-                        <div style={{width: '100%', padding: '1rem'}}>
-                            <CenteredRow style={{justifyContent: 'space-between'}}>
-                                <Link href="/">
-                                    <a style={{fontSize: '1.1rem'}}>
-                                        <LeftOutlined /> Back
-                                    </a>
-                                </Link>
-                                <CenteredRow>
-                                    <Tooltip title={"Setting Mark Style"}>
-                                        <MenuButton>
-                                            <CheckSquareOutlined /> 
-                                        </MenuButton>
-                                    </Tooltip>
-                                    <Tooltip title={"Report"}>
-                                        <MenuButton>
-                                            <AlertFilled /> 
-                                        </MenuButton>
-                                    </Tooltip>
-                                    <Tooltip title={"Share this Link"}>
-                                        <MenuButton>
-                                            <CopyToClipboard text={serverUrl + router.asPath}
-                                            onCopy={() => message.success('Link url is copied!')}>
-                                                <ShareAltOutlined /> 
-                                            </CopyToClipboard>
-                                        </MenuButton>
-                                    </Tooltip>
-                                    <Tooltip title={"Capture bingo screen"}>
-                                        <MenuButton onClick={() => takeScreenShot('captureWithoutResult')}>
-                                            <CameraFilled /> 
-                                        </MenuButton>
-                                    </Tooltip>
-                                    <Tooltip title={"Delete this bingo"}>
-                                        <MenuButton>
-                                            <Popconfirm
-                                                title={
-                                                    <div> 
-                                                        <Input.Password placeholder="input password" onChange={(e) => setPasswordInput(e.target.value)} style={{width: 200}} />
-                                                    </div>
-                                                }
-                                                onConfirm={() => deleteBingo(passwordInput)}
-                                                onCancel={() => console.log('cancelled')}
-                                                okText="Delete"
-                                                cancelText="Cancel"
-                                                icon={<LockOutlined style={{fontSize: 20}} />}
-                                            
-                                            >
-                                                <DeleteOutlined /> 
-                                            </Popconfirm>
-                                        </MenuButton>
-                                    </Tooltip>
-                                </CenteredRow>
+                            <Link href="/">
+                                <a style={{fontSize: '1.1rem'}}>
+                                    <LeftOutlined /> Back
+                                </a>
+                            </Link>
+                            <CenteredRow>
+                                <Tooltip title={"Setting Mark Style"}>
+                                    <MenuButton>
+                                        <CheckSquareOutlined /> 
+                                    </MenuButton>
+                                </Tooltip>
+                                <Tooltip title={"Report"}>
+                                    <MenuButton>
+                                        <AlertFilled /> 
+                                    </MenuButton>
+                                </Tooltip>
+                                <Tooltip title={"Share this Link"}>
+                                    <MenuButton>
+                                        <CopyToClipboard text={serverUrl + router.asPath}
+                                        onCopy={() => message.success('Link url is copied!')}>
+                                            <ShareAltOutlined /> 
+                                        </CopyToClipboard>
+                                    </MenuButton>
+                                </Tooltip>
+                                <Tooltip title={"Capture bingo screen"}>
+                                    <MenuButton onClick={() => takeScreenShot('captureWithoutResult')}>
+                                        <CameraFilled /> 
+                                    </MenuButton>
+                                </Tooltip>
+                                <Tooltip title={"Delete this bingo"}>
+                                    <MenuButton>
+                                        <Popconfirm
+                                            title={
+                                                <div> 
+                                                    <Input.Password placeholder="input password" onChange={(e) => setPasswordInput(e.target.value)} style={{width: 200}} />
+                                                </div>
+                                            }
+                                            onConfirm={() => deleteBingo(passwordInput)}
+                                            onCancel={() => console.log('cancelled')}
+                                            okText="Delete"
+                                            cancelText="Cancel"
+                                            icon={<LockOutlined style={{fontSize: 20}} />}
+                                        
+                                        >
+                                            <DeleteOutlined /> 
+                                        </Popconfirm>
+                                    </MenuButton>
+                                </Tooltip>
                             </CenteredRow>
-                        </div>
-
                     </ControllerPage>
                 </Col>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24} >
