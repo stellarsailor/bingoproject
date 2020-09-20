@@ -25,7 +25,7 @@ const TabLeftTitle = styled.div`
 
 export default function List({ }) {
     const { t, i18n } = useTranslation()
-    const { bingoLoading, bingoList, fetchMainBingos } = useContext(InitialContents)
+    // const { bingoLoading, bingoList, fetchMainBingos } = useContext(InitialContents)
     const router = useRouter()
     const isMobile = useIsMobile()
 
@@ -33,10 +33,56 @@ export default function List({ }) {
     const [ period, setPeriod ] = useState('all')
     const [ searchTarget, setSearchTarget ] = useState('title')
 
+    const [ bingoList, setBingoList ] = useState([])
+    const [ bingoLoading, setBingoLoading ] = useState(true)
+    const [ bingoPage, setBingoPage ] = useState(1)
+
     useEffect(() => {
-        // console.log(router.query.search)
         fetchMainBingos(0, sortBy, router.query.search.toString(), searchTarget, period, 1)
     },[sortBy, router.query.search, period, searchTarget])
+
+    const fetchMainBingos = useCallback( async (categoryId, sortBy, searchBy, searchTarget, period, page) => {
+        setBingoLoading(true)
+
+        let url = `${serverUrl}/api/bingos?lang=${i18n.language}`
+
+        url += `&category=${categoryId}`
+
+        url += `&sortBy=${sortBy}`
+
+        if(searchBy === '') url += ''
+        else {
+            let searchByChunks = searchBy.split(' ')
+            searchByChunks.map(v => url += `&searchBy=${v}`)
+        }
+
+        if(period === 'all') url += ''
+        else if(period === 'month') url += '&period=month'
+        else if(period === 'week') url += '&period=week'
+        else if(period === 'today') url += '&period=today'
+        else url += ''
+        
+        if(searchTarget === 'all') url += ''
+        else if(searchTarget === 'title') url += '&searchTarget=title'
+        else if(searchTarget === 'elements') url += '&searchTarget=elements'
+        else if(searchTarget === 'author') url += '&searchTarget=author'
+        else url += ''
+
+        url += `&page=${bingoPage}&limit=9`
+
+        const res = await fetch(url)
+        const data = await res.json()
+
+        if(page === 1){
+            setBingoList(data.bingos)
+            // setBingoPage(bingoPage + 1)
+            setBingoLoading(false)
+        } else {
+            setBingoList([...bingoList, ...data.bingos])
+            // setBingoPage(bingoPage + 1)
+            setBingoLoading(false)
+        }
+    },[bingoList, bingoPage]) 
 
     return(
         <>
