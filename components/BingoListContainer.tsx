@@ -53,7 +53,7 @@ export default function BingoListContainer( props ){
     const { bingoList, bingoPage, bingoLoading, bingoHasMore, fetchMainBingos, categoryList } = useContext(InitialContents)
 
     const skeletonGroup = () => (
-        <>
+        <div style={{width: '100%'}}>
             <BingoPane>
                 <Skeleton.Avatar active={true} size={80} shape="square" style={{marginRight: '1rem'}} />
                 <Skeleton paragraph={{ rows: 1 }} />
@@ -66,7 +66,7 @@ export default function BingoListContainer( props ){
                 <Skeleton.Avatar active={true} size={80} shape="square" style={{marginRight: '1rem'}} />
                 <Skeleton paragraph={{ rows: 1 }} />
             </BingoPane>
-        </>
+        </div>
     )
 
     const endMessage = () => (
@@ -104,29 +104,27 @@ export default function BingoListContainer( props ){
                     loader={skeletonGroup()}
                     endMessage={endMessage()}
                     >
-                        <div>
-                            { bingoList.map( (v, index) => (
-                                <Link href={`/bingo/${v.id}`} key={index} ><a>
-                                    <BingoPane>
-                                        <SquareBingoIcon bgMainColor={v.bgMainColor} bgSubColor={v.bgSubColor} fontColor={pickTextColorBasedOnBgColor(v.bgMainColor, '#ffffff','#000000')}>
-                                            {v.size} X {v.size}
-                                        </SquareBingoIcon>
-                                        <BingoPaneText>
-                                            <div>
-                                                <span style={{fontWeight: 'bold', fontSize: '1rem', marginRight: '1rem'}}>
-                                                    {v.title} <span style={{color: 'dodgerblue', marginLeft: 10, fontSize: 14}}><BarChartOutlined /> {numberToK(v.popularity)}</span>
-                                                </span>
-                                            </div> 
-                                            <span style={{color: 'var(--mono-4)'}}>{v.description}</span>
-                                            <div style={{overflow: 'hidden', color: 'var(--mono-4)', fontSize: '0.8rem'}}>
-                                                {JSON.parse(v.elements).sort(() => Math.random() - Math.random()).slice(0, 2).map((v, index) => 
-                                                    <span key={index}> #{v} </span> )}
-                                            </div>
-                                        </BingoPaneText>
-                                    </BingoPane>
-                                </a></Link>
-                            )) }
-                        </div>
+                        { bingoList.map( (v, index) => (
+                            <Link href={`/bingo/${v.id}`} key={index} ><a>
+                                <BingoPane>
+                                    <SquareBingoIcon bgMainColor={v.bgMainColor} bgSubColor={v.bgSubColor} fontColor={pickTextColorBasedOnBgColor(v.bgMainColor, '#ffffff','#000000')}>
+                                        {v.size} X {v.size}
+                                    </SquareBingoIcon>
+                                    <BingoPaneText>
+                                        <div>
+                                            <span style={{fontWeight: 'bold', fontSize: '1rem', marginRight: '1rem'}}>
+                                                {v.title} <span style={{color: 'dodgerblue', marginLeft: 10, fontSize: 14}}><BarChartOutlined /> {numberToK(v.popularity)}</span>
+                                            </span>
+                                        </div> 
+                                        <span style={{color: 'var(--mono-4)'}}>{v.description}</span>
+                                        <div style={{overflow: 'hidden', color: 'var(--mono-4)', fontSize: '0.8rem'}}>
+                                            {JSON.parse(v.elements).sort(() => Math.random() - Math.random()).slice(0, 2).map((v, index) => 
+                                                <span key={index}> #{v} </span> )}
+                                        </div>
+                                    </BingoPaneText>
+                                </BingoPane>
+                            </a></Link>
+                        )) }
                     </InfiniteScroll>
             }
         </div>

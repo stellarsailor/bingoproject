@@ -4,12 +4,12 @@ import useWindowSize from './useWindowSize'
 export default function useIsMobile() {
     const [ isMobile, setIsMobile ] = useState(false)
 
-    const [ width, height ] = useWindowSize()
+    // const [ width, height ] = useWindowSize()
 
     useEffect(() => {
-        if(width < 600) setIsMobile(true)
+        if(window.innerWidth < 600) setIsMobile(true)
         else setIsMobile(false)
-    },[width])
+    },[])
     
     return isMobile;
 }

@@ -118,8 +118,6 @@ export default function Home({ }) {
                                     <ThunderboltFilled style={{marginRight: 5}} />{t("FILTER_RECENT")}
                                 </FilterButton>
                             </a>
-                        {/* <Button onClick={() => endOfScroll()}>next</Button> */}
-
                         </CenteredRow>
                         <CenteredRow>
                             <RefreshButton onClick={() => {setBingoPage(1); fetchMainBingos(1)}} />

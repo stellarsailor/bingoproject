@@ -114,7 +114,7 @@ export default function NavBar({ }) {
                         />
                         <CenteredRow>
                             <Dropdown overlay={langMenu} placement="bottomRight" trigger={['click']} arrow>
-                                <GlobalOutlined style={{fontSize: '1.2rem', color: 'gray', marginRight: isMobile ? 8 : 16}} />
+                                <GlobalOutlined style={{fontSize: '1.2rem', color: 'gray', marginRight: isMobile ? 12 : 16}} />
                             </Dropdown>
                             <Dropdown overlay={hamburgerMenu} placement="bottomRight" trigger={['click']} arrow>
                                 <MenuOutlined style={{fontSize: '1.3rem', color: 'gray'}} />
