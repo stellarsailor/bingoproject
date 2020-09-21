@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { Link, useTranslation } from '../i18n'
 import { Button, Row } from 'antd';
 import { CenteredRow, CenteredCol } from '../components/sub/styled';
-import Layout from '../components/Layout';
 
 const MainContent = styled.div`
     display: flex;
@@ -38,7 +37,7 @@ const MainButton = styled(Button)`
 export default function About() {
 
     return (
-        <Layout>
+        <>
             <Row style={{paddingTop: 50}}>
                 <CenteredCol>
                     <MainText>MAKE</MainText>
@@ -58,6 +57,6 @@ export default function About() {
                     </Link>
                 </DisplayRow>
             </Row>
-        </Layout>
+        </>
     )
 }

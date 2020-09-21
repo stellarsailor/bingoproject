@@ -22,7 +22,6 @@ import { InitialContents } from '../../store/InitialContentsProvider';
 import { LeftOutlined, TableOutlined } from '../../assets/icons';
 import BingoRenderer from '../../components/BingoRenderer';
 import { CenteredCol, CenteredRow } from '../../components/sub/styled';
-import Layout from '../../components/Layout';
 
 const ControllerPage = styled.div`
     background-color: white;
@@ -176,7 +175,7 @@ export default function BingoCreate({ data, query, params }) {
     },[bingoPassword, bingoTitle, bingoDescription, bingoAuthor, bingoCategory, bingoSize, bingoArr, bingoBgMainColor, bingoBgSubColor, bingoFontColor, bingoCellColor, bingoLineColor, bingoLinePixel, bingoAchievement])
 
     return(
-        <Layout>
+        <>
             <Row style={{paddingTop: 50}}>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{marginTop: 8, marginBottom: 8}}>
                     <ControllerPage>
@@ -387,6 +386,6 @@ export default function BingoCreate({ data, query, params }) {
                     </CenteredCol>
                 </Col>
             </Row>
-        </Layout>
+        </>
     )
 }

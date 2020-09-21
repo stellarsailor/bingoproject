@@ -9,7 +9,6 @@ import { useRouter } from 'next/router';
 import BingoListContainer from '../../components/BingoListContainer';
 import { CenteredCol } from '../../components/sub/styled';
 import useIsMobile from '../../logics/useIsMobile';
-import Layout from '../../components/Layout';
 
 const FilteringTab = styled.div`
     margin-top: ${(props) => props.isMobile ? '4px' : '8px'};
@@ -77,7 +76,7 @@ export default function List({ }) {
     },[bingoList, bingoPage]) 
 
     return(
-        <Layout>
+        <>
             <Row style={{display: 'flex'}}>
                 <BackTop />
                     <Col xs={24} sm={8} md={8} lg={8} xl={8} style={{paddingRight: isMobile ? 0 : 8, zIndex: 100}}>
@@ -129,7 +128,7 @@ export default function List({ }) {
                     <BingoListContainer bingoLoading={bingoLoading} bingoList={bingoList} />
                 </Col>
             </Row>
-        </Layout>
+        </>
     )
 }
 

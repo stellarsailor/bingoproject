@@ -10,7 +10,6 @@ import { ArrowRightOutlined, FireFilled, ThunderboltFilled, MoreOutlined, RedoOu
 import { CenteredRow, CenteredCol } from '../components/sub/styled'
 import BingoListContainer from '../components/BingoListContainer';
 import useIsMobile from '../logics/useIsMobile';
-import Layout from '../components/Layout';
 
 const CategoryRenderer = styled.div`
     display: flex;
@@ -99,7 +98,7 @@ export default function Home({ }) {
     // }
 
     return (
-        <Layout>
+        <>
             <Row style={{display: 'flex'}}>
                 <BackTop />
                 <Col xs={24} sm={16} md={16} lg={16} xl={16}>
@@ -213,6 +212,6 @@ export default function Home({ }) {
                     </Sticky>
                 </Col>
             </Row>
-        </Layout>
+        </>
     )
 }

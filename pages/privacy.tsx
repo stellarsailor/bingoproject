@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { Button, Row } from 'antd';
-import Layout from '../components/Layout';
 
 const MainContent = styled.div`
     display: flex;
@@ -36,10 +35,10 @@ const MainButton = styled(Button)`
 export default function Privacy() {
 
     return (
-        <Layout>
+        <>
             <Row style={{paddingTop: 50}}>
                 Privacy Policy
             </Row>
-        </Layout>
+        </>
     )
 }

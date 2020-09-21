@@ -14,7 +14,6 @@ import { CenteredCol, CenteredRow } from '../../components/sub/styled'
 import { ShareAltOutlined, LeftOutlined, AlertFilled, CameraFilled, CheckSquareOutlined, DeleteOutlined, LockOutlined } from '../../assets/icons'
 import useIsMobile from '../../logics/useIsMobile'
 import useWindowSize from '../../logics/useWindowSize'
-import Layout from '../../components/Layout'
 
 message.config({
     top: 58,
@@ -214,7 +213,7 @@ export default function BingoDetail({ data }) {
     },[selectedIndex])
 
     return(
-        <Layout>
+        <>
 
             <CenteredRow>
                 <Row style={{paddingTop: 50,width: '100%', maxWidth: height - 100}} >
@@ -318,7 +317,7 @@ export default function BingoDetail({ data }) {
                     </Col>
                 </Row>
             </CenteredRow>
-        </Layout>
+        </>
     )
 }
 
