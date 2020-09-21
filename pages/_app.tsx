@@ -4,7 +4,6 @@ import '../styles/style.css'
 import { appWithTranslation } from '../i18n'
 
 import InitialContentsProvider from '../store/InitialContentsProvider'
-import Layout from "../components/Layout";
 
 function MyApp({ Component, pageProps }: AppProps) {
     // useEffect(() => {
@@ -13,9 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     return (
         <InitialContentsProvider>
-            <Layout>
-                <Component {...pageProps} />
-            </Layout>
+            <Component {...pageProps} />
         </InitialContentsProvider>
     )
 }

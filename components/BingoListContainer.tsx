@@ -1,11 +1,9 @@
 import styled from 'styled-components'
-import Modal from 'antd/lib/modal/Modal'
-import { useState, useCallback, useEffect, useRef, useContext } from 'react'
-import { Input, Skeleton, Empty, Button } from 'antd'
-import { CenteredRow, CenteredCol } from './sub/styled'
+import { useContext } from 'react'
+import { Skeleton, Empty, Button } from 'antd'
 import pickTextColorBasedOnBgColor from '../logics/pickTextColorBasedOnBgColor'
 import { Link, useTranslation } from '../i18n'
-import { LikeOutlined, BarChartOutlined } from '@ant-design/icons'
+import { BarChartOutlined } from '../assets/icons'
 import numberToK from '../logics/numberToK'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { InitialContents } from '../store/InitialContentsProvider'
@@ -105,25 +103,27 @@ export default function BingoListContainer( props ){
                     endMessage={endMessage()}
                     >
                         { bingoList.map( (v, index) => (
-                            <Link href={`/bingo/${v.id}`} key={index} ><a>
-                                <BingoPane>
-                                    <SquareBingoIcon bgMainColor={v.bgMainColor} bgSubColor={v.bgSubColor} fontColor={pickTextColorBasedOnBgColor(v.bgMainColor, '#ffffff','#000000')}>
-                                        {v.size} X {v.size}
-                                    </SquareBingoIcon>
-                                    <BingoPaneText>
-                                        <div>
-                                            <span style={{fontWeight: 'bold', fontSize: '1rem', marginRight: '1rem'}}>
-                                                {v.title} <span style={{color: 'dodgerblue', marginLeft: 10, fontSize: 14}}><BarChartOutlined /> {numberToK(v.popularity)}</span>
-                                            </span>
-                                        </div> 
-                                        <span style={{color: 'var(--mono-4)'}}>{v.description}</span>
-                                        <div style={{overflow: 'hidden', color: 'var(--mono-4)', fontSize: '0.8rem'}}>
-                                            {JSON.parse(v.elements).sort(() => Math.random() - Math.random()).slice(0, 2).map((v, index) => 
-                                                <span key={index}> #{v} </span> )}
-                                        </div>
-                                    </BingoPaneText>
-                                </BingoPane>
-                            </a></Link>
+                            <Link href={`/bingo/${encodeURIComponent(v.id)}`} key={index} >
+                                <a>
+                                    <BingoPane>
+                                        <SquareBingoIcon bgMainColor={v.bgMainColor} bgSubColor={v.bgSubColor} fontColor={pickTextColorBasedOnBgColor(v.bgMainColor, '#ffffff','#000000')}>
+                                            {v.size} X {v.size}
+                                        </SquareBingoIcon>
+                                        <BingoPaneText>
+                                            <div>
+                                                <span style={{fontWeight: 'bold', fontSize: '1rem', marginRight: '1rem'}}>
+                                                    {v.title} <span style={{color: 'dodgerblue', marginLeft: 10, fontSize: 14}}><BarChartOutlined /> {numberToK(v.popularity)}</span>
+                                                </span>
+                                            </div> 
+                                            <span style={{color: 'var(--mono-4)'}}>{v.description}</span>
+                                            <div style={{overflow: 'hidden', color: 'var(--mono-4)', fontSize: '0.8rem'}}>
+                                                {JSON.parse(v.elements).sort(() => Math.random() - Math.random()).slice(0, 2).map((v, index) => 
+                                                    <span key={index}> #{v} </span> )}
+                                            </div>
+                                        </BingoPaneText>
+                                    </BingoPane>
+                                </a>
+                            </Link>
                         )) }
                     </InfiniteScroll>
             }

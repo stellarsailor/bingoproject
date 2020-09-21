@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback, useContext, useRef } from 'react'
-import Link from 'next/link'
+import React, { useState, useEffect, useCallback, useContext } from 'react'
+import { Link } from '../../i18n'
 import styled from 'styled-components'
-import { SwatchesPicker } from 'react-color';
-import { Row, Col, BackTop, Input, Checkbox, Radio, Select, Modal, InputNumber, Button, Tooltip, message, Slider } from 'antd';
+// import { SwatchesPicker } from 'react-color';
+import SwatchesPicker  from 'react-color/lib/Swatches'
+import { Row, Col, Input, Radio, Select, Modal, InputNumber, Button, message, Slider } from 'antd';
 const { Option } = Select;
 const marks = {
     0: '0',
@@ -17,11 +18,11 @@ const marks = {
 
 import { serverUrl } from '../../lib/serverUrl'
 import { useTranslation, Router } from '../../i18n';
-import bingos from '../api/bingos';
 import { InitialContents } from '../../store/InitialContentsProvider';
-import { ArrowLeftOutlined, LeftOutlined, LockOutlined, GlobalOutlined, TableOutlined } from '@ant-design/icons';
+import { LeftOutlined, TableOutlined } from '../../assets/icons';
 import BingoRenderer from '../../components/BingoRenderer';
 import { CenteredCol, CenteredRow } from '../../components/sub/styled';
+import Layout from '../../components/Layout';
 
 const ControllerPage = styled.div`
     background-color: white;
@@ -175,7 +176,7 @@ export default function BingoCreate({ data, query, params }) {
     },[bingoPassword, bingoTitle, bingoDescription, bingoAuthor, bingoCategory, bingoSize, bingoArr, bingoBgMainColor, bingoBgSubColor, bingoFontColor, bingoCellColor, bingoLineColor, bingoLinePixel, bingoAchievement])
 
     return(
-        <>
+        <Layout>
             <Row style={{paddingTop: 50}}>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{marginTop: 8, marginBottom: 8}}>
                     <ControllerPage>
@@ -386,6 +387,6 @@ export default function BingoCreate({ data, query, params }) {
                     </CenteredCol>
                 </Col>
             </Row>
-        </>
+        </Layout>
     )
 }

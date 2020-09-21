@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Link, useTranslation } from '../i18n'
 import { Button, Row } from 'antd';
+import Layout from '../components/Layout';
 
 const MainContent = styled.div`
     display: flex;
@@ -36,10 +36,10 @@ const MainButton = styled(Button)`
 export default function Terms() {
 
     return (
-        <>
+        <Layout>
             <Row style={{paddingTop: 50}}>
                 Terms of Service
             </Row>
-        </>
+        </Layout>
     )
 }

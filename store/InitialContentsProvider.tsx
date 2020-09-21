@@ -88,7 +88,7 @@ const InitialContentsProvider = (props) => {
         const res = await fetch(url)
         const data = await res.json()
 
-        console.log(data)
+        // console.log(data)
         if(data.bingos.length === 0 || data.bingos.length < bingoLimit) {
             setBingoHasMore(false)
         } else {

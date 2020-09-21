@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { useCookies } from 'react-cookie'
-import { Row, Col, BackTop, Button, Spin, Popconfirm, Input, message, Tooltip } from 'antd'
+import { Row, Col, Button, Popconfirm, Input, message, Tooltip } from 'antd'
 import { Link, useTranslation } from '../../i18n'
 import { Element , scroller } from 'react-scroll'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -11,9 +11,10 @@ import domtoimage from 'dom-to-image'
 import { serverUrl } from '../../lib/serverUrl'
 import BingoRenderer from '../../components/BingoRenderer'
 import { CenteredCol, CenteredRow } from '../../components/sub/styled'
-import { ShareAltOutlined, LeftOutlined, LikeFilled, DislikeFilled, AlertFilled, CameraFilled, CheckSquareOutlined, DeleteOutlined, LockOutlined } from '@ant-design/icons'
+import { ShareAltOutlined, LeftOutlined, AlertFilled, CameraFilled, CheckSquareOutlined, DeleteOutlined, LockOutlined } from '../../assets/icons'
 import useIsMobile from '../../logics/useIsMobile'
 import useWindowSize from '../../logics/useWindowSize'
+import Layout from '../../components/Layout'
 
 message.config({
     top: 58,
@@ -213,108 +214,111 @@ export default function BingoDetail({ data }) {
     },[selectedIndex])
 
     return(
-        <CenteredRow>
-            <Row style={{paddingTop: 50,width: '100%', maxWidth: height - 100}} >
-                <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{marginTop: 8, marginBottom: 8}}>
-                    <ControllerPage>
-                            <Link href="/">
-                                <a style={{fontSize: '1.1rem'}}>
-                                    <LeftOutlined /> Back
-                                </a>
-                            </Link>
-                            <CenteredRow>
-                                <Tooltip title={"Setting Mark Style"}>
-                                    <MenuButton>
-                                        <CheckSquareOutlined /> 
-                                    </MenuButton>
-                                </Tooltip>
-                                <Tooltip title={"Report"}>
-                                    <MenuButton>
-                                        <AlertFilled /> 
-                                    </MenuButton>
-                                </Tooltip>
-                                <Tooltip title={"Share this Link"}>
-                                    <MenuButton>
-                                        <CopyToClipboard text={serverUrl + router.asPath}
-                                        onCopy={() => message.success('Link url is copied!')}>
-                                            <ShareAltOutlined /> 
-                                        </CopyToClipboard>
-                                    </MenuButton>
-                                </Tooltip>
-                                <Tooltip title={"Capture bingo screen"}>
-                                    <MenuButton onClick={() => takeScreenShot('captureWithoutResult')}>
-                                        <CameraFilled /> 
-                                    </MenuButton>
-                                </Tooltip>
-                                <Tooltip title={"Delete this bingo"}>
-                                    <MenuButton>
-                                        <Popconfirm
-                                            title={
-                                                <div> 
-                                                    <Input.Password placeholder="input password" onChange={(e) => setPasswordInput(e.target.value)} style={{width: 200}} />
-                                                </div>
-                                            }
-                                            onConfirm={() => deleteBingo(passwordInput)}
-                                            onCancel={() => console.log('cancelled')}
-                                            okText="Delete"
-                                            cancelText="Cancel"
-                                            icon={<LockOutlined style={{fontSize: 20}} />}
-                                        
-                                        >
-                                            <DeleteOutlined /> 
-                                        </Popconfirm>
-                                    </MenuButton>
-                                </Tooltip>
-                            </CenteredRow>
-                    </ControllerPage>
-                </Col>
-                <Col xs={24} sm={24} md={24} lg={24} xl={24} >
-                    {/* <Checkbox onChange={e => console.log(e)}>NSFW</Checkbox> */}
-                    <CenteredCol>
-                        <BingoRenderer 
-                        title={bingo.title}
-                        description={bingo.description}
-                        author={bingo.author}
-                        size={bingo.size}
-                        elements={JSON.parse(bingo.elements)}
-                        elementOnClickEvent={(i) => addIndexToSelected(i)}
-                        selectedIndex={selectedIndex}
-                        bgMainColor={bingo.bgMainColor}
-                        bgSubColor={bingo.bgSubColor}
-                        fontColor={bingo.fontColor}
-                        cellColor={bingo.cellColor}
-                        lineColor={bingo.lineColor}
-                        linePixel={bingo.linePixel}
-                        ipAddress={bingo.ipAddress}
+        <Layout>
 
-                        completedBingoLines={completedBingoLines}
-                        resultString={JSON.parse(bingo.achievements)[completedBingoLines]}
-                        resultStatus={resultStatus}
-                        resultCount={resultCount}
-                        resultPercent={resultPercent}
+            <CenteredRow>
+                <Row style={{paddingTop: 50,width: '100%', maxWidth: height - 100}} >
+                    <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{marginTop: 8, marginBottom: 8}}>
+                        <ControllerPage>
+                                <Link href="/">
+                                    <a style={{fontSize: '1.1rem'}}>
+                                        <LeftOutlined /> Back
+                                    </a>
+                                </Link>
+                                <CenteredRow>
+                                    <Tooltip title={"Setting Mark Style"}>
+                                        <MenuButton>
+                                            <CheckSquareOutlined /> 
+                                        </MenuButton>
+                                    </Tooltip>
+                                    <Tooltip title={"Report"}>
+                                        <MenuButton>
+                                            <AlertFilled /> 
+                                        </MenuButton>
+                                    </Tooltip>
+                                    <Tooltip title={"Share this Link"}>
+                                        <MenuButton>
+                                            <CopyToClipboard text={serverUrl + router.asPath}
+                                            onCopy={() => message.success('Link url is copied!')}>
+                                                <ShareAltOutlined /> 
+                                            </CopyToClipboard>
+                                        </MenuButton>
+                                    </Tooltip>
+                                    <Tooltip title={"Capture bingo screen"}>
+                                        <MenuButton onClick={() => takeScreenShot('captureWithoutResult')}>
+                                            <CameraFilled /> 
+                                        </MenuButton>
+                                    </Tooltip>
+                                    <Tooltip title={"Delete this bingo"}>
+                                        <MenuButton>
+                                            <Popconfirm
+                                                title={
+                                                    <div> 
+                                                        <Input.Password placeholder="input password" onChange={(e) => setPasswordInput(e.target.value)} style={{width: 200}} />
+                                                    </div>
+                                                }
+                                                onConfirm={() => deleteBingo(passwordInput)}
+                                                onCancel={() => console.log('cancelled')}
+                                                okText="Delete"
+                                                cancelText="Cancel"
+                                                icon={<LockOutlined style={{fontSize: 20}} />}
+                                            
+                                            >
+                                                <DeleteOutlined /> 
+                                            </Popconfirm>
+                                        </MenuButton>
+                                    </Tooltip>
+                                </CenteredRow>
+                        </ControllerPage>
+                    </Col>
+                    <Col xs={24} sm={24} md={24} lg={24} xl={24} >
+                        {/* <Checkbox onChange={e => console.log(e)}>NSFW</Checkbox> */}
+                        <CenteredCol>
+                            <BingoRenderer 
+                            title={bingo.title}
+                            description={bingo.description}
+                            author={bingo.author}
+                            size={bingo.size}
+                            elements={JSON.parse(bingo.elements)}
+                            elementOnClickEvent={(i) => addIndexToSelected(i)}
+                            selectedIndex={selectedIndex}
+                            bgMainColor={bingo.bgMainColor}
+                            bgSubColor={bingo.bgSubColor}
+                            fontColor={bingo.fontColor}
+                            cellColor={bingo.cellColor}
+                            lineColor={bingo.lineColor}
+                            linePixel={bingo.linePixel}
+                            ipAddress={bingo.ipAddress}
 
-                        takeScreenShot={takeScreenShot}
-                        /> 
-                    </CenteredCol>
-                    <CenteredCol style={{margin: '1.5rem 0px'}}>
-                        {
-                            resultStatus !== 'idle' ? null
-                            :
-                            <Button 
-                            type="primary" 
-                            onClick={() => submitIndexToFlag()} style={{width: 300, height: 45, borderRadius: 8}}
-                            disabled={resultStatus !== 'idle'}
-                            >
-                                제출 및 통계 확인
-                            </Button>
-                        }
-                    </CenteredCol>
-                    <Element name="scroll-to-element">
-                    
-                    </Element>
-                </Col>
-            </Row>
-        </CenteredRow>
+                            completedBingoLines={completedBingoLines}
+                            resultString={JSON.parse(bingo.achievements)[completedBingoLines]}
+                            resultStatus={resultStatus}
+                            resultCount={resultCount}
+                            resultPercent={resultPercent}
+
+                            takeScreenShot={takeScreenShot}
+                            /> 
+                        </CenteredCol>
+                        <CenteredCol style={{margin: '1.5rem 0px'}}>
+                            {
+                                resultStatus !== 'idle' ? null
+                                :
+                                <Button 
+                                type="primary" 
+                                onClick={() => submitIndexToFlag()} style={{width: 300, height: 45, borderRadius: 8}}
+                                disabled={resultStatus !== 'idle'}
+                                >
+                                    제출 및 통계 확인
+                                </Button>
+                            }
+                        </CenteredCol>
+                        <Element name="scroll-to-element">
+                        
+                        </Element>
+                    </Col>
+                </Row>
+            </CenteredRow>
+        </Layout>
     )
 }
 

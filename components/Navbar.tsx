@@ -2,7 +2,7 @@
 import styled from 'styled-components'
 import { Input, Row, Col, Popover, Button, message, Modal, Dropdown, Menu } from 'antd';
 import { Link, useTranslation, Router } from '../i18n'
-import { MenuOutlined, SearchOutlined, ExclamationCircleOutlined, DownOutlined, BehanceOutlined, GlobalOutlined } from '@ant-design/icons';
+import { MenuOutlined, GlobalOutlined } from '../assets/icons';
 import { useEffect, useState, useCallback, useContext } from 'react';
 import { InitialContents } from '../store/InitialContentsProvider';
 import { CenteredRow } from './sub/styled';

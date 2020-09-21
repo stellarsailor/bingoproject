@@ -1,19 +1,16 @@
 import styled from 'styled-components';
-import { Menu, Row, Col, BackTop } from 'antd';
+import { Row, Col, BackTop } from 'antd';
 import { Link, useTranslation } from '../i18n'
-import { useEffect, useState, useContext, useCallback } from 'react';
+import { useState, useContext } from 'react';
 import Sticky from 'react-sticky-el';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { InitialContents } from '../store/InitialContentsProvider'
 
-import { ArrowRightOutlined, PlusOutlined, FireOutlined, ThunderboltOutlined, FireFilled, ThunderboltFilled, MoreOutlined, RedoOutlined, LikeOutlined, BarChartOutlined } from '@ant-design/icons';
-import { serverUrl } from '../lib/serverUrl';
+import { ArrowRightOutlined, FireFilled, ThunderboltFilled, MoreOutlined, RedoOutlined } from '../assets/icons';
 import { CenteredRow, CenteredCol } from '../components/sub/styled'
-import pickTextColorBasedOnBgColor from '../logics/pickTextColorBasedOnBgColor';
-import dynamicSort from '../logics/dynamicSort'
 import BingoListContainer from '../components/BingoListContainer';
 import useIsMobile from '../logics/useIsMobile';
+import Layout from '../components/Layout';
 
 const CategoryRenderer = styled.div`
     display: flex;
@@ -102,7 +99,7 @@ export default function Home({ }) {
     // }
 
     return (
-        <>
+        <Layout>
             <Row style={{display: 'flex'}}>
                 <BackTop />
                 <Col xs={24} sm={16} md={16} lg={16} xl={16}>
@@ -216,6 +213,6 @@ export default function Home({ }) {
                     </Sticky>
                 </Col>
             </Row>
-        </>
+        </Layout>
     )
 }
