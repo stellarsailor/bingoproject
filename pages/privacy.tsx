@@ -1,44 +1,46 @@
 import styled from 'styled-components';
-import { Button, Row } from 'antd';
+import { useTranslation } from '../i18n';
+const ReactMarkdown = require('react-markdown')
 
-const MainContent = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-`
-
-const MainText = styled.div`
-    font-family: 'Gothic A1', sans-serif;
-    font-size: 9rem;
-    font-weight: 900;
-    letter-spacing: -5px;
-    background: -webkit-linear-gradient(45deg, #007CF0, #00DFD8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-`
-
-const DisplayRow = styled.div`
-    display: flex;
-    flex-direction: row;
-`
-
-const MainButton = styled(Button)`
+const Container = styled.div`
+    margin-top: 66px;
+    border-radius: 3px;
+    background-color: white;
     border: 1px solid lightgray;
-    border-radius: 5px;
-    width: 200px;
-    height: 50px;
-    margin: 0px 1rem;
-    color: ${props => props.theme === 'white' ? 'black' : 'white'};
-    background-color: ${props => props.theme === 'black' ? 'black' : 'white'};
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
 `
+
+const input = {
+en:
+`
+# Privacy Policy
+
+본 약관은 회원님의 SelfBingo에 이용에 적용되며, 아래 설명된 SelfBingo에 서비스에 관한 정보를 제공합니다. 
+
+회원님이 SelfBingo를 이용하면 회원님은 본 약관에 동의하는 것입니다.
+    
+`,
+ko: 
+`
+# 개인정보처리방침
+
+본 약관은 회원님의 SelfBingo에 이용에 적용되며, 아래 설명된 SelfBingo에 서비스에 관한 정보를 제공합니다. 
+
+회원님이 SelfBingo를 이용하면 회원님은 본 약관에 동의하는 것입니다.
+    
+`,
+}
+
 export default function Privacy() {
+    const { t, i18n } = useTranslation()
 
     return (
         <>
-            <Row style={{paddingTop: 50}}>
-                Privacy Policy
-            </Row>
+            <Container>
+                <ReactMarkdown source={input[i18n.language] === undefined ? input['en'] : input[i18n.language] } />
+            </Container>
         </>
     )
 }

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { useContext } from 'react'
 import { Skeleton, Empty, Button } from 'antd'
 import pickTextColorBasedOnBgColor from '../logics/pickTextColorBasedOnBgColor'
-import { Link, useTranslation } from '../i18n'
+import { Link, useTranslation, Router } from '../i18n'
 import { BarChartOutlined } from '../assets/icons'
 import numberToK from '../logics/numberToK'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -47,8 +47,7 @@ const SquareBingoIcon = styled.div`
 
 export default function BingoListContainer( props ){
     const { t, i18n } = useTranslation()
-    const { selectedCategory, sortBy } = props
-    const { bingoList, bingoPage, bingoLoading, bingoHasMore, fetchMainBingos, categoryList } = useContext(InitialContents)
+    const { bingoList, bingoPage, bingoLoading, bingoHasMore, fetchMainBingos } = useContext(InitialContents)
 
     const skeletonGroup = () => (
         <div style={{width: '100%'}}>
@@ -103,8 +102,8 @@ export default function BingoListContainer( props ){
                     endMessage={endMessage()}
                     >
                         { bingoList.map( (v, index) => (
-                            <Link href={`/bingo/${encodeURIComponent(v.id)}`} key={index} >
-                                <a>
+                            // <Link href={`/bingo/${encodeURIComponent(v.id)}`} key={index} >
+                                <a onClick={() => Router.push(`/bingo/${encodeURIComponent(v.id)}`)} key={index}>
                                     <BingoPane>
                                         <SquareBingoIcon bgMainColor={v.bgMainColor} bgSubColor={v.bgSubColor} fontColor={pickTextColorBasedOnBgColor(v.bgMainColor, '#ffffff','#000000')}>
                                             {v.size} X {v.size}
@@ -123,7 +122,7 @@ export default function BingoListContainer( props ){
                                         </BingoPaneText>
                                     </BingoPane>
                                 </a>
-                            </Link>
+                            // </Link>
                         )) }
                     </InfiniteScroll>
             }
