@@ -24,6 +24,8 @@ export const InitialContents = createContext({ //타입 표기, 최하단에 val
 const InitialContentsProvider = (props) => {
     const { t, i18n } = useTranslation()
     const router = useRouter()
+
+    const [ lang, setLang ] = useState(i18n.language)
     
     const [ categoryList, setCategoryList ] = useState([])
     const [ bingoList, setBingoList ] = useState([])
@@ -43,7 +45,10 @@ const InitialContentsProvider = (props) => {
 
         const res = await fetch(url)
         const data = await res.json()
-        setCategoryList(data.categories)
+
+        if(data.categories.length > 0){
+            setCategoryList(data.categories)
+        }
     }
 
     useEffect(() => {
@@ -55,6 +60,14 @@ const InitialContentsProvider = (props) => {
         setBingoPage(1) // when either category or sortBy changed, need to sync bingoPage state
         fetchMainBingos(1)
     },[selectedCategory, sortBy])
+
+    useEffect(() => {
+        setLang(i18n.language)
+
+        setBingoLoading(true)
+        setBingoPage(1)
+        fetchMainBingos(1)
+    },[i18n.language])
 
     const fetchMainBingos = useCallback( async (pageParam) => {
         let url = `${serverUrl}/api/bingos?lang=${i18n.language}`
@@ -104,7 +117,7 @@ const InitialContentsProvider = (props) => {
             setBingoPage(pageParam + 1)
             setBingoLoading(false)
         }
-    },[bingoList, selectedCategory, sortBy, searchBy, searchTarget, period]) 
+    },[lang, bingoList, selectedCategory, sortBy, searchBy, searchTarget, period]) 
 
     return (
         <InitialContents.Provider value={{ 

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Row, Col, BackTop } from 'antd';
 import { Link, useTranslation } from '../i18n'
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import Sticky from 'react-sticky-el';
 
 import { InitialContents } from '../store/InitialContentsProvider'
@@ -10,6 +10,7 @@ import { ArrowRightOutlined, FireFilled, ThunderboltFilled, MoreOutlined, RedoOu
 import { CenteredRow, CenteredCol } from '../components/sub/styled'
 import BingoListContainer from '../components/BingoListContainer';
 import useIsMobile from '../logics/useIsMobile';
+import dynamicSort from '../logics/dynamicSort';
 
 const CategoryRenderer = styled.div`
     display: flex;
@@ -92,6 +93,21 @@ export default function Home({ }) {
     const isMobile = useIsMobile()
     
     const [ mobileCategoryListVisible, setMobileCategoryListVisible ] = useState(false)
+    const [ sortedCategoryList, setSortedCategoryList ] = useState([])
+    
+    useEffect (() => {
+        let copiedCategoryList = [...categoryList]
+        let arr = []
+        arr.push(copiedCategoryList[0])
+        copiedCategoryList.shift()
+        let last = copiedCategoryList.pop()
+
+        arr = [ ...arr, ...(copiedCategoryList.sort(dynamicSort(`name_${i18n.language}`)))]
+
+        arr.push(last)
+        setSortedCategoryList(arr)
+        // console.log(arr)
+    },[categoryList, i18n.language])
 
     // const endOfScroll = () => { //context받은거 사용할땐 절대 useCallback 쓰지않기
     //     fetchMainBingos(selectedCategory, bingoPage) //bingoPage는 다음에 fetch할 페이지를 가르킴
@@ -141,13 +157,16 @@ export default function Home({ }) {
                                     </a>
                                 </Link>
                                 <MobileCategoryContainer>
-                                    {categoryList.map(v => ( //.slice(0).sort(dynamicSort(`name_${i18n.language}`)).map(v => (
-                                        <a key={v.id} onClick={() => { setSelectedCategory(v.id); setMobileCategoryListVisible(false) }}>
-                                            <CategoryRenderer color={v.color} selected={selectedCategory === v.id}>
-                                                {v[`name_${i18n.language}`]}
-                                            </CategoryRenderer>
-                                        </a>
-                                    ))}
+                                    {
+                                        sortedCategoryList.length === 0 || sortedCategoryList[0] === undefined ? null :
+                                            sortedCategoryList.map(v => ( 
+                                                <a key={v.id} onClick={() => { setSelectedCategory(v.id); setMobileCategoryListVisible(false) }}>
+                                                    <CategoryRenderer color={v.color} selected={selectedCategory === v.id}>
+                                                        {v[`name_${i18n.language}`]}
+                                                    </CategoryRenderer>
+                                                </a>
+                                            ))
+                                    }
                                 </MobileCategoryContainer>
                             </Col>
                         </Row>
@@ -176,16 +195,14 @@ export default function Home({ }) {
                             </Link>
                             <div style={{width: '100%', border: '1px solid lightgray', borderBottom: '0px', marginTop: 8 }}>
                                 {
-                                    categoryList.length === 0 ? null :
-                                    <>
-                                        {categoryList.map(v => ( //.slice(0).sort(dynamicSort(`name_${i18n.language}`)).map(v => (
+                                    sortedCategoryList.length === 0 || sortedCategoryList[0] === undefined ? null :
+                                        sortedCategoryList.map(v => ( 
                                             <a key={v.id} onClick={() => {setSelectedCategory(v.id); }}>
                                                 <CategoryRenderer color={v.color} selected={selectedCategory === v.id}>
                                                     {v[`name_${i18n.language}`]}
                                                 </CategoryRenderer>
                                             </a>
-                                        ))}
-                                    </>
+                                        ))
                                 }
                             </div>
                         </CenteredCol>
