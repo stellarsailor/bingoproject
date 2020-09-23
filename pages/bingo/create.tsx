@@ -1,8 +1,14 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react'
 import { Link } from '../../i18n'
 import styled from 'styled-components'
-// import { SwatchesPicker } from 'react-color';
+// import ReCAPTCHA from "react-google-recaptcha";
 import SwatchesPicker  from 'react-color/lib/Swatches'
+import { serverUrl } from '../../lib/serverUrl'
+import { useTranslation, Router } from '../../i18n';
+import { InitialContents } from '../../store/InitialContentsProvider';
+import { LeftOutlined, TableOutlined } from '../../assets/icons';
+import BingoRenderer from '../../components/BingoRenderer';
+import { CenteredCol, CenteredRow } from '../../components/sub/styled';
 import { Row, Col, Input, Radio, Select, Modal, InputNumber, Button, message, Slider } from 'antd';
 const { Option } = Select;
 const marks = {
@@ -15,13 +21,6 @@ const marks = {
     6: '6',
     // 7: '7',
 };
-
-import { serverUrl } from '../../lib/serverUrl'
-import { useTranslation, Router } from '../../i18n';
-import { InitialContents } from '../../store/InitialContentsProvider';
-import { LeftOutlined, TableOutlined } from '../../assets/icons';
-import BingoRenderer from '../../components/BingoRenderer';
-import { CenteredCol, CenteredRow } from '../../components/sub/styled';
 
 const ControllerPage = styled.div`
     background-color: white;
@@ -267,7 +266,7 @@ export default function BingoCreate({ data, query, params }) {
                                 </div>
                             </ColorTab>
 
-                            <ColorTab onClick={() => setColorPickerKey('bingoCellColor')}>
+                            {/* <ColorTab onClick={() => setColorPickerKey('bingoCellColor')}>
                                 <ColorLeftText>셀 배경색 설정</ColorLeftText>
                                 <ColorSquare color={bingoCellColor} />
                             </ColorTab>
@@ -277,7 +276,7 @@ export default function BingoCreate({ data, query, params }) {
                                     <SwatchesPicker color={bingoCellColor} onChangeComplete={(v) => {setBingoCellColor(v.hex); setColorPickerKey('');}} />
                                 </CenteredCol>
                                 : null
-                            }
+                            } */}
 
                             <ColorTab onClick={() => setColorPickerKey('bingoFontColor')}>
                                 <ColorLeftText>글씨 색 설정</ColorLeftText>
@@ -378,6 +377,10 @@ export default function BingoCreate({ data, query, params }) {
                             }
                         </div>
                     </ControllerPage>
+                    {/* <ReCAPTCHA
+                        sitekey="6LfRb88ZAAAAAEpPb5KLCz9J_fDvCX5QELAd3UDu"
+                        onChange={e => console.log(e)}
+                    /> */}
 
                     <CenteredCol style={{margin: '2rem', marginBottom: '3rem'}}>
                         <Button type="primary" onClick={handleSubmit} style={{width: 300, height: 45, borderRadius: 8}} disabled={disableSubmitButton}>
