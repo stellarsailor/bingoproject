@@ -81,6 +81,9 @@ export default function BingoRenderer( props ){
         linePixel, 
         ipAddress, 
 
+        markStyle,
+        markColor,
+
         completedBingoLines, 
         resultString, 
         resultStatus, 
@@ -111,7 +114,15 @@ export default function BingoRenderer( props ){
                     {elements.map((v, index) => {
                         if( size * i <= index && index < size * (i+1) ){
                             return (
-                                <td key={index} style={{border: `${linePixel}px solid ${lineColor}`, backgroundColor: `${selectedIndex.includes(index) ? 'gold' : cellColor}`}} onClick={() => elementOnClickEvent(index)}>
+                                <td 
+                                key={index} 
+                                style={{
+                                    border: `${linePixel}px solid ${lineColor}`, 
+                                    backgroundColor: `${selectedIndex.includes(index) ? markColor : 'white'}`, 
+                                    backgroundImage: markStyle === 'paint' ? null : `url("/static/images/${markStyle}.png")`, 
+                                    backgroundSize: 'cover'
+                                }} 
+                                onClick={() => elementOnClickEvent(index)}>
                                     <a>
                                         <div style={{width: (cellWidth - 50) / size, height: (cellWidth - 50) / size, display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', color: `${fontColor}`, overflow: 'hidden', fontSize: cellWidth / size / 9}}>
                                             {v}

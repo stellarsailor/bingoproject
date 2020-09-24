@@ -14,6 +14,8 @@ import { CenteredCol, CenteredRow } from '../../components/sub/styled'
 import { ShareAltOutlined, LeftOutlined, AlertFilled, CameraFilled, CheckSquareOutlined, DeleteOutlined, LockOutlined } from '../../assets/icons'
 import useIsMobile from '../../logics/useIsMobile'
 import useWindowSize from '../../logics/useWindowSize'
+import MarkStyleModal from '../../components/MarkStyleModal'
+import ReportModal from '../../components/ReportModal'
 
 message.config({
     top: 58,
@@ -36,8 +38,8 @@ const MenuButton = styled.a`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0px 6px;
-    margin-left: 0.8rem;
+    padding: 4px 8px;
+    margin-left: 0.6rem;
     color: ${props => props.selected ? 'dodgerblue' : 'gray' };
     :hover {
         background-color: var(--mono-2);
@@ -48,11 +50,16 @@ const MenuButton = styled.a`
 export default function BingoDetail({ data }) {
     const router = useRouter()
     const { bingoId } = router.query
-    // let id = typeof bingoId === 'string' ? parseInt(bingoId) : null
     const { t, i18n } = useTranslation()
     const isMobile = useIsMobile()
     const [ width, height ] = useWindowSize()
+    const [ cookies, setCookie ] = useCookies(['setting'])
 
+    const [ styleModal, setStyleModal ] = useState(false)
+    const [ markStyle, setMarkStyle ] = useState('')
+    const [ markColor, setMarkColor ] = useState('')
+    
+    const [ reportModal, setReportModal ] = useState(false)
     const [ passwordInput, setPasswordInput ] = useState('')
 
     const [ bingo, setBingo ] = useState(data.bingo)
@@ -63,34 +70,18 @@ export default function BingoDetail({ data }) {
     const [ resultCount, setResultCount ] = useState([])
     const [ resultPercent, setResultPercent ] = useState([])
 
-    const deleteBingo = async (passwordInput) => {
-        let url = `${serverUrl}/api/bingos/${bingoId}`
-        const settings = {
-            method: 'DELETE',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                password: passwordInput
-            })
+    useEffect(() => {
+        //cookie 불러와서 설정이 있으면 그대로 세팅, 없으면 기본 마크 스타일 세팅
+        if(cookies.setting === undefined){
+            const defaultSetting = {style: 'check', color: '#8ED1FC'}
+            setCookie('setting', defaultSetting, { path: '/' })
+            setMarkStyle(defaultSetting.style)
+            setMarkColor(defaultSetting.color)
+        } else {
+            setMarkStyle(cookies.setting.style)
+            setMarkColor(cookies.setting.color)
         }
-        try {
-            const fetchResponse = await fetch(url, settings)
-            const data = await fetchResponse.json()
-
-            if(data.results === 'success'){
-                router.push('/')
-                message.success('Bingo is successfully deleted.')
-            } else if(data.results === 'wrong'){
-                message.warning('Please check password.')
-            } else {
-                message.error('Error!')
-            }
-        } catch (e) {
-            return e
-        }    
-    }
+    },[])
 
     const takeScreenShot = (id) => {
         let scale = 2
@@ -121,6 +112,35 @@ export default function BingoDetail({ data }) {
             link.href = dataUrl
             link.click()
         })
+    }
+
+    const deleteBingo = async (passwordInput) => {
+        let url = `${serverUrl}/api/bingos/${bingoId}`
+        const settings = {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                password: passwordInput
+            })
+        }
+        try {
+            const fetchResponse = await fetch(url, settings)
+            const data = await fetchResponse.json()
+
+            if(data.results === 'success'){
+                router.push('/')
+                message.success('Bingo is successfully deleted.')
+            } else if(data.results === 'wrong'){
+                message.warning('Please check password.')
+            } else {
+                message.error('Error!')
+            }
+        } catch (e) {
+            return e
+        }    
     }
 
     const addIndexToSelected = useCallback((indexToPushPop) => {
@@ -214,60 +234,72 @@ export default function BingoDetail({ data }) {
 
     return(
         <>
-
             <CenteredRow>
+                <MarkStyleModal 
+                markStyle={markStyle}
+                setMarkStyle={setMarkStyle}
+                markColor={markColor}
+                setMarkColor={setMarkColor}
+                visible={styleModal} 
+                setStyleModal={setStyleModal} 
+                />
+                <ReportModal
+                bingoId={bingoId}
+                visible={reportModal}
+                setReportModal={setReportModal}
+                />
                 <Row style={{paddingTop: 50,width: '100%', maxWidth: height - 100}} >
                     <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{marginTop: 8, marginBottom: 8}}>
                         <ControllerPage>
-                                <Link href="/">
-                                    <a style={{fontSize: '1.1rem'}}>
-                                        <LeftOutlined /> Back
-                                    </a>
-                                </Link>
-                                <CenteredRow>
-                                    <Tooltip title={"Setting Mark Style"}>
-                                        <MenuButton>
-                                            <CheckSquareOutlined /> 
-                                        </MenuButton>
-                                    </Tooltip>
-                                    <Tooltip title={"Report"}>
-                                        <MenuButton>
-                                            <AlertFilled /> 
-                                        </MenuButton>
-                                    </Tooltip>
-                                    <Tooltip title={"Share this Link"}>
-                                        <MenuButton>
-                                            <CopyToClipboard text={serverUrl + router.asPath}
-                                            onCopy={() => message.success('Link url is copied!')}>
-                                                <ShareAltOutlined /> 
-                                            </CopyToClipboard>
-                                        </MenuButton>
-                                    </Tooltip>
-                                    <Tooltip title={"Capture bingo screen"}>
-                                        <MenuButton onClick={() => takeScreenShot('captureWithoutResult')}>
-                                            <CameraFilled /> 
-                                        </MenuButton>
-                                    </Tooltip>
-                                    <Tooltip title={"Delete this bingo"}>
-                                        <MenuButton>
-                                            <Popconfirm
-                                                title={
-                                                    <div> 
-                                                        <Input.Password placeholder="input password" onChange={(e) => setPasswordInput(e.target.value)} style={{width: 200}} />
-                                                    </div>
-                                                }
-                                                onConfirm={() => deleteBingo(passwordInput)}
-                                                onCancel={() => console.log('cancelled')}
-                                                okText="Delete"
-                                                cancelText="Cancel"
-                                                icon={<LockOutlined style={{fontSize: 20}} />}
-                                            
-                                            >
-                                                <DeleteOutlined /> 
-                                            </Popconfirm>
-                                        </MenuButton>
-                                    </Tooltip>
-                                </CenteredRow>
+                            <Link href="/">
+                                <a style={{fontSize: '1.1rem'}}>
+                                    <LeftOutlined /> Back
+                                </a>
+                            </Link>
+                            <CenteredRow>
+                                <Tooltip title={"Setting Mark Style"}>
+                                    <MenuButton onClick={() => setStyleModal(true)}>
+                                        <CheckSquareOutlined /> 
+                                    </MenuButton>
+                                </Tooltip>
+                                <Tooltip title={"Report"}>
+                                    <MenuButton onClick={() => setReportModal(true)}>
+                                        <AlertFilled /> 
+                                    </MenuButton>
+                                </Tooltip>
+                                <Tooltip title={"Share this Link"}>
+                                    <MenuButton>
+                                        <CopyToClipboard text={serverUrl + router.asPath}
+                                        onCopy={() => message.success('Link url is copied!')}>
+                                            <ShareAltOutlined /> 
+                                        </CopyToClipboard>
+                                    </MenuButton>
+                                </Tooltip>
+                                <Tooltip title={"Capture bingo screen"}>
+                                    <MenuButton onClick={() => takeScreenShot('captureWithoutResult')}>
+                                        <CameraFilled /> 
+                                    </MenuButton>
+                                </Tooltip>
+                                <Tooltip title={"Delete this bingo"}>
+                                    <MenuButton>
+                                        <Popconfirm
+                                            title={
+                                                <div> 
+                                                    <Input.Password placeholder="input password" onChange={(e) => setPasswordInput(e.target.value)} style={{width: 200}} />
+                                                </div>
+                                            }
+                                            onConfirm={() => deleteBingo(passwordInput)}
+                                            onCancel={() => console.log('cancelled')}
+                                            okText="Delete"
+                                            cancelText="Cancel"
+                                            icon={<LockOutlined style={{fontSize: 20}} />}
+                                        
+                                        >
+                                            <DeleteOutlined /> 
+                                        </Popconfirm>
+                                    </MenuButton>
+                                </Tooltip>
+                            </CenteredRow>
                         </ControllerPage>
                     </Col>
                     <Col xs={24} sm={24} md={24} lg={24} xl={24} >
@@ -284,10 +316,13 @@ export default function BingoDetail({ data }) {
                             bgMainColor={bingo.bgMainColor}
                             bgSubColor={bingo.bgSubColor}
                             fontColor={bingo.fontColor}
-                            cellColor={bingo.cellColor}
+                            // cellColor={bingo.cellColor}
                             lineColor={bingo.lineColor}
                             linePixel={bingo.linePixel}
                             ipAddress={bingo.ipAddress}
+
+                            markStyle={markStyle}
+                            markColor={markColor}
 
                             completedBingoLines={completedBingoLines}
                             resultString={JSON.parse(bingo.achievements)[completedBingoLines]}
