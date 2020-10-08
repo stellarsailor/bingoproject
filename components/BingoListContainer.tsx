@@ -68,7 +68,7 @@ export default function BingoListContainer( props ){
 
     const endMessage = () => (
         <p style={{textAlign: 'center', marginTop: 16, color: 'lightgray'}}>
-            <b>더 이상 불러올 빙고가 없습니다.</b>
+            <b>{t("EMPTY_NO_MORE")}</b>
         </p>
     )
 

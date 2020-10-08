@@ -102,10 +102,18 @@ export default function List({ }) {
                                             Period
                                         </TabLeftTitle> */}
                                         <Radio.Group defaultValue={period} size="small">
-                                            <Radio.Button value="all" onClick={() => setPeriod('all')}>전체</Radio.Button>
-                                            <Radio.Button value="month" onClick={() => setPeriod('month')}>이번달</Radio.Button>
-                                            <Radio.Button value="week" onClick={() => setPeriod('week')}>이번주</Radio.Button>
-                                            <Radio.Button value="today" onClick={() => setPeriod('today')}>오늘</Radio.Button>
+                                            <Radio.Button value="all" onClick={() => setPeriod('all')}>
+                                                {t("SEARCH_ALLTIME")}
+                                            </Radio.Button>
+                                            <Radio.Button value="month" onClick={() => setPeriod('month')}>
+                                                {t("SEARCH_MONTH")}
+                                            </Radio.Button>
+                                            <Radio.Button value="week" onClick={() => setPeriod('week')}>
+                                                {t("SEARCH_WEEK")}
+                                            </Radio.Button>
+                                            <Radio.Button value="today" onClick={() => setPeriod('today')}>
+                                                {t("SEARCH_TODAY")}
+                                            </Radio.Button>
                                         </Radio.Group>
                                     </FilteringTab>
                                     <FilteringTab>
@@ -113,9 +121,15 @@ export default function List({ }) {
                                             Search Target
                                         </TabLeftTitle> */}
                                         <Radio.Group defaultValue={searchTarget} size="small">
-                                            <Radio.Button value="title" onClick={() => setSearchTarget('title')}>제목</Radio.Button>
-                                            <Radio.Button value="elements" onClick={() => setSearchTarget('elements')}>빙고</Radio.Button>
-                                            <Radio.Button value="author" onClick={() => setSearchTarget('author')}>작성자</Radio.Button>
+                                            <Radio.Button value="title" onClick={() => setSearchTarget('title')}>
+                                                {t("SEARCH_TITLE")}
+                                            </Radio.Button>
+                                            <Radio.Button value="elements" onClick={() => setSearchTarget('elements')}>
+                                                {t("SEARCH_ELEMENTS")}
+                                            </Radio.Button>
+                                            <Radio.Button value="author" onClick={() => setSearchTarget('author')}>
+                                                {t("SEARCH_AUTHOR")}
+                                            </Radio.Button>
                                         </Radio.Group>
                                     </FilteringTab>
 

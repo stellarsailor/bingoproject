@@ -53,7 +53,7 @@ export default function NavBar({ }) {
 
     const handleSearch = useCallback((searchParam) => {
         if(searchParam === ''){
-            message.warning('Please type search keyword')
+            message.warning(t("SEARCH_INPUT_NULL_ALERT"))
         } else {
             Router.push(`/bingo?search=${searchParam}`)
         }

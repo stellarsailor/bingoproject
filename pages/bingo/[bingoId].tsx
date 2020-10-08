@@ -257,30 +257,30 @@ export default function BingoDetail({ data }) {
                                 </a>
                             </Link>
                             <CenteredRow>
-                                <Tooltip title={"Setting Mark Style"}>
+                                <Tooltip title={t("PLAYPAGE_SETTING")}>
                                     <MenuButton onClick={() => setStyleModal(true)}>
                                         <CheckSquareOutlined /> 
                                     </MenuButton>
                                 </Tooltip>
-                                <Tooltip title={"Report"}>
+                                <Tooltip title={t("PLAYPAGE_REPORT")}>
                                     <MenuButton onClick={() => setReportModal(true)}>
                                         <AlertFilled /> 
                                     </MenuButton>
                                 </Tooltip>
-                                <Tooltip title={"Share this Link"}>
+                                <Tooltip title={t("PLAYPAGE_SHARE")}>
                                     <MenuButton>
                                         <CopyToClipboard text={serverUrl + router.asPath}
-                                        onCopy={() => message.success('Link url is copied!')}>
+                                        onCopy={() => message.success(t("MODAL_SHARE_LINK"))}>
                                             <ShareAltOutlined /> 
                                         </CopyToClipboard>
                                     </MenuButton>
                                 </Tooltip>
-                                <Tooltip title={"Capture bingo screen"}>
+                                <Tooltip title={t("PLAYPAGE_CAPTURE")}>
                                     <MenuButton onClick={() => takeScreenShot('captureWithoutResult')}>
                                         <CameraFilled /> 
                                     </MenuButton>
                                 </Tooltip>
-                                <Tooltip title={"Delete this bingo"}>
+                                <Tooltip title={t("PLAYPAGE_DELETE")}>
                                     <MenuButton>
                                         <Popconfirm
                                             title={

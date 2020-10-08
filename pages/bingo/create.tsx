@@ -119,11 +119,11 @@ export default function BingoCreate({ data, query, params }) {
     const handleSubmit = useCallback(async () => {
         // console.log(bingoAchievement)
         let blankError = [] //에러는 역순으로
-        bingoAchievement.map(v => {if(v === '' || v === null) blankError.push('there is empty acheievement')})
-        bingoArr.map(v => {if(v === '' || v === null) blankError.push('there is empty element')})
-        if(bingoAuthor === '') blankError.push('Please enter author name')
-        if(bingoPassword === '') blankError.push('비밀번호를 입력해주세요.')
-        if(bingoTitle === '') blankError.push('제목을 입력해주세요.')
+        bingoAchievement.map(v => {if(v === '' || v === null) blankError.push(t("CREATE_EMPTY_ALERT_ACCOMPLISHMENTS"))})
+        bingoArr.map(v => {if(v === '' || v === null) blankError.push(t("CREATE_EMPTY_ALERT_ELEMENT"))})
+        if(bingoAuthor === '') blankError.push(t("CREATE_EMPTY_ALERT_NAME"))
+        if(bingoPassword === '') blankError.push(t("CREATE_EMPTY_ALERT_PASSWORD"))
+        if(bingoTitle === '') blankError.push(t("CREATE_EMPTY_ALERT_TITLE"))
 
         if(blankError.length !== 0){
             message.error(blankError.pop())
@@ -159,7 +159,7 @@ export default function BingoCreate({ data, query, params }) {
                 const data = await fetchResponse.json()
     
                 if(data.error === 'duplicated'){
-                    message.error('Something wrong! try few minutes later.')
+                    message.error(t("STATIC_ERROR_TRY_LATER"))
                     setDisableSubmitButton(false)
                 } else if (data.insertResult.affectedRows === 1){
                     Router.push(`/bingo/${data.insertResult.insertId}`)
@@ -187,8 +187,8 @@ export default function BingoCreate({ data, query, params }) {
                         </div>
                         <div style={{padding: '1rem'}}>
                             <div style={{borderBottom: '1px solid var(--mono-2)', paddingBottom: '1rem'}}>
-                                <Input placeholder="Name" onChange={e => setBingoAuthor(e.target.value)} style={{width: '45%', marginRight: 16}} />
-                                <Input.Password placeholder="input password" onChange={e => setBingoPassword(e.target.value)} style={{width: '45%'}} />
+                                <Input placeholder={t("CREATE_PLACEHOLDER_AUTHOR")} onChange={e => setBingoAuthor(e.target.value)} style={{width: '45%', marginRight: 16}} />
+                                <Input.Password placeholder={t("CREATE_PLACEHOLDER_PASSWORD")} onChange={e => setBingoPassword(e.target.value)} style={{width: '45%'}} />
                             </div>
 
                             {/* <Radio.Group defaultValue="a" style={{marginTop: 16}}>
@@ -201,18 +201,18 @@ export default function BingoCreate({ data, query, params }) {
                             </Radio.Group> */}
 
                             <div>
-                                <Select placeholder="Category" style={{ width: 150, margin: '1rem 0px', marginRight: 16 }} onChange={v => setBingoCategory(v)}>
+                                <Select placeholder={t("CREATE_PLACEHOLDER_CATEGORY")} style={{ width: 150, margin: '1rem 0px', marginRight: 16 }} onChange={v => setBingoCategory(v)}>
                                     {categoryList.map((v, index) => <Option key={index} value={index}>{v.name_ko}</Option>)}
                                 </Select>
                             </div>
 
-                            <Input placeholder="Title" onChange={e => setBingoTitle(e.target.value)} style={{width: '100%'}} />
+                            <Input placeholder={t("CREATE_PLACEHOLDER_TITLE")} onChange={e => setBingoTitle(e.target.value)} style={{width: '100%'}} />
                             
-                            <Input placeholder="Enter description of Your Bingo, how to play it" onChange={e => setBingoDescription(e.target.value)} style={{width: '100%', margin: '1rem 0px'}} />
+                            <Input placeholder={t("CREATE_PLACEHOLDER_DESC")} onChange={e => setBingoDescription(e.target.value)} style={{width: '100%', margin: '1rem 0px'}} />
     
                             <div style={{margin: '1rem 0px'}}>
                                 <span style={{marginRight: 16}}>
-                                    <TableOutlined /> Bingo Size
+                                    <TableOutlined /> {t("CREATE_BINGO_SIZE")}
                                 </span>
                                 <Radio.Group defaultValue={bingoSize} onChange={(e) => setBingoSize(e.target.value)}>
                                     <Radio.Button value={3}>3x3</Radio.Button>
@@ -222,7 +222,7 @@ export default function BingoCreate({ data, query, params }) {
                             </div>
 
                             <ColorTab onClick={() => setColorPickerKey('bingoBgMainColor')}>
-                                <ColorLeftText>배경색 설정</ColorLeftText>
+                                <ColorLeftText>{t("CREATE_BACKGROUND_COLOR")}</ColorLeftText>
                                 <ColorSquare color={bingoBgMainColor} />
                             </ColorTab>
                             {
@@ -234,7 +234,7 @@ export default function BingoCreate({ data, query, params }) {
                             }
 
                             <ColorTab onClick={() => setColorPickerKey('bingoBgSubColor')}>
-                                <ColorLeftText>서브 배경색 설정</ColorLeftText>
+                                <ColorLeftText>{t("CREATE_SUB_BACKGROUND_COLOR")}</ColorLeftText>
                                 <ColorSquare color={bingoBgSubColor} />
                             </ColorTab>
                             {
@@ -246,7 +246,7 @@ export default function BingoCreate({ data, query, params }) {
                             }
 
                             <ColorTab onClick={() => setColorPickerKey('bingoLineColor')}>
-                                <ColorLeftText>선 색 설정</ColorLeftText>
+                                <ColorLeftText>{t("CREATE_LINE_COLOR")}</ColorLeftText>
                                 <ColorSquare color={bingoLineColor} />
                             </ColorTab>
                             {
@@ -259,7 +259,7 @@ export default function BingoCreate({ data, query, params }) {
 
                             <ColorTab>
                                 <div style={{width: 120}}>
-                                    선 두께 설정
+                                    {t("CREATE_LINE_THICK")}
                                 </div>
                                 <div>
                                     <InputNumber min={1} max={3} defaultValue={2} onChange={(v: number) => setBingoLinePixel(v)} style={{width: 60}} />
@@ -279,7 +279,7 @@ export default function BingoCreate({ data, query, params }) {
                             } */}
 
                             <ColorTab onClick={() => setColorPickerKey('bingoFontColor')}>
-                                <ColorLeftText>글씨 색 설정</ColorLeftText>
+                                <ColorLeftText>{t("CREATE_FONT_COLOR")}</ColorLeftText>
                                 <ColorSquare color={bingoFontColor} />
                             </ColorTab>
                             {
@@ -309,7 +309,7 @@ export default function BingoCreate({ data, query, params }) {
                     linePixel={bingoLinePixel}
                     />
                     <Modal
-                    title="내용 변경"
+                    title={t("CREATE_CHANGE_BINGO_ELEMENT")}
                     visible={modalOpened}
                     onOk={() => changeElement(modalWillChangeInput, modalWillChangeIndex)}
                     onCancel={() => setModalOpened(false)}
@@ -326,9 +326,9 @@ export default function BingoCreate({ data, query, params }) {
 
                     <ControllerPage style={{marginTop: 8, padding: '1rem'}}>
                         <div>
-                            빙고 라인 갯수 업적
+                            {t("CREATE_BINGO_ACCOMPLISHMENTS")}
                         </div>
-                        {bingoAchievement.map((v, index) => <div key={index}>{index} bingo: {v}</div>)}
+                        {bingoAchievement.map((v, index) => <div key={index}>{index} {t("STATIC_BINGO")}: {v}</div>)}
                         <div>
                             {
                                 achievementMinimumPointer === 0 ?
@@ -349,7 +349,7 @@ export default function BingoCreate({ data, query, params }) {
                                     style={{marginLeft: '1rem'}} 
                                     onClick={() => {handleAcheievement(0, achievementPointer, achievementInput)}}
                                     > 
-                                        추가 
+                                        {t("STATIC_ADD")} 
                                     </Button>
                                 </div>
                                 :
@@ -371,7 +371,7 @@ export default function BingoCreate({ data, query, params }) {
                                     style={{marginLeft: '1rem'}} 
                                     onClick={() => {handleAcheievement(achievementMinimumPointer, achievementPointer, achievementInput)}}
                                     > 
-                                        추가 
+                                        {t("STATIC_ADD")}  
                                     </Button>
                                 </div>
                             }
@@ -384,7 +384,7 @@ export default function BingoCreate({ data, query, params }) {
 
                     <CenteredCol style={{margin: '2rem', marginBottom: '3rem'}}>
                         <Button type="primary" onClick={handleSubmit} style={{width: 300, height: 45, borderRadius: 8}} disabled={disableSubmitButton}>
-                            Create
+                            {t("STATIC_CREATE")}
                         </Button>
                     </CenteredCol>
                 </Col>

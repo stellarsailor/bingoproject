@@ -10,6 +10,7 @@ import { ShareAltOutlined, CameraFilled } from '../assets/icons'
 import { serverUrl } from '../lib/serverUrl'
 import { useRouter } from 'next/router'
 import useIsMobile from '../logics/useIsMobile'
+import { useTranslation } from '../i18n'
 
 message.config({
     top: 58,
@@ -64,6 +65,7 @@ const DescText = styled.div`
 `
 
 export default function BingoRenderer( props ){
+    const { t, i18n } = useTranslation()
     
     const { 
         title, 
@@ -187,7 +189,7 @@ export default function BingoRenderer( props ){
                         </tbody>
                     </table>
                     <div style={{color: `${pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}`, fontWeight: 'bold', fontSize: '1.3rem', marginTop: '0.5rem'}}>
-                        selfbingo.com
+                        SelfBingo.com
                     </div>
                 </CenteredCol>
             </CreatePage>
@@ -211,7 +213,7 @@ export default function BingoRenderer( props ){
                                 <CenteredRow style={{marginTop: '1rem', marginBottom: '1rem'}}>
                                     <MenuButton>
                                         <CopyToClipboard text={serverUrl + router.asPath}
-                                        onCopy={() => message.success('Link url is copied!')}>
+                                        onCopy={() => message.success(t("MODAL_SHARE_LINK"))}>
                                             <span><ShareAltOutlined /> Share</span>
                                         </CopyToClipboard>
                                     </MenuButton>

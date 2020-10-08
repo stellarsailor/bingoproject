@@ -4,6 +4,7 @@ import { Modal, message, Select } from 'antd'
 import { serverUrl } from '../lib/serverUrl'
 import { useRouter } from 'next/router'
 import TextArea from 'antd/lib/input/TextArea'
+import { useTranslation } from '../i18n'
 
 message.config({
     top: 58,
@@ -11,6 +12,7 @@ message.config({
 const { Option } = Select;
 
 export default function ReportModal (props){
+    const { t, i18n } = useTranslation()
     const router = useRouter()
     
     const { bingoId, visible, setReportModal } = props
@@ -41,9 +43,9 @@ export default function ReportModal (props){
             const data = await fetchResponse.json()
 
             if(data.insertResult.affectedRows === 1){
-                message.success('The report is successfully submitted.')
+                message.success(t("MODAL_REPORT_SUCCESS_MSG"))
             } else {
-                message.error('Error! Try again few minutes later.')
+                message.error(t("STATIC_ERROR_TRY_LATER"))
             }
         } catch (e) {
             return e
@@ -52,17 +54,17 @@ export default function ReportModal (props){
 
     return(
         <Modal
-            title="Report Bingo"
+            title={t("PLAYPAGE_REPORT")}
             visible={visible}
             onOk={() => reportBingo(reportType, reportText)}
             onCancel={() => setReportModal(false)}
         >
             <Select defaultValue={0} style={{ width: 120, marginBottom: '1rem' }} onChange={v => setReportType(v)}>
-                <Option value={0}>광고</Option>
-                <Option value={1}>음란물</Option>
-                <Option value={2}>개인정보침해</Option>
-                <Option value={3}>저작권침해</Option>
-                <Option value={4}>기타</Option>
+                <Option value={0}>{t("MODAL_REPORT_ADS")}</Option>
+                <Option value={1}>{t("MODAL_REPORT_PORN")}</Option>
+                <Option value={2}>{t("MODAL_REPORT_PRIVACY")}</Option>
+                <Option value={3}>{t("MODAL_REPORT_COPYRIGHT")}</Option>
+                <Option value={4}>{t("STATIC_ETC")}</Option>
             </Select>
 
             <TextArea rows={4} onChange={(e) => setReportText(e.target.value)} value={reportText} />

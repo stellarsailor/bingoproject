@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Modal, Radio } from 'antd'
 import TwitterPicker  from 'react-color/lib/Twitter'
 import { useCookies } from 'react-cookie'
+import { useTranslation } from '../i18n'
 
 const SampleView = styled.div`
     width: 100px;
@@ -19,19 +20,21 @@ const SampleView = styled.div`
     margin-bottom: 1rem;
 `
 
-const options = [
-    { label: 'Check', value: 'check' },
-    { label: 'Circle', value: 'circle' },
-    { label: 'Paint', value: 'paint' },
-];
-  
+
 export default function MarkStyleModal (props){
+    const { t, i18n } = useTranslation()
     const [ cookies, setCookie ] = useCookies(['setting'])
-
+    
     const { markStyle, setMarkStyle, markColor, setMarkColor, visible, setStyleModal } = props
-
+    
     const [ sampleStyle, setSampleStyle ] = useState('')
     const [ sampleColor, setSampleColor ] = useState('')
+    
+    const options = [
+        { label: t("MODAL_MARKSTYLE_CHECK"), value: 'check' },
+        { label: t("MODAL_MARKSTYLE_CIRCLE"), value: 'circle' },
+        { label: t("MODAL_MARKSTYLE_PAINT"), value: 'paint' },
+    ]
 
     useEffect(() => {
         setSampleStyle(markStyle)
@@ -56,7 +59,7 @@ export default function MarkStyleModal (props){
 
     return (
         <Modal
-            title="Mark Style Setting"
+            title={t("PLAYPAGE_SETTING")}
             visible={visible}
             onOk={() => saveStyleAndColor(sampleStyle, sampleColor)}
             onCancel={() => cancelStyleAndColor()}
@@ -70,7 +73,7 @@ export default function MarkStyleModal (props){
             />
 
             <SampleView markStyle={sampleStyle} markColor={sampleColor}>
-                Sample Bingo Element
+                {t("MODAL_MARKSTYLE_SAMPLE")}
             </SampleView>
 
             <TwitterPicker color={sampleColor} onChangeComplete={(v) => {setSampleColor(v.hex)}} />
