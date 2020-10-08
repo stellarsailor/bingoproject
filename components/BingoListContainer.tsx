@@ -102,8 +102,8 @@ export default function BingoListContainer( props ){
                     endMessage={endMessage()}
                     >
                         { bingoList.map( (v, index) => (
-                            // <Link href={`/bingo/${encodeURIComponent(v.id)}`} key={index} >
-                                <a onClick={() => Router.push(`/bingo/${encodeURIComponent(v.id)}`)} key={index}>
+                            <Link href={`/bingo/[bingoId]?bingoId=${v.id}`} as={`/bingo/${encodeURIComponent(v.id)}`} key={index} >
+                                <a>
                                     <BingoPane>
                                         <SquareBingoIcon bgMainColor={v.bgMainColor} bgSubColor={v.bgSubColor} fontColor={pickTextColorBasedOnBgColor(v.bgMainColor, '#ffffff','#000000')}>
                                             {v.size} X {v.size}
@@ -122,7 +122,7 @@ export default function BingoListContainer( props ){
                                         </BingoPaneText>
                                     </BingoPane>
                                 </a>
-                            // </Link>
+                            </Link>
                         )) }
                     </InfiniteScroll>
             }
