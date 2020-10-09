@@ -6,5 +6,6 @@ module.exports = new NextI18Next({
     otherLanguages: ['ko'],
     localeSubpaths,
     localePath: path.resolve('./public/static/locales'),
+    ignoreRoutes: ["/_next/", "/static/", "/public/", "/api/", "/sitemap", "/robots.txt", "/fonts/"],
     //shallowRender: true //test
 })

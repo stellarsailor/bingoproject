@@ -3,6 +3,15 @@ import { serverUrl } from '../lib/serverUrl'
 
 const createSitemap = (bingos) => `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+        <url>
+            <loc>${`https://selfbingo.com/`}</loc>
+        </url>
+        <url>
+            <loc>${`https://selfbingo.com/en/about`}</loc>
+        </url>
+        <url>
+            <loc>${`https://selfbingo.com/ko/about`}</loc>
+        </url>
         ${bingos.map(({ id, lang }) => {
             return `
                 <url>
