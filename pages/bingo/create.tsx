@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react'
+import { NextSeo } from 'next-seo'
 import { Link } from '../../i18n'
 import styled from 'styled-components'
 // import ReCAPTCHA from "react-google-recaptcha";
@@ -175,6 +176,10 @@ export default function BingoCreate({ data, query, params }) {
 
     return(
         <>
+            <NextSeo
+            title="Self Bingo"
+            description="Make Your Bingo and Share It!"
+            />
             <Row style={{paddingTop: 50}}>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{marginTop: 8, marginBottom: 8}}>
                     <ControllerPage>

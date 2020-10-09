@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
+import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { useCookies } from 'react-cookie'
@@ -234,6 +235,10 @@ export default function BingoDetail({ data }) {
 
     return(
         <>
+            <NextSeo
+            title={bingo.title + ' - SelfBingo'}
+            description={bingo.description}
+            />
             <CenteredRow>
                 <MarkStyleModal 
                 markStyle={markStyle}

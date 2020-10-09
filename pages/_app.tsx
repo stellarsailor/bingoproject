@@ -2,13 +2,14 @@ import App from "next/app";
 import type { AppProps /*, AppContext */ } from 'next/app'
 import '../styles/style.css'
 import { appWithTranslation } from '../i18n'
+import { DefaultSeo } from 'next-seo';
+
+import InitialContentsProvider from '../store/InitialContentsProvider'
+import Layout from "../components/Layout";
 
 import Router from 'next/router';
 import NProgress from 'nprogress'; 
 import 'nprogress/nprogress.css'; 
-
-import InitialContentsProvider from '../store/InitialContentsProvider'
-import Layout from "../components/Layout";
 
 Router.events.on('routeChangeStart', () => NProgress.start())
 Router.events.on('routeChangeComplete', () => NProgress.done())
@@ -22,6 +23,21 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     return (
         <InitialContentsProvider>
+            <DefaultSeo
+            title="SelfBingo"
+            canonical="https://www.selfbing.com/"
+            openGraph={{
+                type: 'website',
+                locale: 'en_IE',
+                url: 'https://www.selfbingo.com/',
+                site_name: 'SelfBingo',
+            }}
+            twitter={{
+                handle: '@handle',
+                site: '@site',
+                cardType: 'summary_large_image',
+            }}
+            />
             <Layout>
                 <Component {...pageProps} />
             </Layout>
