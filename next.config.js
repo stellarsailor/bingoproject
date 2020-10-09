@@ -29,6 +29,8 @@ module.exports = withBundleAnalyzer(withCSS(withLess({
   },
   webpack: (config, { isServer }) => {
     if (isServer) {
+      require('./lib/generate-sitemap');
+
       const antStyles = /antd\/.*?\/style.*?/
       const origExternals = [...config.externals]
       config.externals = [
