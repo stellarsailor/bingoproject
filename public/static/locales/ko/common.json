@@ -40,6 +40,8 @@
     "PLAYPAGE_SHARE": "공유하기",
     "PLAYPAGE_CAPTURE": "빙고 화면 캡쳐",
     "PLAYPAGE_DELETE": "빙고 삭제",
+    "PLAYPAGE_SUBMIT": "제출 및 통계 확인",
+    "PLAYPAGE_PERCENTAGE_STATS": "유저 선택 비율 통계",
 
     "MODAL_MARKSTYLE_CHECK": "체크",
     "MODAL_MARKSTYLE_CIRCLE": "동그라미",

@@ -59,7 +59,7 @@ export default function ReportModal (props){
             onOk={() => reportBingo(reportType, reportText)}
             onCancel={() => setReportModal(false)}
         >
-            <Select defaultValue={0} style={{ width: 120, marginBottom: '1rem' }} onChange={v => setReportType(v)}>
+            <Select defaultValue={0} style={{ width: 250, marginBottom: '1rem' }} onChange={v => setReportType(v)}>
                 <Option value={0}>{t("MODAL_REPORT_ADS")}</Option>
                 <Option value={1}>{t("MODAL_REPORT_PORN")}</Option>
                 <Option value={2}>{t("MODAL_REPORT_PRIVACY")}</Option>

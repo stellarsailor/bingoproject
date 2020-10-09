@@ -61,3 +61,7 @@ export {
 export {
     default as LockOutlined
 } from '@ant-design/icons/lib/icons/LockOutlined';
+
+export {
+    default as UserOutlined
+} from '@ant-design/icons/lib/icons/UserOutlined';

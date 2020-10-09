@@ -40,6 +40,8 @@
     "PLAYPAGE_SHARE": "Share this Link",
     "PLAYPAGE_CAPTURE": "Capture Bingo Screen",
     "PLAYPAGE_DELETE": "Delete this Bingo",
+    "PLAYPAGE_SUBMIT": "Submit/Check Stats",
+    "PLAYPAGE_PERCENTAGE_STATS": "Bingo Percentage Statistics",
 
     "MODAL_MARKSTYLE_CHECK": "Check",
     "MODAL_MARKSTYLE_CIRCLE": "Circle",
@@ -58,6 +60,7 @@
 
     "STATIC_CANCEL": "Cancel",
     "STATIC_OK": "OK",
+    "STATIC_ETC": "Etc",
     "STATIC_ADD": "Add", 
     "STATIC_BINGO": "Bingo",
     "STATIC_CREATE": "Create",

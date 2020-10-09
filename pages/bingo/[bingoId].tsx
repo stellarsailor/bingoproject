@@ -342,7 +342,7 @@ export default function BingoDetail({ data }) {
                                 onClick={() => submitIndexToFlag()} style={{width: 300, height: 45, borderRadius: 8}}
                                 disabled={resultStatus !== 'idle'}
                                 >
-                                    제출 및 통계 확인
+                                    {t("PLAYPAGE_SUBMIT")}
                                 </Button>
                             }
                         </CenteredCol>

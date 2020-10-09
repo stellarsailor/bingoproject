@@ -6,7 +6,7 @@ import { CenteredRow, CenteredCol } from './sub/styled'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import pickTextColorBasedOnBgColor from '../logics/pickTextColorBasedOnBgColor'
 import useWindowSize from '../logics/useWindowSize'
-import { ShareAltOutlined, CameraFilled } from '../assets/icons'
+import { ShareAltOutlined, CameraFilled, UserOutlined } from '../assets/icons'
 import { serverUrl } from '../lib/serverUrl'
 import { useRouter } from 'next/router'
 import useIsMobile from '../logics/useIsMobile'
@@ -158,8 +158,8 @@ export default function BingoRenderer( props ){
                         if( size * i <= index && index < size * (i+1) ){
                             return (
                                 <td key={index} style={{border: '1px solid black', backgroundColor: `rgba(255,255,0, ${backColor(v)})`, textAlign: 'center', color: `${selectedIndex.includes(index) ? 'dodgerblue' : 'black'}`, padding: '4px 8px'}}>
-                                    {v}%
-                                    <div style={{fontSize: '0.8rem'}}>({resultCount[index]}회) </div>
+                                    <span style={{fontWeight: 'bold'}}>{v}%</span>
+                                    <div style={{fontSize: '0.8rem'}}>(<UserOutlined />{resultCount[index]}) </div>
                                 </td>
                             )
                         }
@@ -214,17 +214,19 @@ export default function BingoRenderer( props ){
                                     <MenuButton>
                                         <CopyToClipboard text={serverUrl + router.asPath}
                                         onCopy={() => message.success(t("MODAL_SHARE_LINK"))}>
-                                            <span><ShareAltOutlined /> Share</span>
+                                            <span><ShareAltOutlined /> {t("PLAYPAGE_SHARE")}</span>
                                         </CopyToClipboard>
                                     </MenuButton>
                                     <MenuButton onClick={() => takeScreenShot('captureWithResult')}>
-                                        <span><CameraFilled /> Capture with Result</span>
+                                        <span><CameraFilled /> {t("PLAYPAGE_CAPTURE")}</span>
                                     </MenuButton>
                                 </CenteredRow>
                             </CenteredCol>
                         </Col>
                         <Col xs={24} sm={12} md={12} lg={12} xl={12} >
-                            <CenteredCol style={{fontWeight: 'bold'}}>유저 선택 비율 통계</CenteredCol>
+                            <CenteredCol style={{fontWeight: 'bold'}}>
+                                {t("PLAYPAGE_PERCENTAGE_STATS")}
+                            </CenteredCol>
                             <CenteredCol>
                                 <table>
                                     <tbody>
