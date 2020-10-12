@@ -9,6 +9,8 @@ import { CenteredRow } from './sub/styled';
 import langCodeToLanguage from '../logics/langCodeToLanguage'
 import useIsMobile from '../logics/useIsMobile';
 
+import { signIn, signOut, useSession } from 'next-auth/client'
+
 const { Search } = Input
 message.config({
     top: 58,
@@ -44,6 +46,7 @@ const HamburgerMenuTab = styled.div`
 `
 
 export default function NavBar({ }) {
+    const [ session, loading ] = useSession()
     // const { formatMessage: tr } = useIntl();
     const { t, i18n } = useTranslation()
     const isMobile = useIsMobile()
@@ -95,6 +98,38 @@ export default function NavBar({ }) {
                     <a> {t("ETC_PRIVACY_POLICY")} </a>
                 </Link>
             </Menu.Item>
+            <div >
+                <p>
+                {!session && <>
+                    <span >You are not signed in</span>
+                    <a
+                        href={`/api/auth/signin`}
+                        onClick={(e) => {
+                        e.preventDefault()
+                        signIn()
+                        }}
+                    >
+                        Sign in
+                    </a>
+                </>}
+                {session && <>
+                    {session.user.image && <span style={{backgroundImage: `url(${session.user.image})` }} />}
+                    <span>
+                    <small>Signed in as</small><br/>
+                    <strong>{session.user.id + ' ' + session.user.email || session.user.name}</strong>
+                    </span>
+                    <a
+                        href={`/api/auth/signout`}
+                        onClick={(e) => {
+                        e.preventDefault()
+                        signOut()
+                        }}
+                    >
+                        Sign out
+                    </a>
+                </>}
+                </p>
+            </div>
         </Menu>
     )
 

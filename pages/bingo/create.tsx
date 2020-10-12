@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react'
+import { useSession, signIn } from 'next-auth/client'
 import { NextSeo } from 'next-seo'
 import { Link } from '../../i18n'
 import styled from 'styled-components'
@@ -11,6 +12,7 @@ import { LeftOutlined, TableOutlined } from '../../assets/icons';
 import BingoRenderer from '../../components/BingoRenderer';
 import { CenteredCol, CenteredRow } from '../../components/sub/styled';
 import { Row, Col, Input, Radio, Select, Modal, InputNumber, Button, message, Slider } from 'antd';
+import LoginContainer from '../../components/LoginContainer'
 const { Option } = Select;
 const marks = {
     0: '0',
@@ -47,8 +49,9 @@ const ColorLeftText = styled.span`
     margin-right: 16px;
 `
 
-export default function BingoCreate({ data, query, params }) {
+export default function BingoCreate() {
     const { t, i18n } = useTranslation()
+    const [ session, loading ] = useSession()
     const { categoryList } = useContext(InitialContents)
 
     const [ bingoCategory, setBingoCategory ] = useState<any>(0)
@@ -174,13 +177,23 @@ export default function BingoCreate({ data, query, params }) {
         }
     },[bingoPassword, bingoTitle, bingoDescription, bingoAuthor, bingoCategory, bingoSize, bingoArr, bingoBgMainColor, bingoBgSubColor, bingoFontColor, bingoCellColor, bingoLineColor, bingoLinePixel, bingoAchievement])
 
+    if (loading) {
+        return <p>Loading…</p>
+    }
+
+    if (!loading && !session) {
+        return <p>빙고를 만들기 위해선 로그인 해주세요. 
+            <LoginContainer />
+        </p>
+    }
+
     return(
         <>
             <NextSeo
             title="Self Bingo"
             description="Make Your Bingo and Share It!"
             />
-            <Row style={{paddingTop: 50}}>
+            <Row>
                 <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{marginTop: 8, marginBottom: 8}}>
                     <ControllerPage>
                         <div style={{width: '100%', backgroundColor: 'white', paddingTop: '1rem', paddingLeft: '1rem'}}>

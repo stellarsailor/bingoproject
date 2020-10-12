@@ -65,7 +65,6 @@ const MobileCategoryContainer = styled.div`
 
 const CreateBingoButton = styled.div`
     width: 100%;
-    margin-top: 58px;
     height: 50px;
     background-color: white;
     border: 1px solid lightgray;
@@ -118,7 +117,7 @@ export default function Home({ }) {
             <Row style={{display: 'flex'}}>
                 <BackTop />
                 <Col xs={24} sm={16} md={16} lg={16} xl={16}>
-                    <div style={{width: '100%', marginTop: 58, height: 50, marginBottom: 8, backgroundColor: 'white', border: '1px solid lightgray', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                    <div style={{width: '100%', height: 50, marginBottom: 8, backgroundColor: 'white', border: '1px solid lightgray', display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
                         <CenteredRow>
                             <a onClick={() => setSortBy(0)}>
                                 <FilterButton selected={sortBy === 0}>

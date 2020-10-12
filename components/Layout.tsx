@@ -9,9 +9,10 @@ export default function Layout(props) {
             <Head>
                 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
             </Head>
+            
             <Navbar />
             <Row justify="center" style={{backgroundColor: 'var(--mono-1)', minHeight: '100vh'}}>
-                <Col xs={24} sm={22} md={20} lg={20} xl={12} >
+                <Col xs={24} sm={22} md={20} lg={20} xl={12} style={{marginTop: 58}}>
                     {props.children}
                 </Col>
             </Row>

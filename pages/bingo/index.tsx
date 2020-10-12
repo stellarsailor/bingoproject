@@ -82,7 +82,7 @@ export default function List({ }) {
                     <Col xs={24} sm={8} md={8} lg={8} xl={8} style={{paddingRight: isMobile ? 0 : 8, zIndex: 100}}>
                         <Sticky topOffset={0}>
                             <CenteredCol>
-                                <div style={{width: '100%', marginTop: isMobile ? 50 : 58, marginBottom: 8, padding: 8, backgroundColor: 'white', border: '1px solid lightgray'}}>
+                                <div style={{width: '100%', marginBottom: 8, padding: 8, backgroundColor: 'white', border: '1px solid lightgray'}}>
                                     <div>
                                         <span style={{fontWeight: 'bold', fontSize: '1rem', marginRight: 8}}>{router.query.search}</span> 
                                         <span style={{color: 'gray'}}> | Search Result</span>
@@ -138,7 +138,7 @@ export default function List({ }) {
                             </CenteredCol>
                         </Sticky>
                     </Col>
-                <Col xs={24} sm={16} md={16} lg={16} xl={16} style={{marginTop: isMobile ? 0 : 58}}>
+                <Col xs={24} sm={16} md={16} lg={16} xl={16}>
                     <BingoListContainer bingoLoading={bingoLoading} bingoList={bingoList} />
                 </Col>
             </Row>

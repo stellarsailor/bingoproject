@@ -1,6 +1,10 @@
 import App from "next/app";
 import type { AppProps /*, AppContext */ } from 'next/app'
 import '../styles/style.css'
+
+import { Provider } from 'next-auth/client'
+import { providers, signIn } from 'next-auth/client'
+
 import { appWithTranslation } from '../i18n'
 import { DefaultSeo } from 'next-seo';
 
@@ -22,26 +26,28 @@ function MyApp({ Component, pageProps }: AppProps) {
     // },[])
 
     return (
-        <InitialContentsProvider>
-            <DefaultSeo
-            title="SelfBingo"
-            canonical="https://www.selfbing.com/"
-            openGraph={{
-                type: 'website',
-                locale: 'en_IE',
-                url: 'https://www.selfbingo.com/',
-                site_name: 'SelfBingo',
-            }}
-            twitter={{
-                handle: '@handle',
-                site: '@site',
-                cardType: 'summary_large_image',
-            }}
-            />
-            <Layout>
-                <Component {...pageProps} />
-            </Layout>
-        </InitialContentsProvider>
+        <Provider session={pageProps.session}>
+            <InitialContentsProvider>
+                <DefaultSeo
+                title="SelfBingo"
+                canonical="https://www.selfbingo.com/"
+                openGraph={{
+                    type: 'website',
+                    locale: 'en_IE',
+                    url: 'https://www.selfbingo.com/',
+                    site_name: 'SelfBingo',
+                }}
+                twitter={{
+                    handle: '@handle',
+                    site: '@site',
+                    cardType: 'summary_large_image',
+                }}
+                />
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
+            </InitialContentsProvider>
+        </Provider>
     )
 }
 
@@ -66,7 +72,8 @@ MyApp.getInitialProps = async (appContext) => {
     return {
         ...appProps,
         pageProps: {
-            namespacesRequired: [...(appProps.pageProps.namespacesRequired || []), ...(defaultProps?.i18nNamespaces || [])]
+            namespacesRequired: [...(appProps.pageProps.namespacesRequired || []), ...(defaultProps?.i18nNamespaces || [])],
+            // providers: await providers(appContext)
         }
     }
 }

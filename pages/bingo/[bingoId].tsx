@@ -253,7 +253,7 @@ export default function BingoDetail({ data }) {
                 visible={reportModal}
                 setReportModal={setReportModal}
                 />
-                <Row style={{paddingTop: 50,width: '100%', maxWidth: height - 100}} >
+                <Row style={{width: '100%', maxWidth: height - 100}} >
                     <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{marginTop: 8, marginBottom: 8}}>
                         <ControllerPage>
                             <Link href="/">
