@@ -1,4 +1,7 @@
 {
+    "SIGN_IN": "로그인",
+    "SIGN_IN_WARNING": "빙고를 만들기위해선 로그인이 필요합니다.",
+    "SIGN_OUT": "로그아웃",
     "CREATE_SELFBINGO": "셀프빙고 만들기",
     "FILTER_BEST": "인기 순",
     "FILTER_RECENT": "최신 순",
@@ -42,6 +45,7 @@
     "PLAYPAGE_DELETE": "빙고 삭제",
     "PLAYPAGE_SUBMIT": "제출 및 통계 확인",
     "PLAYPAGE_PERCENTAGE_STATS": "유저 선택 비율 통계",
+    "PLAYPAGE_AVG_COUNT": "평균 체크 개수",
 
     "MODAL_MARKSTYLE_CHECK": "체크",
     "MODAL_MARKSTYLE_CIRCLE": "동그라미",

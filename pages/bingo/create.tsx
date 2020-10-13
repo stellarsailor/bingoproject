@@ -55,7 +55,7 @@ export default function BingoCreate() {
     const { categoryList } = useContext(InitialContents)
 
     const [ bingoCategory, setBingoCategory ] = useState<any>(0)
-    const [ bingoPassword, setBingoPassword ] = useState('')
+    // const [ bingoPassword, setBingoPassword ] = useState('')
     const [ bingoTitle, setBingoTitle ] = useState('')
     const [ bingoDescription, setBingoDescription ] = useState('')
     const [ bingoAuthor, setBingoAuthor ] = useState('')
@@ -125,8 +125,8 @@ export default function BingoCreate() {
         let blankError = [] //에러는 역순으로
         bingoAchievement.map(v => {if(v === '' || v === null) blankError.push(t("CREATE_EMPTY_ALERT_ACCOMPLISHMENTS"))})
         bingoArr.map(v => {if(v === '' || v === null) blankError.push(t("CREATE_EMPTY_ALERT_ELEMENT"))})
-        if(bingoAuthor === '') blankError.push(t("CREATE_EMPTY_ALERT_NAME"))
-        if(bingoPassword === '') blankError.push(t("CREATE_EMPTY_ALERT_PASSWORD"))
+        // if(bingoAuthor === '') blankError.push(t("CREATE_EMPTY_ALERT_NAME"))
+        // if(bingoPassword === '') blankError.push(t("CREATE_EMPTY_ALERT_PASSWORD"))
         if(bingoTitle === '') blankError.push(t("CREATE_EMPTY_ALERT_TITLE"))
 
         if(blankError.length !== 0){
@@ -141,9 +141,10 @@ export default function BingoCreate() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    lock: 0,
-                    author: bingoAuthor,
-                    password: bingoPassword,
+                    // lock: 0,
+                    // author: bingoAuthor,
+                    userId: session.user.id,
+                    // password: bingoPassword,
                     category: bingoCategory,
                     title: bingoTitle,
                     description: bingoDescription,
@@ -170,21 +171,19 @@ export default function BingoCreate() {
                 } else {
                     setDisableSubmitButton(false)
                 }
-    
             } catch (e) {
                 return e;
             }
         }
-    },[bingoPassword, bingoTitle, bingoDescription, bingoAuthor, bingoCategory, bingoSize, bingoArr, bingoBgMainColor, bingoBgSubColor, bingoFontColor, bingoCellColor, bingoLineColor, bingoLinePixel, bingoAchievement])
+    },[bingoTitle, bingoDescription, bingoAuthor, bingoCategory, bingoSize, bingoArr, bingoBgMainColor, bingoBgSubColor, bingoFontColor, bingoCellColor, bingoLineColor, bingoLinePixel, bingoAchievement])
 
     if (loading) {
         return <p>Loading…</p>
     }
 
     if (!loading && !session) {
-        return <p>빙고를 만들기 위해선 로그인 해주세요. 
-            <LoginContainer />
-        </p>
+        Router.push('/auth/signin')
+        return <p style={{fontSize: '1rem'}}>To make a bingo, You have to Sign in.</p>
     }
 
     return(
@@ -194,7 +193,7 @@ export default function BingoCreate() {
             description="Make Your Bingo and Share It!"
             />
             <Row>
-                <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{marginTop: 8, marginBottom: 8}}>
+                <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{marginBottom: 8}}>
                     <ControllerPage>
                         <div style={{width: '100%', backgroundColor: 'white', paddingTop: '1rem', paddingLeft: '1rem'}}>
                             <Link href="/">
@@ -204,10 +203,10 @@ export default function BingoCreate() {
                             </Link>
                         </div>
                         <div style={{padding: '1rem'}}>
-                            <div style={{borderBottom: '1px solid var(--mono-2)', paddingBottom: '1rem'}}>
-                                <Input placeholder={t("CREATE_PLACEHOLDER_AUTHOR")} onChange={e => setBingoAuthor(e.target.value)} style={{width: '45%', marginRight: 16}} />
-                                <Input.Password placeholder={t("CREATE_PLACEHOLDER_PASSWORD")} onChange={e => setBingoPassword(e.target.value)} style={{width: '45%'}} />
-                            </div>
+                            {/* <div style={{borderBottom: '1px solid var(--mono-2)', paddingBottom: '1rem'}}> */}
+                                {/* <Input placeholder={t("CREATE_PLACEHOLDER_AUTHOR")} value={session.user.name} onChange={e => setBingoAuthor(e.target.value)} style={{width: '45%', marginRight: 16}} /> */}
+                                {/* <Input.Password placeholder={t("CREATE_PLACEHOLDER_PASSWORD")} onChange={e => setBingoPassword(e.target.value)} style={{width: '45%'}} /> */}
+                            {/* </div> */}
 
                             {/* <Radio.Group defaultValue="a" style={{marginTop: 16}}>
                                 <Radio.Button value="a">
@@ -314,7 +313,8 @@ export default function BingoCreate() {
                     {/* <Checkbox onChange={e => console.log(e)}>NSFW</Checkbox> */}
                     <BingoRenderer 
                     title={bingoTitle}
-                    author={bingoAuthor}
+                    // author={session.user.name}
+                    description={bingoDescription}
                     size={bingoSize}
                     elements={bingoArr}
                     elementOnClickEvent={openIndexedModal}

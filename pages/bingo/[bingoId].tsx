@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/client'
 import styled from 'styled-components'
 import { useCookies } from 'react-cookie'
 import { Row, Col, Button, Popconfirm, Input, message, Tooltip } from 'antd'
-import { Link, useTranslation } from '../../i18n'
+import { Link, useTranslation, Router } from '../../i18n'
 import { Element , scroller } from 'react-scroll'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import domtoimage from 'dom-to-image'
@@ -49,6 +50,7 @@ const MenuButton = styled.a`
 `
 
 export default function BingoDetail({ data }) {
+    const [ session, loading ] = useSession()
     const router = useRouter()
     const { bingoId } = router.query
     const { t, i18n } = useTranslation()
@@ -69,6 +71,7 @@ export default function BingoDetail({ data }) {
 
     const [ resultStatus, setResultStatus ] = useState('idle')
     const [ resultCount, setResultCount ] = useState([])
+    const [ resultAvgCount, setResultAvgCount ] = useState(0)
     const [ resultPercent, setResultPercent ] = useState([])
 
     useEffect(() => {
@@ -124,7 +127,8 @@ export default function BingoDetail({ data }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                password: passwordInput
+                // password: passwordInput
+                userId: session.user.id
             })
         }
         try {
@@ -132,7 +136,7 @@ export default function BingoDetail({ data }) {
             const data = await fetchResponse.json()
 
             if(data.results === 'success'){
-                router.push('/')
+                Router.push('/')
                 message.success('Bingo is successfully deleted.')
             } else if(data.results === 'wrong'){
                 message.warning('Please check password.')
@@ -223,9 +227,13 @@ export default function BingoDetail({ data }) {
                 })
             })
 
+            let sumCount = 0
+            countArr.map(v => sumCount += v)
+
             let percentArr = countArr.map(v => Math.round((v / resultLength) * 100))
 
             setResultCount(countArr)
+            setResultAvgCount(sumCount / resultLength)
             setResultPercent(percentArr)
             setResultStatus('done')
         } catch (e) {
@@ -254,7 +262,7 @@ export default function BingoDetail({ data }) {
                 setReportModal={setReportModal}
                 />
                 <Row style={{width: '100%', maxWidth: height - 100}} >
-                    <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{marginTop: 8, marginBottom: 8}}>
+                    <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{marginBottom: 8}}>
                         <ControllerPage>
                             <Link href="/">
                                 <a style={{fontSize: '1.1rem'}}>
@@ -285,25 +293,28 @@ export default function BingoDetail({ data }) {
                                         <CameraFilled /> 
                                     </MenuButton>
                                 </Tooltip>
-                                <Tooltip title={t("PLAYPAGE_DELETE")}>
-                                    <MenuButton>
-                                        <Popconfirm
-                                            title={
-                                                <div> 
-                                                    <Input.Password placeholder="input password" onChange={(e) => setPasswordInput(e.target.value)} style={{width: 200}} />
-                                                </div>
-                                            }
-                                            onConfirm={() => deleteBingo(passwordInput)}
-                                            onCancel={() => console.log('cancelled')}
-                                            okText="Delete"
-                                            cancelText="Cancel"
-                                            icon={<LockOutlined style={{fontSize: 20}} />}
-                                        
-                                        >
-                                            <DeleteOutlined /> 
-                                        </Popconfirm>
-                                    </MenuButton>
-                                </Tooltip>
+                                { session && session.user.id === bingo.userId ? 
+                                    <Tooltip title={t("PLAYPAGE_DELETE")}>
+                                        <MenuButton>
+                                            <Popconfirm
+                                                title={
+                                                    <div> 
+                                                        {/* <Input.Password placeholder="input password" onChange={(e) => setPasswordInput(e.target.value)} style={{width: 200}} /> */}
+                                                        Do you want to delete this Bingo?
+                                                    </div>
+                                                }
+                                                onConfirm={() => deleteBingo(passwordInput)}
+                                                onCancel={() => console.log('cancelled')}
+                                                okText="Delete"
+                                                cancelText="Cancel"
+                                                icon={<LockOutlined style={{fontSize: 16}} />}
+                                            
+                                            >
+                                                <DeleteOutlined /> 
+                                            </Popconfirm>
+                                        </MenuButton>
+                                    </Tooltip>
+                                 : null}
                             </CenteredRow>
                         </ControllerPage>
                     </Col>
@@ -333,6 +344,7 @@ export default function BingoDetail({ data }) {
                             resultString={JSON.parse(bingo.achievements)[completedBingoLines]}
                             resultStatus={resultStatus}
                             resultCount={resultCount}
+                            resultAvgCount={resultAvgCount}
                             resultPercent={resultPercent}
 
                             takeScreenShot={takeScreenShot}

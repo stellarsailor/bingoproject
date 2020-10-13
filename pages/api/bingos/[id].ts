@@ -60,26 +60,45 @@ export default async (req, res) => {
 
     } else if(req.method === 'DELETE'){
         const bingoId = parseInt(req.query.id)
-        const password = req.body.password
+        // const password = req.body.password
 
-        const hashFromDB = await db.query(escape`
-            SELECT password 
+        // const hashFromDB = await db.query(escape`
+        //     SELECT password 
+        //     FROM bingos
+        //     WHERE id = ${bingoId};
+        // `)
+
+        // if (bcrypt.compareSync(password, hashFromDB[0].password) === true){
+        //     const deleteBingo = await db.query(escape`
+        //         DELETE FROM bingos
+        //         WHERE id = ${bingoId};
+        //     `)
+        //     if(deleteBingo.affectedRows === 1){
+        //         res.status(200).json({ results: 'success' })
+        //     } else {
+        //         res.status(200).json({ results: 'error' })
+        //     }
+        // } else {
+        //     res.status(200).json({ results: 'wrong' })
+        // }
+        const userId = parseInt(req.body.userId)
+
+        const compareUserId = await db.query(escape`
+            SELECT count(*) as TF
             FROM bingos
-            WHERE id = ${bingoId};
+            WHERE id = ${bingoId} AND userId = ${userId};
         `)
 
-        if (bcrypt.compareSync(password, hashFromDB[0].password) === true){
+        if(compareUserId[0].TF === 1){
             const deleteBingo = await db.query(escape`
                 DELETE FROM bingos
                 WHERE id = ${bingoId};
             `)
             if(deleteBingo.affectedRows === 1){
                 res.status(200).json({ results: 'success' })
-            } else {
-                res.status(200).json({ results: 'error' })
             }
         } else {
-            res.status(200).json({ results: 'wrong' })
+            res.status(200).json({ results: 'error' })
         }
     }
 }

@@ -65,3 +65,7 @@ export {
 export {
     default as UserOutlined
 } from '@ant-design/icons/lib/icons/UserOutlined';
+
+export {
+    default as EditOutlined
+} from '@ant-design/icons/lib/icons/EditOutlined';

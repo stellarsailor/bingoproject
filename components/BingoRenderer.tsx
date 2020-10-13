@@ -90,6 +90,7 @@ export default function BingoRenderer( props ){
         resultString, 
         resultStatus, 
         resultCount, 
+        resultAvgCount, 
         resultPercent, 
 
         takeScreenShot,
@@ -175,11 +176,11 @@ export default function BingoRenderer( props ){
             <CreatePage ref={ref} bgMainColor={bgMainColor} bgSubColor={bgSubColor} id="captureWithoutResult">
                 <CenteredCol>
                     <TitleText color={pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}>
-                        {title} 
+                        {title}
                     </TitleText>
-                    <AuthorText color={pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}>
-                        by {author}
-                    </AuthorText>
+                    {/* <AuthorText color={pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}>
+                        {author}
+                    </AuthorText> */}
                     <DescText color={pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}>
                         {description}
                     </DescText>
@@ -188,7 +189,7 @@ export default function BingoRenderer( props ){
                             {renderTable(size)}
                         </tbody>
                     </table>
-                    <div style={{color: `${pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}`, fontWeight: 'bold', fontSize: '1.3rem', marginTop: '0.5rem'}}>
+                    <div style={{color: `${pickTextColorBasedOnBgColor(bgSubColor ? bgSubColor : bgMainColor, '#ffffff', '#000000')}`, fontWeight: 'bold', fontSize: '1.3rem', marginTop: '0.5rem'}}>
                         SelfBingo.com
                     </div>
                 </CenteredCol>
@@ -233,6 +234,7 @@ export default function BingoRenderer( props ){
                                         {renderResultTable(size)}
                                     </tbody>
                                 </table>
+                                {t("PLAYPAGE_AVG_COUNT")}: {resultAvgCount}
                             </CenteredCol>
                         </Col>
                     </Row>

@@ -1,4 +1,7 @@
 {
+    "SIGN_IN": "Sign In",
+    "SIGN_IN_WARNING": "To make a bingo, You have to sign in.",
+    "SIGN_OUT": "Sign Out",
     "CREATE_SELFBINGO": "Create SelfBingo",
     "FILTER_BEST": "BEST",
     "FILTER_RECENT": "NEW",
@@ -42,6 +45,7 @@
     "PLAYPAGE_DELETE": "Delete this Bingo",
     "PLAYPAGE_SUBMIT": "Submit/Check Stats",
     "PLAYPAGE_PERCENTAGE_STATS": "Bingo Percentage Statistics",
+    "PLAYPAGE_AVG_COUNT": "Average Marks",
 
     "MODAL_MARKSTYLE_CHECK": "Check",
     "MODAL_MARKSTYLE_CIRCLE": "Circle",

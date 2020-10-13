@@ -3,7 +3,6 @@ import { useTranslation } from '../i18n';
 const ReactMarkdown = require('react-markdown')
 
 const Container = styled.div`
-    margin-top: 66px;
     border-radius: 3px;
     background-color: white;
     border: 1px solid lightgray;

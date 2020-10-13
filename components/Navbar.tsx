@@ -2,10 +2,10 @@
 import styled from 'styled-components'
 import { Input, Row, Col, Popover, Button, message, Modal, Dropdown, Menu } from 'antd';
 import { Link, useTranslation, Router } from '../i18n'
-import { MenuOutlined, GlobalOutlined } from '../assets/icons';
+import { MenuOutlined, GlobalOutlined, UserOutlined, EditOutlined } from '../assets/icons';
 import { useEffect, useState, useCallback, useContext } from 'react';
 import { InitialContents } from '../store/InitialContentsProvider';
-import { CenteredRow } from './sub/styled';
+import { CenteredCol, CenteredRow } from './sub/styled';
 import langCodeToLanguage from '../logics/langCodeToLanguage'
 import useIsMobile from '../logics/useIsMobile';
 
@@ -77,7 +77,30 @@ export default function NavBar({ }) {
     )
 
     const hamburgerMenu = (
-        <Menu>
+        <Menu style={{width: 240}}>
+            {!session ?
+            <Menu.Item style={{padding: '8px 20px'}}>
+                <Link href="/auth/signin">
+                    {/* <Button type="primary" style={{width: 150, margin: '8px 20px'}} onClick={(e) => console.log()}> */}
+                        <a style={{color: 'dodgerblue'}}>{t("SIGN_IN")}</a>
+                    {/* </Button> */}
+                </Link>
+            </Menu.Item>
+            :
+            <div style={{padding: '8px 20px', display: 'flex', flexDirection: 'row'}}>
+                {/* {session.user.image && <span style={{backgroundImage: `url(${session.user.image})` }} />} */}
+                <CenteredCol>
+                    <UserOutlined style={{fontSize: 20, marginRight: 10}} />    
+                </CenteredCol>
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <span>
+                        <strong>{session.user.name}</strong> 
+                        {/* <small style={{color: 'dodgerblue'}}><EditOutlined /></small> */}
+                    </span>
+                    <small>{session.user.email}</small>
+                </div>
+            </div>
+            }
             <Menu.Item style={{padding: '8px 20px'}}>
                 <Link href="/bingo/create">
                     <a> {t("CREATE_SELFBINGO")} </a>
@@ -98,38 +121,12 @@ export default function NavBar({ }) {
                     <a> {t("ETC_PRIVACY_POLICY")} </a>
                 </Link>
             </Menu.Item>
-            <div >
-                <p>
-                {!session && <>
-                    <span >You are not signed in</span>
-                    <a
-                        href={`/api/auth/signin`}
-                        onClick={(e) => {
-                        e.preventDefault()
-                        signIn()
-                        }}
-                    >
-                        Sign in
-                    </a>
-                </>}
-                {session && <>
-                    {session.user.image && <span style={{backgroundImage: `url(${session.user.image})` }} />}
-                    <span>
-                    <small>Signed in as</small><br/>
-                    <strong>{session.user.id + ' ' + session.user.email || session.user.name}</strong>
-                    </span>
-                    <a
-                        href={`/api/auth/signout`}
-                        onClick={(e) => {
-                        e.preventDefault()
-                        signOut()
-                        }}
-                    >
-                        Sign out
-                    </a>
-                </>}
-                </p>
-            </div>
+            {session && <Menu.Divider /> }
+            {session &&
+                <Menu.Item style={{padding: '8px 20px'}}>
+                    <a onClick={() => signOut()}> {t("SIGN_OUT")} </a>
+                </Menu.Item>
+            }
         </Menu>
     )
 
@@ -139,8 +136,8 @@ export default function NavBar({ }) {
                 <Col xs={23} sm={22} md={20} lg={20} xl={12} >
                     <CenterAlign>
                         <Link href="/"><a>
-                            { isMobile ? null : <img src="/static/images/icon.png" alt="my image" style={{height: 35}} /> }
-                            <img src="/static/images/logo.png" alt="my image" style={{height: isMobile ? 22 : 35}} />
+                            { isMobile ? null : <img src="/static/images/icon.png" alt="Selfbingo Icon" style={{height: 35}} /> }
+                            <img src="/static/images/logo.png" alt="Selfbingo Logo" style={{height: isMobile ? 22 : 35}} />
                         </a></Link>
                         <Search
                         placeholder={t('SEARCH_INPUT_PLACEHOLER')}

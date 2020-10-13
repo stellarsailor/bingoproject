@@ -70,9 +70,10 @@ export default async (req, res) => {
         const salt = bcrypt.genSaltSync(10)
 
         const lang = req.query.lang || 'en'
-        const lock = req.body.lock
-        const author = req.body.author
-        const password = bcrypt.hashSync(req.body.password, salt)
+        // const lock = req.body.lock
+        // const author = req.body.author
+        const userId = req.body.userId
+        // const password = bcrypt.hashSync(req.body.password, salt)
         const category = req.body.category
         const title = req.body.title
         const description = req.body.description
@@ -91,19 +92,19 @@ export default async (req, res) => {
         // console.log(elements)
         // console.log(req.headers['x-real-ip'] || req.connection.remoteAddress)
 
-        const spamCheck = await db.query(escape`
-            SELECT count(*) as spamCount FROM bingos WHERE createdAt > date_sub(now(), interval 5 minute) AND ipAddress=${ipAddress}
-        `)
+        // const spamCheck = await db.query(escape`
+        //     SELECT count(*) as spamCount FROM bingos WHERE createdAt > date_sub(now(), interval 5 minute) AND ipAddress=${ipAddress}
+        // `)
 
-        if(spamCheck[0].spamCount > 0){
-            res.status(200).json({ error: 'duplicated' })
-        } else {
+        // if(spamCheck[0].spamCount > 0){
+        //     res.status(200).json({ error: 'duplicated' })
+        // } else {
             const insertResult = await db.query(escape`
-                INSERT INTO bingos (lang, categoryId, title, description, author, size, elements, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, linePixel, achievements, ipAddress, password)
-                VALUES (${lang}, ${category}, ${title}, ${description}, ${author}, ${size}, ${JSON.stringify(elements)}, ${bgMainColor}, ${bgSubColor}, ${fontColor}, ${cellColor}, ${lineColor}, ${linePixel}, ${JSON.stringify(achievements)}, ${ipAddress}, ${password});
+                INSERT INTO bingos (lang, categoryId, title, description, userId, size, elements, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, linePixel, achievements, ipAddress)
+                VALUES (${lang}, ${category}, ${title}, ${description}, ${userId}, ${size}, ${JSON.stringify(elements)}, ${bgMainColor}, ${bgSubColor}, ${fontColor}, ${cellColor}, ${lineColor}, ${linePixel}, ${JSON.stringify(achievements)}, ${ipAddress});
             `)
     
             res.status(200).json({ insertResult })
-        }
+        // }
     }
 }
