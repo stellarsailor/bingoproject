@@ -88,11 +88,16 @@ const GrayLittleLink = styled.a`
 
 export default function Home({ }) {
     const { t, i18n } = useTranslation()
-    const { bingoList, bingoPage, setBingoPage, bingoLoading, bingoHasMore, selectedCategory, setSelectedCategory, sortBy, setSortBy, fetchMainBingos, categoryList } = useContext(InitialContents)
+    const { bingoList, bingoPage, setBingoPage, bingoLoading, bingoHasMore, selectedCategory, setSelectedCategory, sortBy, setSortBy, setSearchBy, setSearchTarget, fetchMainBingos, categoryList } = useContext(InitialContents)
     const isMobile = useIsMobile()
     
     const [ mobileCategoryListVisible, setMobileCategoryListVisible ] = useState(false)
     const [ sortedCategoryList, setSortedCategoryList ] = useState([])
+
+    useEffect(() => {
+        setSearchBy('')
+        setSearchTarget('all')
+    },[])
     
     useEffect (() => {
         let copiedCategoryList = [...categoryList]

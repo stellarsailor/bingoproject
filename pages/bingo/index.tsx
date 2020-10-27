@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useContext } from 'react'
 import styled from 'styled-components'
 import { Row, Col, BackTop, Radio } from 'antd';
 import Sticky from 'react-sticky-el';
 
-import { serverUrl } from '../../lib/serverUrl'
 import { Link, useTranslation } from '../../i18n';
 import { useRouter } from 'next/router';
 import BingoListContainer from '../../components/BingoListContainer';
 import { CenteredCol } from '../../components/sub/styled';
 import useIsMobile from '../../logics/useIsMobile';
+import { InitialContents } from '../../store/InitialContentsProvider'
 
 const FilteringTab = styled.div`
     margin-top: ${(props) => props.isMobile ? '4px' : '8px'};
@@ -16,64 +16,15 @@ const FilteringTab = styled.div`
 
 export default function List({ }) {
     const { t, i18n } = useTranslation()
-    // const { bingoLoading, bingoList, fetchMainBingos } = useContext(InitialContents)
+    const { sortBy, setSortBy, period, setPeriod, setSearchBy, fetchMainBingos, searchTarget, setSearchTarget } = useContext(InitialContents)
     const router = useRouter()
     const isMobile = useIsMobile()
 
-    const [ sortBy, setSortBy ] = useState(0)
-    const [ period, setPeriod ] = useState('all')
-    const [ searchTarget, setSearchTarget ] = useState('title')
-
-    const [ bingoList, setBingoList ] = useState([])
-    const [ bingoLoading, setBingoLoading ] = useState(true)
-    const [ bingoPage, setBingoPage ] = useState(1)
-
     useEffect(() => {
-        fetchMainBingos(0, sortBy, router.query.search.toString(), searchTarget, period, 1)
-    },[sortBy, router.query.search, period, searchTarget])
-
-    const fetchMainBingos = useCallback( async (categoryId, sortBy, searchBy, searchTarget, period, page) => {
-        setBingoLoading(true)
-
-        let url = `${serverUrl}/api/bingos?lang=${i18n.language}`
-
-        url += `&category=${categoryId}`
-
-        url += `&sortBy=${sortBy}`
-
-        if(searchBy === '') url += ''
-        else {
-            let searchByChunks = searchBy.split(' ')
-            searchByChunks.map(v => url += `&searchBy=${v}`)
-        }
-
-        if(period === 'all') url += ''
-        else if(period === 'month') url += '&period=month'
-        else if(period === 'week') url += '&period=week'
-        else if(period === 'today') url += '&period=today'
-        else url += ''
-        
-        if(searchTarget === 'all') url += ''
-        else if(searchTarget === 'title') url += '&searchTarget=title'
-        else if(searchTarget === 'elements') url += '&searchTarget=elements'
-        else if(searchTarget === 'author') url += '&searchTarget=author'
-        else url += ''
-
-        url += `&page=${bingoPage}&limit=9`
-
-        const res = await fetch(url)
-        const data = await res.json()
-
-        if(page === 1){
-            setBingoList(data.bingos)
-            // setBingoPage(bingoPage + 1)
-            setBingoLoading(false)
-        } else {
-            setBingoList([...bingoList, ...data.bingos])
-            // setBingoPage(bingoPage + 1)
-            setBingoLoading(false)
-        }
-    },[bingoList, bingoPage]) 
+        let searchQueryString = router.query.search.toString()
+        setSearchBy(searchQueryString)
+        setSearchTarget('title')
+    },[router.query.search])
 
     return(
         <>
@@ -120,16 +71,16 @@ export default function List({ }) {
                                         {/* <TabLeftTitle>
                                             Search Target
                                         </TabLeftTitle> */}
-                                        <Radio.Group defaultValue={searchTarget} size="small">
+                                        <Radio.Group defaultValue={'title'} size="small">
                                             <Radio.Button value="title" onClick={() => setSearchTarget('title')}>
                                                 {t("SEARCH_TITLE")}
                                             </Radio.Button>
                                             <Radio.Button value="elements" onClick={() => setSearchTarget('elements')}>
                                                 {t("SEARCH_ELEMENTS")}
                                             </Radio.Button>
-                                            <Radio.Button value="author" onClick={() => setSearchTarget('author')}>
+                                            {/* <Radio.Button value="author" onClick={() => setSearchTarget('author')}>
                                                 {t("SEARCH_AUTHOR")}
-                                            </Radio.Button>
+                                            </Radio.Button> */}
                                         </Radio.Group>
                                     </FilteringTab>
 
@@ -139,7 +90,7 @@ export default function List({ }) {
                         </Sticky>
                     </Col>
                 <Col xs={24} sm={16} md={16} lg={16} xl={16}>
-                    <BingoListContainer bingoLoading={bingoLoading} bingoList={bingoList} />
+                    <BingoListContainer />
                 </Col>
             </Row>
         </>

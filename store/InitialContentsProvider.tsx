@@ -16,8 +16,11 @@ export const InitialContents = createContext({ //타입 표기, 최하단에 val
     sortBy: 0,
     setSortBy: (sortBy: 0 | 1) => {},
     searchBy: '',
+    setSearchBy: (searchBy: string) => {},
     searchTarget: 'all',
+    setSearchTarget: (searchTarget: string) => {},
     period: 'all',
+    setPeriod: (period: string) => {},
     fetchMainBingos: (pageParam) => {},
 })
 
@@ -25,7 +28,6 @@ const InitialContentsProvider = (props) => {
     const { t, i18n } = useTranslation()
     const router = useRouter()
 
-    const [ lang, setLang ] = useState(i18n.language)
     
     const [ categoryList, setCategoryList ] = useState([])
     const [ bingoList, setBingoList ] = useState([])
@@ -53,21 +55,14 @@ const InitialContentsProvider = (props) => {
 
     useEffect(() => {
         fetchMainCategories()
-    }, [])
+    },[])
 
     useEffect(() => {
-        setBingoLoading(true)
-        setBingoPage(1) // when either category or sortBy changed, need to sync bingoPage state
-        fetchMainBingos(1)
-    },[selectedCategory, sortBy])
-
-    useEffect(() => {
-        setLang(i18n.language)
-
+        // console.log('triggered!! Category: ' + selectedCategory + ' / sortBy: '+ sortBy + ' / searchBy: '+ searchBy + ' / searchTarget: '+ searchTarget)
         setBingoLoading(true)
         setBingoPage(1)
         fetchMainBingos(1)
-    },[i18n.language])
+    }, [selectedCategory, sortBy, searchBy, searchTarget, period, i18n.language])
 
     const fetchMainBingos = useCallback( async (pageParam) => {
         let url = `${serverUrl}/api/bingos?lang=${i18n.language}`
@@ -117,7 +112,7 @@ const InitialContentsProvider = (props) => {
             setBingoPage(pageParam + 1)
             setBingoLoading(false)
         }
-    },[lang, bingoList, selectedCategory, sortBy, searchBy, searchTarget, period]) 
+    },[bingoList, selectedCategory, sortBy, searchBy, searchTarget, period]) 
 
     return (
         <InitialContents.Provider value={{ 
@@ -133,10 +128,14 @@ const InitialContentsProvider = (props) => {
             sortBy: sortBy,
             setSortBy: setSortBy,
             searchBy: searchBy,
+            setSearchBy: setSearchBy,
             searchTarget: searchTarget,
+            setSearchTarget: setSearchTarget,
             period: period,
+            setPeriod: setPeriod,
 
-            fetchMainBingos: fetchMainBingos
+            fetchMainBingos: fetchMainBingos,
+            // applyChangesAndFetch: applyChangesAndFetch,
         }}>
             {props.children}
         </InitialContents.Provider>
