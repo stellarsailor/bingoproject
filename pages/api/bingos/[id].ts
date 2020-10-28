@@ -17,6 +17,7 @@ export default async (req, res) => {
     } else if(req.method === 'POST'){
         const bingoId = parseInt(req.query.id)
         const binaryResult = req.body.binaryResult
+        const completedLines = parseInt(req.body.completedLines) //completed bingo lines
         const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress
 
         const spamCheck = await db.query(escape`
@@ -34,8 +35,8 @@ export default async (req, res) => {
         } else {
             // console.log(insertResult) 이때 모든 요소가 숫자인지 검사하고 예외처리가 필요한가?
             const insertResult = await db.query(escape`
-                INSERT INTO results (bingoId, binaryResult, ipAddress)
-                VALUES (${bingoId}, ${JSON.stringify(binaryResult)}, ${ipAddress});
+                INSERT INTO results (bingoId, binaryResult, completedLines, ipAddress)
+                VALUES (${bingoId}, ${JSON.stringify(binaryResult)}, ${completedLines}, ${ipAddress});
             `)
 
             if(insertResult.affectedRows === 1){
@@ -47,7 +48,7 @@ export default async (req, res) => {
     
                 //all results of that bingo after added one of user's
                 const results = await db.query(escape`
-                SELECT binaryResult
+                SELECT binaryResult, completedLines
                 FROM results
                 WHERE bingoId = ${bingoId};
                 `)

@@ -69,3 +69,23 @@ export {
 export {
     default as EditOutlined
 } from '@ant-design/icons/lib/icons/EditOutlined';
+
+export {
+    default as InfoCircleOutlined
+} from '@ant-design/icons/lib/icons/InfoCircleOutlined';
+
+export {
+    default as BgColorsOutlined
+} from '@ant-design/icons/lib/icons/BgColorsOutlined';
+
+export {
+    default as HighlightOutlined
+} from '@ant-design/icons/lib/icons/HighlightOutlined';
+
+export {
+    default as BarsOutlined
+} from '@ant-design/icons/lib/icons/BarsOutlined';
+
+export {
+    default as TrophyOutlined
+} from '@ant-design/icons/lib/icons/TrophyOutlined';

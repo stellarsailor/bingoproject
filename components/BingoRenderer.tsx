@@ -34,13 +34,15 @@ const MenuButton = styled.a`
 const CreatePage = styled.div`
     background: ${(props) => `-webkit-linear-gradient(${props.bgMainColor}, ${props.bgSubColor})` };
     width: 100%;
+    max-width: 800px;
     padding: 1rem;
     border: 1px solid lightgray;
 `
 
 const ResultPage = styled.div`
-    /* margin-top: 8px; */
-    margin-top: -1px;
+    margin-top: 8px;
+    width: 100%;
+    /* margin-top: -1px; */
     border: 1px solid lightgray;
     border-radius: 3px;
     background-color: white;
@@ -91,13 +93,14 @@ export default function BingoRenderer( props ){
         resultStatus, 
         resultCount, 
         resultAvgCount, 
+        resultAvgBingoLines,
         resultPercent, 
 
         takeScreenShot,
     } = props
 
     const router = useRouter()
-    const isMobile = useIsMobile()
+    // const isMobile = useIsMobile()
     const ref = useRef(null)
 
     const [ width, height ] = useWindowSize()
@@ -172,7 +175,7 @@ export default function BingoRenderer( props ){
     }
 
     return (
-        <div id='captureWithResult' style={{width: '100%'}}>
+        <div id='captureWithResult' style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
             <CreatePage ref={ref} bgMainColor={bgMainColor} bgSubColor={bgSubColor} id="captureWithoutResult">
                 <CenteredCol>
                     <TitleText color={pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}>
@@ -205,7 +208,7 @@ export default function BingoRenderer( props ){
                             <CenteredCol>
                                 <CenteredCol style={{borderBottom: '1px solid lightgray', width: '100%'}}>
                                     <div style={{color: 'black', fontWeight: 'bold', fontSize: '1rem'}}>
-                                        완성된 빙고 개수 : {completedBingoLines}
+                                        완성된 빙고 개수#! : {completedBingoLines}
                                     </div>
                                     <div style={{color: 'black', fontWeight: 'bold', fontSize: '1.4rem', marginTop: '0.3rem'}}>
                                         "{resultString}"
@@ -234,7 +237,12 @@ export default function BingoRenderer( props ){
                                         {renderResultTable(size)}
                                     </tbody>
                                 </table>
-                                {t("PLAYPAGE_AVG_COUNT")}: {resultAvgCount}
+                                <div>
+                                   {t("PLAYPAGE_AVG_COUNT")}: {resultAvgCount}
+                                </div>
+                                <div>
+                                    완성된 평균 빙고 개수#!: {resultAvgBingoLines}
+                                </div>
                             </CenteredCol>
                         </Col>
                     </Row>

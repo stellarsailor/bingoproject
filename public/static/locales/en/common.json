@@ -45,7 +45,7 @@
     "PLAYPAGE_DELETE": "Delete this Bingo",
     "PLAYPAGE_SUBMIT": "Submit/Check Stats",
     "PLAYPAGE_PERCENTAGE_STATS": "Bingo Percentage Statistics",
-    "PLAYPAGE_AVG_COUNT": "Average Marks",
+    "PLAYPAGE_AVG_COUNT": "Average Number of Marks",
 
     "MODAL_MARKSTYLE_CHECK": "Check",
     "MODAL_MARKSTYLE_CIRCLE": "Circle",

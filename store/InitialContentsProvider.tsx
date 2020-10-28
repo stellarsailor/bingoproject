@@ -91,7 +91,7 @@ const InitialContentsProvider = (props) => {
 
         url += `&page=${pageParam}&limit=${bingoLimit}`
 
-        console.log(url)
+        // console.log(url)
 
         const res = await fetch(url)
         const data = await res.json()

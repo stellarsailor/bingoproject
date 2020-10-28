@@ -11,8 +11,10 @@ import { InitialContents } from '../../store/InitialContentsProvider';
 import { LeftOutlined, TableOutlined } from '../../assets/icons';
 import BingoRenderer from '../../components/BingoRenderer';
 import { CenteredCol, CenteredRow } from '../../components/sub/styled';
-import { Row, Col, Input, Radio, Select, Modal, InputNumber, Button, message, Slider } from 'antd';
+import { Row, Col, Input, Radio, Select, Modal, InputNumber, Button, message, Slider, Checkbox } from 'antd';
 import LoginContainer from '../../components/LoginContainer'
+import CreateButtonTab from '../../components/sub/CreateButtonTab'
+import useWindowSize from '../../logics/useWindowSize'
 const { Option } = Select;
 const marks = {
     0: '0',
@@ -25,34 +27,56 @@ const marks = {
     // 7: '7',
 };
 
+const TopBar = styled.div`
+    background: -webkit-linear-gradient(45deg, dodgerblue, darkblue);
+    width: 100%;
+    height: 60px;
+    background-color: dodgerblue;
+    padding-top: 1rem;
+    padding-left: 1rem;
+`
+
+const TextLabel = styled.div`
+    color: var(--mono-2);
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 8px;
+`
+
 const ControllerPage = styled.div`
-    background-color: white;
-    border: 1px solid lightgray;
+    background-color: #293039;
+    color: white;
+    /* border: 1px solid lightgray; */
+    width: ${props => props.width < 768 ? '100%' : '350px'};
+    padding: 1rem;
 `
 
 const ColorSquare = styled.div`
-    width: 20px;
-    height: 20px;
+    width: 120px;
+    height: 30px;
     background-color: ${props => props.color};
-    border-radius: 4px;
+    border-radius: 6px;
     border: 1px solid lightgray;
+    margin-left: 16px;
+    margin-bottom: 16px;
+    &:hover {
+        cursor: pointer;
+    }
 `
 
 const ColorTab = styled.span`
-    display: flex;
-    flex-direction: row;
+    /* display: flex;
+    flex-direction: row; */
     margin: 8px 0px;
-`
-
-const ColorLeftText = styled.span`
-    width: 120px;
-    margin-right: 16px;
 `
 
 export default function BingoCreate() {
     const { t, i18n } = useTranslation()
     const [ session, loading ] = useSession()
+    const [ width, height ] = useWindowSize()
     const { categoryList } = useContext(InitialContents)
+    
+    const [ selectedButton, setSelectedButton ] = useState(0)
 
     const [ bingoCategory, setBingoCategory ] = useState<any>(0)
     // const [ bingoPassword, setBingoPassword ] = useState('')
@@ -65,6 +89,7 @@ export default function BingoCreate() {
     const [ colorPickerKey, setColorPickerKey ] = useState('')
 
     const [ bingoBgMainColor, setBingoBgMainColor ] = useState('#ffffff')
+    const [ allowGradient, setAllowGradient ] = useState(false)
     const [ bingoBgSubColor, setBingoBgSubColor ] = useState('#0693E3')
     const [ bingoFontColor, setBingoFontColor ] = useState('#000000')
     const [ bingoLineColor, setBingoLineColor ] = useState('#000000')
@@ -189,128 +214,203 @@ export default function BingoCreate() {
     return(
         <>
             <NextSeo
-            title="Self Bingo"
+            title="Create Self Bingo"
             description="Make Your Bingo and Share It!"
             />
-            <Row>
-                <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{marginBottom: 8}}>
-                    <ControllerPage>
-                        <div style={{width: '100%', backgroundColor: 'white', paddingTop: '1rem', paddingLeft: '1rem'}}>
-                            <Link href="/">
-                                <a style={{fontSize: '1.1rem'}}>
-                                    <LeftOutlined /> Back
-                                </a>
-                            </Link>
-                        </div>
-                        <div style={{padding: '1rem'}}>
-                            {/* <div style={{borderBottom: '1px solid var(--mono-2)', paddingBottom: '1rem'}}> */}
-                                {/* <Input placeholder={t("CREATE_PLACEHOLDER_AUTHOR")} value={session.user.name} onChange={e => setBingoAuthor(e.target.value)} style={{width: '45%', marginRight: 16}} /> */}
-                                {/* <Input.Password placeholder={t("CREATE_PLACEHOLDER_PASSWORD")} onChange={e => setBingoPassword(e.target.value)} style={{width: '45%'}} /> */}
-                            {/* </div> */}
-
-                            {/* <Radio.Group defaultValue="a" style={{marginTop: 16}}>
-                                <Radio.Button value="a">
-                                    <GlobalOutlined /> 공개
-                                </Radio.Button>
-                                <Radio.Button value="b">
-                                    <LockOutlined /> 일부공개
-                                </Radio.Button>
-                            </Radio.Group> */}
-
-                            <div>
-                                <Select placeholder={t("CREATE_PLACEHOLDER_CATEGORY")} style={{ width: 150, margin: '1rem 0px', marginRight: 16 }} onChange={v => setBingoCategory(v)}>
+            <TopBar>
+                <Link href="/">
+                    <a style={{fontSize: '1.1rem', color: 'white'}}>
+                        <LeftOutlined /> Back
+                    </a>
+                </Link>
+            </TopBar>
+            <Row style={{width: '100%'}}> 
+                <Col style={{maxWidth: width < 768 ? width : 768, display: 'flex', flexDirection: width < 768 ? 'column' : 'row' }}>
+                    <CreateButtonTab selectedButton={selectedButton} setSelectedButton={setSelectedButton} />
+                    <ControllerPage width={width}>
+                        {/* <div style={{borderBottom: '1px solid var(--mono-2)', paddingBottom: '1rem'}}> */}
+                            {/* <Input placeholder={t("CREATE_PLACEHOLDER_AUTHOR")} value={session.user.name} onChange={e => setBingoAuthor(e.target.value)} style={{width: '45%', marginRight: 16}} /> */}
+                            {/* <Input.Password placeholder={t("CREATE_PLACEHOLDER_PASSWORD")} onChange={e => setBingoPassword(e.target.value)} style={{width: '45%'}} /> */}
+                        {/* </div> */}
+                        {
+                            selectedButton === 0 && 
+                            <>
+                                <Select placeholder={t("CREATE_PLACEHOLDER_CATEGORY")} style={{ width: 200, margin: '1rem 0px', marginRight: 16 }} onChange={v => setBingoCategory(v)}>
                                     {categoryList.map((v, index) => <Option key={index} value={index}>{v.name_ko}</Option>)}
                                 </Select>
-                            </div>
 
-                            <Input placeholder={t("CREATE_PLACEHOLDER_TITLE")} onChange={e => setBingoTitle(e.target.value)} style={{width: '100%'}} />
-                            
-                            <Input placeholder={t("CREATE_PLACEHOLDER_DESC")} onChange={e => setBingoDescription(e.target.value)} style={{width: '100%', margin: '1rem 0px'}} />
-    
-                            <div style={{margin: '1rem 0px'}}>
-                                <span style={{marginRight: 16}}>
-                                    <TableOutlined /> {t("CREATE_BINGO_SIZE")}
-                                </span>
-                                <Radio.Group defaultValue={bingoSize} onChange={(e) => setBingoSize(e.target.value)}>
-                                    <Radio.Button value={3}>3x3</Radio.Button>
-                                    <Radio.Button value={5}>5x5</Radio.Button>
-                                    {/* <Radio.Button value="7">7x7</Radio.Button> */}
-                                </Radio.Group>
-                            </div>
+                                <Input placeholder={t("CREATE_PLACEHOLDER_TITLE")} onChange={e => setBingoTitle(e.target.value)} style={{width: '100%', height: 40, borderRadius: 5}} />
+                                
+                                <Input placeholder={t("CREATE_PLACEHOLDER_DESC")} onChange={e => setBingoDescription(e.target.value)} style={{width: '100%', height: 35, margin: '1rem 0px', borderRadius: 5}} />
 
-                            <ColorTab onClick={() => setColorPickerKey('bingoBgMainColor')}>
-                                <ColorLeftText>{t("CREATE_BACKGROUND_COLOR")}</ColorLeftText>
-                                <ColorSquare color={bingoBgMainColor} />
-                            </ColorTab>
-                            {
-                                colorPickerKey === 'bingoBgMainColor' ? 
-                                <CenteredCol>
-                                    <SwatchesPicker color={bingoBgMainColor} onChangeComplete={(v) => {setBingoBgMainColor(v.hex); setColorPickerKey('');}} />
-                                </CenteredCol>
-                                : null
-                            }
-
-                            <ColorTab onClick={() => setColorPickerKey('bingoBgSubColor')}>
-                                <ColorLeftText>{t("CREATE_SUB_BACKGROUND_COLOR")}</ColorLeftText>
-                                <ColorSquare color={bingoBgSubColor} />
-                            </ColorTab>
-                            {
-                                colorPickerKey === 'bingoBgSubColor' ? 
-                                <CenteredCol>
-                                    <SwatchesPicker color={bingoBgSubColor} onChangeComplete={(v) => {setBingoBgSubColor(v.hex); setColorPickerKey('');}} />
-                                </CenteredCol>
-                                : null
-                            }
-
-                            <ColorTab onClick={() => setColorPickerKey('bingoLineColor')}>
-                                <ColorLeftText>{t("CREATE_LINE_COLOR")}</ColorLeftText>
-                                <ColorSquare color={bingoLineColor} />
-                            </ColorTab>
-                            {
-                                colorPickerKey === 'bingoLineColor' ? 
-                                <CenteredCol>
-                                    <SwatchesPicker color={bingoLineColor} onChangeComplete={(v) => {setBingoLineColor(v.hex); setColorPickerKey('');}} />
-                                </CenteredCol>
-                                : null
-                            }
-
-                            <ColorTab>
-                                <div style={{width: 120}}>
-                                    {t("CREATE_LINE_THICK")}
+                                <div style={{margin: '1rem 0px'}}>
+                                    <TextLabel>
+                                        {t("CREATE_BINGO_SIZE")}
+                                    </TextLabel>
+                                    <Radio.Group defaultValue={bingoSize} onChange={(e) => setBingoSize(e.target.value)} >
+                                        <Radio.Button value={3} style={{width: 80, textAlign: 'center'}}>3x3</Radio.Button>
+                                        <Radio.Button value={5} style={{width: 80, textAlign: 'center'}}>5x5</Radio.Button>
+                                        {/* <Radio.Button value="7">7x7</Radio.Button> */}
+                                    </Radio.Group>
                                 </div>
+                            </>
+                        }
+                        {
+                            selectedButton === 1 &&
+                            <>
+                                <ColorTab onClick={() => setColorPickerKey('bingoLineColor')}>
+                                    <TextLabel>{t("CREATE_LINE_COLOR")}</TextLabel>
+                                    <ColorSquare color={bingoLineColor} />
+                                </ColorTab>
+                                {
+                                    colorPickerKey === 'bingoLineColor' ? 
+                                    <CenteredCol>
+                                        <SwatchesPicker color={bingoLineColor} onChangeComplete={(v) => {setBingoLineColor(v.hex); setColorPickerKey('');}} />
+                                    </CenteredCol>
+                                    : null
+                                }
+
+                                {/* <ColorTab>
+                                    <div style={{width: 120}}>
+                                        {t("CREATE_LINE_THICK")}
+                                    </div>
+                                    <div>
+                                        <InputNumber min={1} max={3} defaultValue={2} onChange={(v: number) => setBingoLinePixel(v)} style={{width: 60}} />
+                                    </div>
+                                </ColorTab> */}
+
+                                {/* <ColorTab onClick={() => setColorPickerKey('bingoCellColor')}>
+                                    <TextLabel>셀 배경색 설정</TextLabel>
+                                    <ColorSquare color={bingoCellColor} />
+                                </ColorTab>
+                                {
+                                    colorPickerKey === 'bingoCellColor' ? 
+                                    <CenteredCol>
+                                        <SwatchesPicker color={bingoCellColor} onChangeComplete={(v) => {setBingoCellColor(v.hex); setColorPickerKey('');}} />
+                                    </CenteredCol>
+                                    : null
+                                } */}
+
+                                <ColorTab onClick={() => setColorPickerKey('bingoFontColor')}>
+                                    <TextLabel>{t("CREATE_FONT_COLOR")}</TextLabel>
+                                    <ColorSquare color={bingoFontColor} />
+                                </ColorTab>
+                                {
+                                    colorPickerKey === 'bingoFontColor' ? 
+                                    <CenteredCol>
+                                        <SwatchesPicker color={bingoFontColor} onChangeComplete={(v) => {setBingoFontColor(v.hex); setColorPickerKey('');}} />
+                                    </CenteredCol>
+                                    : null
+                                }
+                            </>
+                        }
+                        {
+                            selectedButton === 2 &&
+                            <>
+                                <ColorTab onClick={() => setColorPickerKey('bingoBgMainColor')}>
+                                    <TextLabel>{t("CREATE_BACKGROUND_COLOR")}</TextLabel>
+                                    <ColorSquare color={bingoBgMainColor} />
+                                </ColorTab>
+                                {
+                                    colorPickerKey === 'bingoBgMainColor' ? 
+                                    <CenteredCol>
+                                        <SwatchesPicker color={bingoBgMainColor} onChangeComplete={(v) => {
+                                            if(!allowGradient) setBingoBgSubColor(v.hex)
+                                            setBingoBgMainColor(v.hex); 
+                                            setColorPickerKey('');
+                                            }} />
+                                    </CenteredCol>
+                                    : null
+                                }
+
+                                <Checkbox onChange={e => setAllowGradient(e.target.checked)} style={{color: 'var(--mono-2)', marginBottom: 8}}>그라데이션 활성화</Checkbox>
+                                {
+                                    allowGradient && 
+                                    <>
+                                        <ColorTab onClick={() => setColorPickerKey('bingoBgSubColor')}>
+                                            <TextLabel>{t("CREATE_SUB_BACKGROUND_COLOR")}</TextLabel>
+                                            <ColorSquare color={bingoBgSubColor} />
+                                        </ColorTab>
+                                        {
+                                            colorPickerKey === 'bingoBgSubColor' &&
+                                            <CenteredCol>
+                                                <SwatchesPicker color={bingoBgSubColor} onChangeComplete={(v) => {setBingoBgSubColor(v.hex); setColorPickerKey('');}} />
+                                            </CenteredCol>
+                                        }
+                                    </>
+                                }
+                            </>
+                        }
+                        {
+                            selectedButton === 3 &&
+                            <>
+                                <TextLabel>
+                                    빙고 요소 간편 편집
+                                </TextLabel>
                                 <div>
-                                    <InputNumber min={1} max={3} defaultValue={2} onChange={(v: number) => setBingoLinePixel(v)} style={{width: 60}} />
+                                    준비 중
                                 </div>
-                            </ColorTab>
-
-                            {/* <ColorTab onClick={() => setColorPickerKey('bingoCellColor')}>
-                                <ColorLeftText>셀 배경색 설정</ColorLeftText>
-                                <ColorSquare color={bingoCellColor} />
-                            </ColorTab>
-                            {
-                                colorPickerKey === 'bingoCellColor' ? 
-                                <CenteredCol>
-                                    <SwatchesPicker color={bingoCellColor} onChangeComplete={(v) => {setBingoCellColor(v.hex); setColorPickerKey('');}} />
-                                </CenteredCol>
-                                : null
-                            } */}
-
-                            <ColorTab onClick={() => setColorPickerKey('bingoFontColor')}>
-                                <ColorLeftText>{t("CREATE_FONT_COLOR")}</ColorLeftText>
-                                <ColorSquare color={bingoFontColor} />
-                            </ColorTab>
-                            {
-                                colorPickerKey === 'bingoFontColor' ? 
-                                <CenteredCol>
-                                    <SwatchesPicker color={bingoFontColor} onChangeComplete={(v) => {setBingoFontColor(v.hex); setColorPickerKey('');}} />
-                                </CenteredCol>
-                                : null
-                            }
-                        </div>
+                            </>
+                        }
+                        {
+                            selectedButton === 4 &&
+                            <>
+                                <TextLabel>
+                                    {t("CREATE_BINGO_ACCOMPLISHMENTS")}
+                                </TextLabel>
+                                {bingoAchievement.map((v, index) => <div key={index}>{index} {t("STATIC_BINGO")}: {v}</div>)}
+                                <div>
+                                    {
+                                        achievementMinimumPointer === 0 ?
+                                        <div>
+                                            <Slider 
+                                            defaultValue={achievementPointer} 
+                                            min={0} max={(bingoSize * 2 + 2) + 1} 
+                                            onChange={v => setAchievementPointer(v)} 
+                                            marks={marks}
+                                            />
+                                            <Input 
+                                            style={{width: '70%'}} 
+                                            value={achievementInput}
+                                            onChange={e => setAchievementInput(e.target.value)} 
+                                            onPressEnter={() => {handleAcheievement(0, achievementPointer, achievementInput)}}
+                                            />
+                                            <Button 
+                                            style={{marginLeft: '1rem'}} 
+                                            onClick={() => {handleAcheievement(0, achievementPointer, achievementInput)}}
+                                            > 
+                                                {t("STATIC_ADD")} 
+                                            </Button>
+                                        </div>
+                                        :
+                                        <div>
+                                            <Slider 
+                                            range 
+                                            value={[achievementMinimumPointer, achievementPointer]} 
+                                            min={0} max={(bingoSize * 2 + 2) + 1} 
+                                            onChange={v => {setAchievementMinimumPointer(v[0]); setAchievementPointer(v[1])}} 
+                                            marks={marks}
+                                            />
+                                            <Input 
+                                            style={{width: '70%'}}
+                                            value={achievementInput}
+                                            onChange={e => setAchievementInput(e.target.value)} 
+                                            onPressEnter={() => {handleAcheievement(achievementMinimumPointer, achievementPointer, achievementInput)}}
+                                            />
+                                            <Button 
+                                            style={{marginLeft: '1rem'}} 
+                                            onClick={() => {handleAcheievement(achievementMinimumPointer, achievementPointer, achievementInput)}}
+                                            > 
+                                                {t("STATIC_ADD")}  
+                                            </Button>
+                                        </div>
+                                    }
+                                </div>
+                            </>
+                        }
                     </ControllerPage>
                 </Col>
-                <Col xs={24} sm={24} md={24} lg={24} xl={24} >
-                    {/* <Checkbox onChange={e => console.log(e)}>NSFW</Checkbox> */}
+                <Col style={{width: width < 768 ? '100%' : 'calc(100% - 420px)', padding: '1rem', backgroundColor: 'white'}} >
                     <BingoRenderer 
                     title={bingoTitle}
                     // author={session.user.name}
@@ -342,59 +442,6 @@ export default function BingoCreate() {
                         />
                     </Modal>
 
-                    <ControllerPage style={{marginTop: 8, padding: '1rem'}}>
-                        <div>
-                            {t("CREATE_BINGO_ACCOMPLISHMENTS")}
-                        </div>
-                        {bingoAchievement.map((v, index) => <div key={index}>{index} {t("STATIC_BINGO")}: {v}</div>)}
-                        <div>
-                            {
-                                achievementMinimumPointer === 0 ?
-                                <div>
-                                    <Slider 
-                                    defaultValue={achievementPointer} 
-                                    min={0} max={(bingoSize * 2 + 2) + 1} 
-                                    onChange={v => setAchievementPointer(v)} 
-                                    marks={marks}
-                                    />
-                                    <Input 
-                                    style={{width: '70%'}} 
-                                    value={achievementInput}
-                                    onChange={e => setAchievementInput(e.target.value)} 
-                                    onPressEnter={() => {handleAcheievement(0, achievementPointer, achievementInput)}}
-                                    />
-                                    <Button 
-                                    style={{marginLeft: '1rem'}} 
-                                    onClick={() => {handleAcheievement(0, achievementPointer, achievementInput)}}
-                                    > 
-                                        {t("STATIC_ADD")} 
-                                    </Button>
-                                </div>
-                                :
-                                <div>
-                                    <Slider 
-                                    range 
-                                    value={[achievementMinimumPointer, achievementPointer]} 
-                                    min={0} max={(bingoSize * 2 + 2) + 1} 
-                                    onChange={v => {setAchievementMinimumPointer(v[0]); setAchievementPointer(v[1])}} 
-                                    marks={marks}
-                                    />
-                                    <Input 
-                                    style={{width: '70%'}}
-                                    value={achievementInput}
-                                    onChange={e => setAchievementInput(e.target.value)} 
-                                    onPressEnter={() => {handleAcheievement(achievementMinimumPointer, achievementPointer, achievementInput)}}
-                                    />
-                                    <Button 
-                                    style={{marginLeft: '1rem'}} 
-                                    onClick={() => {handleAcheievement(achievementMinimumPointer, achievementPointer, achievementInput)}}
-                                    > 
-                                        {t("STATIC_ADD")}  
-                                    </Button>
-                                </div>
-                            }
-                        </div>
-                    </ControllerPage>
                     {/* <ReCAPTCHA
                         sitekey="6LfRb88ZAAAAAEpPb5KLCz9J_fDvCX5QELAd3UDu"
                         onChange={e => console.log(e)}

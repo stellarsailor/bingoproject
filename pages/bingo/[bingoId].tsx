@@ -72,12 +72,13 @@ export default function BingoDetail({ data }) {
     const [ resultStatus, setResultStatus ] = useState('idle')
     const [ resultCount, setResultCount ] = useState([])
     const [ resultAvgCount, setResultAvgCount ] = useState(0)
+    const [ resultAvgBingoLines, setResultAvgBingoLines ] = useState(0)
     const [ resultPercent, setResultPercent ] = useState([])
 
     useEffect(() => {
         //cookie 불러와서 설정이 있으면 그대로 세팅, 없으면 기본 마크 스타일 세팅
         if(cookies.setting === undefined){
-            const defaultSetting = {style: 'check', color: '#8ED1FC'}
+            const defaultSetting = {style: 'circle', color: '#EB144C'}
             setCookie('setting', defaultSetting, { path: '/' })
             setMarkStyle(defaultSetting.style)
             setMarkColor(defaultSetting.color)
@@ -201,7 +202,8 @@ export default function BingoDetail({ data }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                binaryResult: arr
+                binaryResult: arr,
+                completedLines: completedBingoLines //added to calc
             })
         }
         try {
@@ -221,10 +223,13 @@ export default function BingoDetail({ data }) {
                 countArr.push(0)
             }
 
+            let sumCompletedLines = 0
+
             data.results.map((v) => {
                 JSON.parse(v.binaryResult).map((v, index) => {
                     if(typeof(v) === 'number') countArr[index] += v
                 })
+                sumCompletedLines += v.completedLines
             })
 
             let sumCount = 0
@@ -234,12 +239,13 @@ export default function BingoDetail({ data }) {
 
             setResultCount(countArr)
             setResultAvgCount(sumCount / resultLength)
+            setResultAvgBingoLines(sumCompletedLines / resultLength)
             setResultPercent(percentArr)
             setResultStatus('done')
         } catch (e) {
             return e;
         }    
-    },[selectedIndex])
+    },[selectedIndex, completedBingoLines])
 
     return(
         <>
@@ -345,6 +351,7 @@ export default function BingoDetail({ data }) {
                             resultStatus={resultStatus}
                             resultCount={resultCount}
                             resultAvgCount={resultAvgCount}
+                            resultAvgBingoLines={resultAvgBingoLines}
                             resultPercent={resultPercent}
 
                             takeScreenShot={takeScreenShot}
@@ -363,9 +370,7 @@ export default function BingoDetail({ data }) {
                                 </Button>
                             }
                         </CenteredCol>
-                        <Element name="scroll-to-element">
-                        
-                        </Element>
+                        <Element name="scroll-to-element" />
                     </Col>
                 </Row>
             </CenteredRow>
