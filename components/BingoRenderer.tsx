@@ -32,7 +32,10 @@ const MenuButton = styled.a`
 `
 
 const CreatePage = styled.div`
-    background: ${(props) => `-webkit-linear-gradient(${props.bgMainColor}, ${props.bgSubColor})` };
+    ${(props) => props.bgSubColor === '' ?
+    `background-color: ${props.bgMainColor};`
+    :
+    `background: -webkit-linear-gradient(${props.bgMainColor}, ${props.bgSubColor})` };
     width: 100%;
     max-width: 800px;
     padding: 1rem;
@@ -52,7 +55,7 @@ const ResultPage = styled.div`
 const TitleText = styled.div`
     color: ${props => props.color};
     font-weight: bold;
-    font-size: 1.6rem;
+    font-size: 1.8rem;
 `
 
 const AuthorText = styled.div`
@@ -123,7 +126,7 @@ export default function BingoRenderer( props ){
                                 <td 
                                 key={index} 
                                 style={{
-                                    border: `${linePixel}px solid ${lineColor}`, 
+                                    border: `${width < 768 ? 1 : 2}px solid ${lineColor}`, 
                                     backgroundColor: `${selectedIndex.includes(index) ? markColor : 'white'}`, 
                                     backgroundImage: markStyle === 'paint' ? null : `url("/static/images/${markStyle}.png")`, 
                                     backgroundSize: 'cover'

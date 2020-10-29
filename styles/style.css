@@ -74,3 +74,7 @@ body {
     --shadow-sticky: 0 12px 10px -10px rgba(0,0,0,0.12);
     --portal-opacity: 0.25;
 }
+
+.ant-slider-mark-text {
+    color: white !important;
+}

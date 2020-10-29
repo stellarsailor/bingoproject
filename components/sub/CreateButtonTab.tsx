@@ -31,7 +31,7 @@ export default function CreateButtonTab(props){
             </EachButton>
             <EachButton isSelected={props.selectedButton === 1} onClick={() => props.setSelectedButton(1)}>
                 <HighlightOutlined style={{fontSize: 20}} />
-                Bingo Size, line
+                Color
             </EachButton>
             <EachButton isSelected={props.selectedButton === 2} onClick={() => props.setSelectedButton(2)}>
                 <BgColorsOutlined style={{fontSize: 20}} />
@@ -39,7 +39,7 @@ export default function CreateButtonTab(props){
             </EachButton>
             <EachButton isSelected={props.selectedButton === 3} onClick={() => props.setSelectedButton(3)}>
                 <BarsOutlined style={{fontSize: 20}} />
-                Bingo Elements
+                Edit Bingo
             </EachButton>
             <EachButton isSelected={props.selectedButton === 4} onClick={() => props.setSelectedButton(4)}>
                 <TrophyOutlined style={{fontSize: 20}} />

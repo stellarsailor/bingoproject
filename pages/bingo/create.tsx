@@ -70,6 +70,8 @@ const ColorTab = styled.span`
     margin: 8px 0px;
 `
 
+const initialColorArray = [ '#f8bbd0', '#e1bee7', '#ffe0b2', '#b2dfdb', '#f06292', '#fff9c4', '#009688', '#5d4037', '#303f9f', '#000000']
+
 export default function BingoCreate() {
     const { t, i18n } = useTranslation()
     const [ session, loading ] = useSession()
@@ -88,9 +90,9 @@ export default function BingoCreate() {
 
     const [ colorPickerKey, setColorPickerKey ] = useState('')
 
-    const [ bingoBgMainColor, setBingoBgMainColor ] = useState('#ffffff')
+    const [ bingoBgMainColor, setBingoBgMainColor ] = useState(initialColorArray[Math.floor(Math.random() * initialColorArray.length)])
     const [ allowGradient, setAllowGradient ] = useState(false)
-    const [ bingoBgSubColor, setBingoBgSubColor ] = useState('#0693E3')
+    const [ bingoBgSubColor, setBingoBgSubColor ] = useState('')
     const [ bingoFontColor, setBingoFontColor ] = useState('#000000')
     const [ bingoLineColor, setBingoLineColor ] = useState('#000000')
     const [ bingoLinePixel, setBingoLinePixel ] = useState(2)
@@ -180,7 +182,7 @@ export default function BingoCreate() {
                     fontColor: bingoFontColor,
                     cellColor: bingoCellColor,
                     lineColor: bingoLineColor,
-                    linePixel: bingoLinePixel,
+                    // linePixel: bingoLinePixel,
                     achievements: bingoAchievement
                 })
             }
@@ -263,11 +265,10 @@ export default function BingoCreate() {
                                     <ColorSquare color={bingoLineColor} />
                                 </ColorTab>
                                 {
-                                    colorPickerKey === 'bingoLineColor' ? 
+                                    colorPickerKey === 'bingoLineColor' &&
                                     <CenteredCol>
                                         <SwatchesPicker color={bingoLineColor} onChangeComplete={(v) => {setBingoLineColor(v.hex); setColorPickerKey('');}} />
                                     </CenteredCol>
-                                    : null
                                 }
 
                                 {/* <ColorTab>
@@ -284,11 +285,10 @@ export default function BingoCreate() {
                                     <ColorSquare color={bingoCellColor} />
                                 </ColorTab>
                                 {
-                                    colorPickerKey === 'bingoCellColor' ? 
+                                    colorPickerKey === 'bingoCellColor' &&
                                     <CenteredCol>
                                         <SwatchesPicker color={bingoCellColor} onChangeComplete={(v) => {setBingoCellColor(v.hex); setColorPickerKey('');}} />
                                     </CenteredCol>
-                                    : null
                                 } */}
 
                                 <ColorTab onClick={() => setColorPickerKey('bingoFontColor')}>
@@ -296,11 +296,10 @@ export default function BingoCreate() {
                                     <ColorSquare color={bingoFontColor} />
                                 </ColorTab>
                                 {
-                                    colorPickerKey === 'bingoFontColor' ? 
+                                    colorPickerKey === 'bingoFontColor' &&
                                     <CenteredCol>
                                         <SwatchesPicker color={bingoFontColor} onChangeComplete={(v) => {setBingoFontColor(v.hex); setColorPickerKey('');}} />
                                     </CenteredCol>
-                                    : null
                                 }
                             </>
                         }
@@ -312,18 +311,25 @@ export default function BingoCreate() {
                                     <ColorSquare color={bingoBgMainColor} />
                                 </ColorTab>
                                 {
-                                    colorPickerKey === 'bingoBgMainColor' ? 
+                                    colorPickerKey === 'bingoBgMainColor' && 
                                     <CenteredCol>
                                         <SwatchesPicker color={bingoBgMainColor} onChangeComplete={(v) => {
-                                            if(!allowGradient) setBingoBgSubColor(v.hex)
+                                            if(!allowGradient) setBingoBgSubColor('')
                                             setBingoBgMainColor(v.hex); 
                                             setColorPickerKey('');
                                             }} />
                                     </CenteredCol>
-                                    : null
                                 }
 
-                                <Checkbox onChange={e => setAllowGradient(e.target.checked)} style={{color: 'var(--mono-2)', marginBottom: 8}}>그라데이션 활성화</Checkbox>
+                                <Checkbox 
+                                checked={allowGradient}
+                                style={{color: 'var(--mono-2)', marginBottom: 8}}
+                                onChange={e => {
+                                    bingoBgSubColor !== '' && setBingoBgSubColor('')
+                                    setAllowGradient(e.target.checked)
+                                }}>
+                                    그라데이션 활성화
+                                </Checkbox>
                                 {
                                     allowGradient && 
                                     <>
@@ -345,10 +351,13 @@ export default function BingoCreate() {
                             selectedButton === 3 &&
                             <>
                                 <TextLabel>
-                                    빙고 요소 간편 편집
+                                    빙고 요소 일괄 편집
                                 </TextLabel>
                                 <div>
                                     준비 중
+                                </div>
+                                <div style={{marginTop: 32}}>
+                                    빙고 칸을 클릭하여 빙고를 수정할 수도 있습니다!
                                 </div>
                             </>
                         }
