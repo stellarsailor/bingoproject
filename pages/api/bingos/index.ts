@@ -67,7 +67,7 @@ export default async (req, res) => {
         res.status(200).json({ bingos })
 
     } else if(req.method === 'POST'){
-        const salt = bcrypt.genSaltSync(10)
+        // const salt = bcrypt.genSaltSync(10)
 
         const lang = req.query.lang || 'en'
         // const lock = req.body.lock
@@ -84,7 +84,7 @@ export default async (req, res) => {
         const fontColor = req.body.fontColor
         const cellColor = req.body.cellColor
         const lineColor = req.body.lineColor
-        const linePixel = req.body.linePixel
+        // const linePixel = req.body.linePixel
         const achievements = req.body.achievements
         const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress
 
@@ -100,8 +100,8 @@ export default async (req, res) => {
         //     res.status(200).json({ error: 'duplicated' })
         // } else {
             const insertResult = await db.query(escape`
-                INSERT INTO bingos (lang, categoryId, title, description, userId, size, elements, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, linePixel, achievements, ipAddress)
-                VALUES (${lang}, ${category}, ${title}, ${description}, ${userId}, ${size}, ${JSON.stringify(elements)}, ${bgMainColor}, ${bgSubColor}, ${fontColor}, ${cellColor}, ${lineColor}, ${linePixel}, ${JSON.stringify(achievements)}, ${ipAddress});
+                INSERT INTO bingos (lang, categoryId, title, description, userId, size, elements, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, achievements, ipAddress)
+                VALUES (${lang}, ${category}, ${title}, ${description}, ${userId}, ${size}, ${JSON.stringify(elements)}, ${bgMainColor}, ${bgSubColor}, ${fontColor}, ${cellColor}, ${lineColor}, ${JSON.stringify(achievements)}, ${ipAddress});
             `)
     
             res.status(200).json({ insertResult })

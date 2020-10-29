@@ -129,7 +129,8 @@ export default function BingoDetail({ data }) {
             },
             body: JSON.stringify({
                 // password: passwordInput
-                userId: session.user.id
+                userId: session.user.id,
+                accessToken: session.accessToken,
             })
         }
         try {

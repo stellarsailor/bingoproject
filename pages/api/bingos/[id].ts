@@ -83,11 +83,12 @@ export default async (req, res) => {
         //     res.status(200).json({ results: 'wrong' })
         // }
         const userId = parseInt(req.body.userId)
+        const accessToken = req.body.accessToken
 
         const compareUserId = await db.query(escape`
             SELECT count(*) as TF
-            FROM bingos
-            WHERE id = ${bingoId} AND userId = ${userId};
+            FROM bingos b, sessions s
+            WHERE b.userId = s.user_id AND b.id = ${bingoId} AND b.userId = ${userId} AND s.access_token = ${accessToken};
         `)
 
         if(compareUserId[0].TF === 1){
