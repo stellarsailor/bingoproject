@@ -32,24 +32,24 @@ export default function LoginContainer() {
                     Sign in with Google
                 </ButtonText>
             </SignInButton>
-            <SignInButton onClick={() => signIn('apple', { callbackUrl: serverUrl })}>
+            {/* <SignInButton onClick={() => signIn('apple', { callbackUrl: serverUrl })}>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/505px-Apple_logo_black.svg.png" width="15" height="18"></img>
                 <ButtonText>
                     Sign in with Apple
                 </ButtonText>
-            </SignInButton>
+            </SignInButton> */}
             <SignInButton onClick={() => signIn('facebook', { callbackUrl: serverUrl })}>
                 <svg width="25" height="25" fill="#3B5998"><path d="M20.3 4H4.7a.7.7 0 0 0-.7.7v15.6c0 .38.32.7.7.7h8.33v-6.38h-2.12v-2.65h2.12V9.84c0-2.2 1.4-3.27 3.35-3.27.94 0 1.75.07 1.98.1v2.3H17c-1.06 0-1.31.5-1.31 1.24v1.76h2.65l-.53 2.65H15.7l.04 6.38h4.56a.7.7 0 0 0 .71-.7V4.7a.7.7 0 0 0-.7-.7" fillRule="evenodd"></path></svg>
                 <ButtonText>
                     Sign in with FaceBook
                 </ButtonText>
             </SignInButton>
-            <SignInButton onClick={() => signIn('twitter', { callbackUrl: serverUrl })}>
+            {/* <SignInButton onClick={() => signIn('twitter', { callbackUrl: serverUrl })}>
                 <img src="https://upload.wikimedia.org/wikipedia/sco/thumb/9/9f/Twitter_bird_logo_2012.svg/1200px-Twitter_bird_logo_2012.svg.png" width="20" height="16"></img>
                 <ButtonText>
                     Sign in with Twitter
                 </ButtonText>
-            </SignInButton>
+            </SignInButton> */}
 
             <div style={{color: 'var(--mono-3)', margin: '32px 16px', textAlign: 'center'}}>
                 Click “Sign In” to agree to SelfBingo's Terms of Service and acknowledge that SelfBingo's Privacy Policy applies to you.
