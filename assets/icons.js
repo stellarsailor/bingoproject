@@ -89,3 +89,7 @@ export {
 export {
     default as TrophyOutlined
 } from '@ant-design/icons/lib/icons/TrophyOutlined';
+
+export {
+    default as SearchOutlined
+} from '@ant-design/icons/lib/icons/SearchOutlined';

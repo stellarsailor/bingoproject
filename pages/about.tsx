@@ -62,7 +62,7 @@ export default function About() {
                         <ExplanationText>
                             Selfbingo provides various bingos you can play alone. You can share the bingo with your friends who have similar interests if you want! 
                         </ExplanationText>
-                        <Link href="/bingo">
+                        <Link href="/">
                             <a>
                                 <MainButton size="large" theme='white'> View List </MainButton> 
                             </a>
@@ -87,7 +87,7 @@ export default function About() {
                 </Col>
                 <HrLine />
                 <Col span={24} >
-                    Contact : selfbingo@gmail.com
+                    Contact : selfbingo.com@gmail.com
                 </Col>
             </Row>
         </>

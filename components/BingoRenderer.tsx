@@ -6,7 +6,7 @@ import { CenteredRow, CenteredCol } from './sub/styled'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import pickTextColorBasedOnBgColor from '../logics/pickTextColorBasedOnBgColor'
 import useWindowSize from '../logics/useWindowSize'
-import { ShareAltOutlined, CameraFilled, UserOutlined } from '../assets/icons'
+import { ShareAltOutlined, CameraFilled, UserOutlined, SearchOutlined } from '../assets/icons'
 import { serverUrl } from '../lib/serverUrl'
 import { useRouter } from 'next/router'
 import useIsMobile from '../logics/useIsMobile'
@@ -24,6 +24,7 @@ const MenuButton = styled.a`
     justify-content: center;
     align-items: center;
     padding: 0px 8px;
+    margin: 4px;
     color: ${props => props.selected ? 'dodgerblue' : 'gray' };
     :hover {
         background-color: var(--mono-2);
@@ -55,18 +56,30 @@ const ResultPage = styled.div`
 const TitleText = styled.div`
     color: ${props => props.color};
     font-weight: bold;
-    font-size: 1.8rem;
-`
-
-const AuthorText = styled.div`
-    color: ${props => props.color};
-    font-weight: bold;
-    font-size: 0.8rem;
+    font-size: ${props => props.cellWidth * 0.05}px;
 `
 
 const DescText = styled.div`
     color: ${props => props.color};
-    font-size: 0.8rem;
+    font-size: ${props => props.cellWidth * 0.03}px;
+`
+
+const ResultBox = styled.div`
+    background-color: ${props => props.bgColor};
+    color: white;
+    width: 100%;
+    height: 120px;
+    padding: 20px;
+    border: 1px solid var(--mono-2);
+`
+
+const MiniTextInResultBox = styled.div`
+    font-size: 14px;
+    font-weight: bold;
+`
+
+const BigTextInResultBox = styled.div`
+    font-size: 24px;
 `
 
 export default function BingoRenderer( props ){
@@ -113,8 +126,9 @@ export default function BingoRenderer( props ){
     }, [ width, height ])
 
     const [ cellWidth, setCellWidth ] = useState(0)
+    const [ resultTableModalVisible, setResultTableModalVisible ] = useState(false)
 
-    const renderTable = (size) => {
+    const renderTable = (size, baseWidth) => {
         let rows = []
         
         for(let i = 0; i < size; i++){
@@ -133,7 +147,7 @@ export default function BingoRenderer( props ){
                                 }} 
                                 onClick={() => elementOnClickEvent(index)}>
                                     <a>
-                                        <div style={{width: (cellWidth - 50) / size, height: (cellWidth - 50) / size, display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', color: `${fontColor}`, overflow: 'hidden', fontSize: cellWidth / size / 9}}>
+                                        <div style={{width: (baseWidth - 50) / size, height: (baseWidth - 50) / size, display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', color: `${fontColor}`, overflow: 'hidden', fontSize: baseWidth / size / 9}}>
                                             {v}
                                         </div>
                                     </a>
@@ -147,12 +161,10 @@ export default function BingoRenderer( props ){
         return rows
     }
 
-    const backColor = (percentage) => {
-        if(0 <= percentage && percentage <= 20) return 0.1
-        else if(20 < percentage && percentage <= 40) return 0.15
-        else if(40 < percentage && percentage <= 60) return 0.25
-        else if(60 < percentage && percentage <= 80) return 0.5
-        else if(80 < percentage && percentage <= 100) return 0.8
+    const backColor = (percent) => {
+        let r = percent<50 ? 255 : Math.floor(255-(percent*2-100)*255/100);
+        let g = percent>50 ? 255 : Math.floor((percent*2)*255/100);
+        return 'rgb('+r+', '+g+', 0, 0.6)';
     }
 
     const renderResultTable = (size) => {
@@ -164,9 +176,9 @@ export default function BingoRenderer( props ){
                     {resultPercent.map((v, index) => {
                         if( size * i <= index && index < size * (i+1) ){
                             return (
-                                <td key={index} style={{border: '1px solid black', backgroundColor: `rgba(255,255,0, ${backColor(v)})`, textAlign: 'center', color: `${selectedIndex.includes(index) ? 'dodgerblue' : 'black'}`, padding: '4px 8px'}}>
+                                <td key={index} style={{border: '1px solid black', backgroundColor: `${backColor(v)}`, textAlign: 'center', color: `${selectedIndex.includes(index) ? 'black' : 'var(--mono-6)'}`, padding: '4px 8px'}}>
                                     <span style={{fontWeight: 'bold'}}>{v}%</span>
-                                    <div style={{fontSize: '0.8rem'}}>(<UserOutlined />{resultCount[index]}) </div>
+                                    <div style={{fontSize: '0.8rem'}}><UserOutlined />{resultCount[index]} </div>
                                 </td>
                             )
                         }
@@ -181,21 +193,21 @@ export default function BingoRenderer( props ){
         <div id='captureWithResult' style={{width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
             <CreatePage ref={ref} bgMainColor={bgMainColor} bgSubColor={bgSubColor} id="captureWithoutResult">
                 <CenteredCol>
-                    <TitleText color={pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}>
+                    <TitleText cellWidth={cellWidth} color={pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}>
                         {title}
                     </TitleText>
                     {/* <AuthorText color={pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}>
                         {author}
                     </AuthorText> */}
-                    <DescText color={pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}>
+                    <DescText cellWidth={cellWidth} color={pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000')}>
                         {description}
                     </DescText>
                     <table style={{}}>
                         <tbody>
-                            {renderTable(size)}
+                            {renderTable(size, cellWidth)}
                         </tbody>
                     </table>
-                    <div style={{color: `${pickTextColorBasedOnBgColor(bgSubColor ? bgSubColor : bgMainColor, '#ffffff', '#000000')}`, fontWeight: 'bold', fontSize: '1.3rem', marginTop: '0.5rem'}}>
+                    <div style={{color: `${pickTextColorBasedOnBgColor(bgSubColor ? bgSubColor : bgMainColor, '#ffffff', '#000000')}`, fontWeight: 'bold', fontSize: cellWidth * 0.03, marginTop: '0.5rem'}}>
                         SelfBingo.com
                     </div>
                 </CenteredCol>
@@ -206,51 +218,85 @@ export default function BingoRenderer( props ){
                 : resultStatus === 'calculating' ? <CenteredRow style={{height: 300}}><Spin /> 데이터를 계산 중 입니다.</CenteredRow>
                 : 
                 <ResultPage>
+                    <Row style={{padding: 8}}>
+                        <div style={{width: '100%', minHeight: 60, backgroundColor: bgMainColor, fontSize: 24, textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', color: pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000'), border: '1px solid var(--mono-2)'}}>
+                            <div style={{fontSize: 12}}>당신은</div>
+                            {resultString}
+                        </div>
+                    </Row>
                     <Row>
-                        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
-                            <CenteredCol>
-                                <CenteredCol style={{borderBottom: '1px solid lightgray', width: '100%'}}>
-                                    <div style={{color: 'black', fontWeight: 'bold', fontSize: '1rem'}}>
-                                        완성된 빙고 개수#! : {completedBingoLines}
-                                    </div>
-                                    <div style={{color: 'black', fontWeight: 'bold', fontSize: '1.4rem', marginTop: '0.3rem'}}>
-                                        "{resultString}"
-                                    </div>
-                                </CenteredCol>
-                                <CenteredRow style={{marginTop: '1rem', marginBottom: '1rem'}}>
-                                    <MenuButton>
-                                        <CopyToClipboard text={serverUrl + router.asPath}
-                                        onCopy={() => message.success(t("MODAL_SHARE_LINK"))}>
-                                            <span><ShareAltOutlined /> {t("PLAYPAGE_SHARE")}</span>
-                                        </CopyToClipboard>
-                                    </MenuButton>
-                                    <MenuButton onClick={() => takeScreenShot('captureWithResult')}>
-                                        <span><CameraFilled /> {t("PLAYPAGE_CAPTURE")}</span>
-                                    </MenuButton>
-                                </CenteredRow>
-                            </CenteredCol>
+                        <Col xs={12} sm={8} md={8} lg={8} xl={8} style={{padding: 8}}>
+                            <ResultBox bgColor={'#4285F4'}>
+                                <MiniTextInResultBox>
+                                    Your Marks
+                                </MiniTextInResultBox>
+                                <BigTextInResultBox>
+                                    {selectedIndex.length}
+                                    <span style={{fontSize: 12, marginLeft: 16}}>Avg : {resultAvgCount.toFixed(2)}</span>
+                                </BigTextInResultBox>
+                            </ResultBox>
                         </Col>
-                        <Col xs={24} sm={12} md={12} lg={12} xl={12} >
-                            <CenteredCol style={{fontWeight: 'bold'}}>
-                                {t("PLAYPAGE_PERCENTAGE_STATS")}
-                            </CenteredCol>
-                            <CenteredCol>
-                                <table>
-                                    <tbody>
-                                        {renderResultTable(size)}
-                                    </tbody>
-                                </table>
-                                <div>
-                                   {t("PLAYPAGE_AVG_COUNT")}: {resultAvgCount}
-                                </div>
-                                <div>
-                                    완성된 평균 빙고 개수#!: {resultAvgBingoLines}
-                                </div>
+                        <Col xs={12} sm={8} md={8} lg={8} xl={8} style={{padding: 8}}>
+                            <ResultBox bgColor={'#0F9D58'}>
+                                <MiniTextInResultBox>
+                                    Completed Lines
+                                </MiniTextInResultBox>
+                                <BigTextInResultBox>
+                                    {completedBingoLines}
+                                    <span style={{fontSize: 12, marginLeft: 16}}>Avg : {resultAvgBingoLines.toFixed(2)}</span>
+                                </BigTextInResultBox>
+                            </ResultBox>
+                        </Col>
+                        <Col xs={12} sm={8} md={8} lg={8} xl={8} style={{padding: 8}}>
+                            <ResultBox bgColor={'#F4B400'}>
+                                <MiniTextInResultBox>
+                                    {t("PLAYPAGE_PERCENTAGE_STATS")}
+                                </MiniTextInResultBox>
+                                <BigTextInResultBox onClick={() => setResultTableModalVisible(true)}>
+                                    <a style={{color: 'white'}}>보기 <SearchOutlined style={{fontSize: 16}} /></a>
+                                </BigTextInResultBox>
+                            </ResultBox>
+                        </Col>
+                        <Col xs={12} sm={24} md={24} lg={24} xl={24} style={{padding: 8}}>
+                            <CenteredCol style={{border: '0px solid var(--mono-2)'}}>
+                                <MenuButton>
+                                    <CopyToClipboard text={serverUrl + router.asPath}
+                                    onCopy={() => message.success(t("MODAL_SHARE_LINK"))}>
+                                        <span><ShareAltOutlined /> {t("PLAYPAGE_SHARE")}</span>
+                                    </CopyToClipboard>
+                                </MenuButton>
+                                <MenuButton onClick={() => takeScreenShot('captureWithResult')}>
+                                    <span><CameraFilled /> {t("PLAYPAGE_CAPTURE")}</span>
+                                </MenuButton>
                             </CenteredCol>
                         </Col>
                     </Row>
                 </ResultPage>
             }
+            <Modal
+            closable
+            title={t("PLAYPAGE_PERCENTAGE_STATS")}
+            visible={resultTableModalVisible}
+            footer={null}
+            onCancel={() => setResultTableModalVisible(false)}
+            // style={{top: '55%'}}
+            centered
+            // mask={false}
+            >
+                <CenteredCol>
+                    <table style={{}}>
+                        <tbody>
+                            {renderTable(size, width < 768 ? cellWidth : cellWidth/2)}
+                        </tbody>
+                    </table>
+                    <div style={{margin: 16}} />
+                    <table>
+                        <tbody>
+                            {renderResultTable(size)}
+                        </tbody>
+                    </table>
+                </CenteredCol>
+            </Modal>
         </div>
     )
 }

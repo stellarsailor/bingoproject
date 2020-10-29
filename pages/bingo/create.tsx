@@ -238,7 +238,7 @@ export default function BingoCreate() {
                             selectedButton === 0 && 
                             <>
                                 <Select placeholder={t("CREATE_PLACEHOLDER_CATEGORY")} style={{ width: 200, margin: '1rem 0px', marginRight: 16 }} onChange={v => setBingoCategory(v)}>
-                                    {categoryList.map((v, index) => <Option key={index} value={index}>{v.name_ko}</Option>)}
+                                    {categoryList.slice(1).map((v, index) => <Option key={index} value={index}>{v.name_ko}</Option>)}
                                 </Select>
 
                                 <Input placeholder={t("CREATE_PLACEHOLDER_TITLE")} onChange={e => setBingoTitle(e.target.value)} style={{width: '100%', height: 40, borderRadius: 5}} />
