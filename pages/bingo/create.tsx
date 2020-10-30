@@ -98,6 +98,7 @@ export default function BingoCreate() {
     const [ bingoLinePixel, setBingoLinePixel ] = useState(2)
     const [ bingoCellColor, setBingoCellColor ] = useState('#ffffff')
 
+    const [ enableAchievement, setEnableAchievement ] = useState(false)
     const [ bingoAchievement, setBingoAchievement ] = useState([])
     const [ achievementInput, setAchievementInput ] = useState('')
     const [ achievementMinimumPointer, setAchievementMinimumPointer ] = useState(0)
@@ -150,7 +151,9 @@ export default function BingoCreate() {
     const handleSubmit = useCallback(async () => {
         // console.log(bingoAchievement)
         let blankError = [] //에러는 역순으로
-        bingoAchievement.map(v => {if(v === '' || v === null) blankError.push(t("CREATE_EMPTY_ALERT_ACCOMPLISHMENTS"))})
+        if(enableAchievement){
+            bingoAchievement.map(v => {if(v === '' || v === null) blankError.push(t("CREATE_EMPTY_ALERT_ACCOMPLISHMENTS"))})
+        } //else, Achievement is disabled so not to check blank
         bingoArr.map(v => {if(v === '' || v === null) blankError.push(t("CREATE_EMPTY_ALERT_ELEMENT"))})
         // if(bingoAuthor === '') blankError.push(t("CREATE_EMPTY_ALERT_NAME"))
         // if(bingoPassword === '') blankError.push(t("CREATE_EMPTY_ALERT_PASSWORD"))
@@ -202,7 +205,7 @@ export default function BingoCreate() {
                 return e;
             }
         }
-    },[bingoTitle, bingoDescription, bingoAuthor, bingoCategory, bingoSize, bingoArr, bingoBgMainColor, bingoBgSubColor, bingoFontColor, bingoCellColor, bingoLineColor, bingoLinePixel, bingoAchievement])
+    },[bingoTitle, bingoDescription, bingoAuthor, bingoCategory, bingoSize, bingoArr, bingoBgMainColor, bingoBgSubColor, bingoFontColor, bingoCellColor, bingoLineColor, bingoLinePixel, bingoAchievement, enableAchievement])
 
     if (loading) {
         return <p>Loading…</p>
@@ -364,57 +367,73 @@ export default function BingoCreate() {
                         {
                             selectedButton === 4 &&
                             <>
-                                <TextLabel>
-                                    {t("CREATE_BINGO_ACCOMPLISHMENTS")}
-                                </TextLabel>
-                                {bingoAchievement.map((v, index) => <div key={index}>{index} {t("STATIC_BINGO")}: {v}</div>)}
-                                <div>
-                                    {
-                                        achievementMinimumPointer === 0 ?
+                                <Checkbox 
+                                checked={enableAchievement}
+                                style={{color: 'var(--mono-2)', marginBottom: 8}}
+                                onChange={e => {
+                                    if(enableAchievement) {
+                                        handleAcheievement(0, bingoSize * 2 + 2 + 1, '') // reset achievement, consider number.
+                                        setEnableAchievement(e.target.checked)
+                                    } else setEnableAchievement(e.target.checked)
+                                }}>
+                                    빙고 업적 설정
+                                </Checkbox>
+                                {
+                                    enableAchievement &&
+                                    <>
+                                        <TextLabel>
+                                            {t("CREATE_BINGO_ACCOMPLISHMENTS")}
+                                        </TextLabel>
+                                        {bingoAchievement.map((v, index) => <div key={index}>{index} {t("STATIC_BINGO")}: {v}</div>)}
                                         <div>
-                                            <Slider 
-                                            defaultValue={achievementPointer} 
-                                            min={0} max={(bingoSize * 2 + 2) + 1} 
-                                            onChange={v => setAchievementPointer(v)} 
-                                            marks={marks}
-                                            />
-                                            <Input 
-                                            style={{width: '70%'}} 
-                                            value={achievementInput}
-                                            onChange={e => setAchievementInput(e.target.value)} 
-                                            onPressEnter={() => {handleAcheievement(0, achievementPointer, achievementInput)}}
-                                            />
-                                            <Button 
-                                            style={{marginLeft: '1rem'}} 
-                                            onClick={() => {handleAcheievement(0, achievementPointer, achievementInput)}}
-                                            > 
-                                                {t("STATIC_ADD")} 
-                                            </Button>
+                                            {
+                                                achievementMinimumPointer === 0 ?
+                                                <div>
+                                                    <Slider 
+                                                    defaultValue={achievementPointer} 
+                                                    min={0} max={(bingoSize * 2 + 2) + 1} 
+                                                    onChange={v => setAchievementPointer(v)} 
+                                                    marks={marks}
+                                                    />
+                                                    <Input 
+                                                    style={{width: '70%'}} 
+                                                    value={achievementInput}
+                                                    onChange={e => setAchievementInput(e.target.value)} 
+                                                    onPressEnter={() => {handleAcheievement(0, achievementPointer, achievementInput)}}
+                                                    />
+                                                    <Button 
+                                                    style={{marginLeft: '1rem'}} 
+                                                    onClick={() => {handleAcheievement(0, achievementPointer, achievementInput)}}
+                                                    > 
+                                                        {t("STATIC_ADD")} 
+                                                    </Button>
+                                                </div>
+                                                :
+                                                <div>
+                                                    <Slider 
+                                                    range 
+                                                    value={[achievementMinimumPointer, achievementPointer]} 
+                                                    min={0} max={(bingoSize * 2 + 2) + 1} 
+                                                    onChange={v => {setAchievementMinimumPointer(v[0]); setAchievementPointer(v[1])}} 
+                                                    marks={marks}
+                                                    />
+                                                    <Input 
+                                                    style={{width: '70%'}}
+                                                    value={achievementInput}
+                                                    onChange={e => setAchievementInput(e.target.value)} 
+                                                    onPressEnter={() => {handleAcheievement(achievementMinimumPointer, achievementPointer, achievementInput)}}
+                                                    />
+                                                    <Button 
+                                                    style={{marginLeft: '1rem'}} 
+                                                    onClick={() => {handleAcheievement(achievementMinimumPointer, achievementPointer, achievementInput)}}
+                                                    > 
+                                                        {t("STATIC_ADD")}  
+                                                    </Button>
+                                                </div>
+                                            }
                                         </div>
-                                        :
-                                        <div>
-                                            <Slider 
-                                            range 
-                                            value={[achievementMinimumPointer, achievementPointer]} 
-                                            min={0} max={(bingoSize * 2 + 2) + 1} 
-                                            onChange={v => {setAchievementMinimumPointer(v[0]); setAchievementPointer(v[1])}} 
-                                            marks={marks}
-                                            />
-                                            <Input 
-                                            style={{width: '70%'}}
-                                            value={achievementInput}
-                                            onChange={e => setAchievementInput(e.target.value)} 
-                                            onPressEnter={() => {handleAcheievement(achievementMinimumPointer, achievementPointer, achievementInput)}}
-                                            />
-                                            <Button 
-                                            style={{marginLeft: '1rem'}} 
-                                            onClick={() => {handleAcheievement(achievementMinimumPointer, achievementPointer, achievementInput)}}
-                                            > 
-                                                {t("STATIC_ADD")}  
-                                            </Button>
-                                        </div>
-                                    }
-                                </div>
+                                    </>
+                                }
                             </>
                         }
                     </ControllerPage>

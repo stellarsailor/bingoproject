@@ -11,6 +11,7 @@ import { serverUrl } from '../lib/serverUrl'
 import { useRouter } from 'next/router'
 import useIsMobile from '../logics/useIsMobile'
 import { useTranslation } from '../i18n'
+import MarkStyleSVG from './sub/MarkStyleSVG'
 
 message.config({
     top: 58,
@@ -54,6 +55,8 @@ const ResultPage = styled.div`
 `
 
 const TitleText = styled.div`
+    width: 100%;
+    text-align: center;
     color: ${props => props.color};
     font-weight: bold;
     font-size: ${props => props.cellWidth * 0.05}px;
@@ -69,7 +72,7 @@ const ResultBox = styled.div`
     color: white;
     width: 100%;
     height: 120px;
-    padding: 20px;
+    padding: 16px;
     border: 1px solid var(--mono-2);
 `
 
@@ -141,14 +144,40 @@ export default function BingoRenderer( props ){
                                 key={index} 
                                 style={{
                                     border: `${width < 768 ? 1 : 2}px solid ${lineColor}`, 
-                                    backgroundColor: `${selectedIndex.includes(index) ? markColor : 'white'}`, 
-                                    backgroundImage: markStyle === 'paint' ? null : `url("/static/images/${markStyle}.png")`, 
-                                    backgroundSize: 'cover'
+                                    backgroundColor: markStyle === 'paint' && selectedIndex.includes(index) ? markColor 
+                                    : cellColor !== '' ? cellColor : ''
+                                    // backgroundColor: `${selectedIndex.includes(index) ? markColor : 'white'}`, 
+                                    // backgroundImage: markStyle === 'paint' ? null : `url("/static/images/${markStyle}.png")`, 
+                                    // backgroundSize: 'cover'
                                 }} 
                                 onClick={() => elementOnClickEvent(index)}>
                                     <a>
-                                        <div style={{width: (baseWidth - 50) / size, height: (baseWidth - 50) / size, display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center', color: `${fontColor}`, overflow: 'hidden', fontSize: baseWidth / size / 9}}>
-                                            {v}
+                                        {
+                                            markStyle !== 'paint' && selectedIndex.includes(index) && 
+                                            <MarkStyleSVG markStyle={markStyle} markColor={markColor} markWidth={(baseWidth - 50) / size} />
+                                        }
+                                        <div 
+                                        style={{
+                                            width: (baseWidth - 50) / size, 
+                                            height: (baseWidth - 50) / size, 
+                                            display: 'flex', 
+                                            justifyContent: 'center', 
+                                            alignItems: 'center', 
+                                            textAlign: 'center', 
+                                            color: `${fontColor}`, 
+                                            fontSize: baseWidth / size / 9,
+                                            overflow: 'hidden'
+                                        }}>
+                                            <span style={{width: (baseWidth - 50) / size, 
+                                            height: (baseWidth - 50) / size,
+                                            display: 'flex', 
+                                            justifyContent: 'center', 
+                                            alignItems: 'center', 
+                                            position: 'absolute', 
+                                            zIndex: 10, 
+                                            overflow: 'hidden'}}>
+                                                {v}
+                                            </span>
                                         </div>
                                     </a>
                                 </td>
@@ -218,12 +247,15 @@ export default function BingoRenderer( props ){
                 : resultStatus === 'calculating' ? <CenteredRow style={{height: 300}}><Spin /> 데이터를 계산 중 입니다.</CenteredRow>
                 : 
                 <ResultPage>
-                    <Row style={{padding: 8}}>
-                        <div style={{width: '100%', minHeight: 60, backgroundColor: bgMainColor, fontSize: 24, textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', color: pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000'), border: '1px solid var(--mono-2)'}}>
-                            <div style={{fontSize: 12}}>당신은</div>
-                            {resultString}
-                        </div>
-                    </Row>
+                    {
+                        resultString !== '' &&
+                        <Row style={{padding: 8}}>
+                            <div style={{width: '100%', minHeight: 60, backgroundColor: bgMainColor, fontSize: 24, textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', color: pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000'), border: '1px solid var(--mono-2)'}}>
+                                <div style={{fontSize: 12}}>당신은</div>
+                                {resultString}
+                            </div>
+                        </Row>
+                    }
                     <Row>
                         <Col xs={12} sm={8} md={8} lg={8} xl={8} style={{padding: 8}}>
                             <ResultBox bgColor={'#4285F4'}>
@@ -266,37 +298,40 @@ export default function BingoRenderer( props ){
                                     </CopyToClipboard>
                                 </MenuButton>
                                 <MenuButton onClick={() => takeScreenShot('captureWithResult')}>
+                                    <span><CameraFilled /> {t("PLAYPAGE_CAPTURE")} with Result</span>
+                                </MenuButton>
+                                <MenuButton onClick={() => takeScreenShot('captureWithoutResult')}>
                                     <span><CameraFilled /> {t("PLAYPAGE_CAPTURE")}</span>
                                 </MenuButton>
                             </CenteredCol>
                         </Col>
                     </Row>
+                    <Modal
+                    closable
+                    title={t("PLAYPAGE_PERCENTAGE_STATS")}
+                    visible={resultTableModalVisible}
+                    footer={null}
+                    onCancel={() => setResultTableModalVisible(false)}
+                    // style={{top: '55%'}}
+                    centered
+                    // mask={false}
+                    >
+                        <CenteredCol>
+                            <table style={{}}>
+                                <tbody>
+                                    {renderTable(size, width < 768 ? cellWidth : cellWidth/2)}
+                                </tbody>
+                            </table>
+                            <div style={{margin: 16}} />
+                            <table>
+                                <tbody>
+                                    {renderResultTable(size)}
+                                </tbody>
+                            </table>
+                        </CenteredCol>
+                    </Modal>
                 </ResultPage>
             }
-            <Modal
-            closable
-            title={t("PLAYPAGE_PERCENTAGE_STATS")}
-            visible={resultTableModalVisible}
-            footer={null}
-            onCancel={() => setResultTableModalVisible(false)}
-            // style={{top: '55%'}}
-            centered
-            // mask={false}
-            >
-                <CenteredCol>
-                    <table style={{}}>
-                        <tbody>
-                            {renderTable(size, width < 768 ? cellWidth : cellWidth/2)}
-                        </tbody>
-                    </table>
-                    <div style={{margin: 16}} />
-                    <table>
-                        <tbody>
-                            {renderResultTable(size)}
-                        </tbody>
-                    </table>
-                </CenteredCol>
-            </Modal>
         </div>
     )
 }

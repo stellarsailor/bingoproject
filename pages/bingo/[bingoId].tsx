@@ -339,7 +339,7 @@ export default function BingoDetail({ data }) {
                             bgMainColor={bingo.bgMainColor}
                             bgSubColor={bingo.bgSubColor}
                             fontColor={bingo.fontColor}
-                            // cellColor={bingo.cellColor}
+                            cellColor={bingo.cellColor}
                             lineColor={bingo.lineColor}
                             linePixel={bingo.linePixel}
                             ipAddress={bingo.ipAddress}

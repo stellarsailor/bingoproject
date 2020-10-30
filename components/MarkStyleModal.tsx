@@ -4,20 +4,21 @@ import { Modal, Radio } from 'antd'
 import TwitterPicker  from 'react-color/lib/Twitter'
 import { useCookies } from 'react-cookie'
 import { useTranslation } from '../i18n'
+import MarkStyleSVG from './sub/MarkStyleSVG'
 
 const SampleView = styled.div`
     width: 100px;
     height: 100px;
-    border: 2px solid rgba(0, 0, 0, 0.9); 
-    background-color: ${props => props.markColor}; 
-    background-image: ${props => props.markStyle === 'paint' ? null : `url("/static/images/${props.markStyle}.png")`} ; 
+    border: 1px solid rgba(0, 0, 0, 0.9); 
+    background-color: ${props => props.markStyle === 'paint' ? props.markColor : 'white'}; 
+    /* background-image: ${props => props.markStyle === 'paint' ? null : `url("/static/images/${props.markStyle}.png")`} ;  */
     background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    /* margin-top: 1rem;
+    margin-bottom: 1rem; */
 `
 
 
@@ -33,6 +34,7 @@ export default function MarkStyleModal (props){
     const options = [
         { label: t("MODAL_MARKSTYLE_CHECK"), value: 'check' },
         { label: t("MODAL_MARKSTYLE_CIRCLE"), value: 'circle' },
+        { label: t("MODAL_MARKSTYLE_X"), value: 'x' },
         { label: t("MODAL_MARKSTYLE_PAINT"), value: 'paint' },
     ]
 
@@ -70,13 +72,17 @@ export default function MarkStyleModal (props){
             value={sampleStyle}
             optionType="button"
             buttonStyle="solid"
+            style={{marginBottom: 16}}
             />
 
+            <MarkStyleSVG markStyle={sampleStyle} markColor={sampleColor} markWidth={100} />
             <SampleView markStyle={sampleStyle} markColor={sampleColor}>
-                {t("MODAL_MARKSTYLE_SAMPLE")}
+                {/* {t("MODAL_MARKSTYLE_SAMPLE")} */}
             </SampleView>
-
-            <TwitterPicker color={sampleColor} onChangeComplete={(v) => {setSampleColor(v.hex)}} />
+            
+            <div style={{marginTop: 16}}>
+                <TwitterPicker color={sampleColor} onChangeComplete={(v) => {setSampleColor(v.hex)}} />
+            </div>
 
         </Modal>
     )
