@@ -8,13 +8,14 @@ import SwatchesPicker  from 'react-color/lib/Swatches'
 import { serverUrl } from '../../lib/serverUrl'
 import { useTranslation, Router } from '../../i18n';
 import { InitialContents } from '../../store/InitialContentsProvider';
-import { LeftOutlined, TableOutlined } from '../../assets/icons';
+import { BgColorsOutlined, LeftOutlined, TableOutlined } from '../../assets/icons';
 import BingoRenderer from '../../components/BingoRenderer';
 import { CenteredCol, CenteredRow } from '../../components/sub/styled';
 import { Row, Col, Input, Radio, Select, Modal, InputNumber, Button, message, Slider, Checkbox } from 'antd';
-import LoginContainer from '../../components/LoginContainer'
 import CreateButtonTab from '../../components/sub/CreateButtonTab'
 import useWindowSize from '../../logics/useWindowSize'
+import shuffleArray from '../../logics/shuffleArray'
+const { TextArea } = Input;
 const { Option } = Select;
 const marks = {
     0: '0',
@@ -58,16 +59,22 @@ const ColorSquare = styled.div`
     border-radius: 6px;
     border: 1px solid lightgray;
     margin-left: 16px;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     &:hover {
         cursor: pointer;
     }
 `
 
 const ColorTab = styled.span`
-    /* display: flex;
-    flex-direction: row; */
     margin: 8px 0px;
+`
+
+const TransparentText = styled.div`
+    margin-left: 16px;
+    margin-bottom: 8px;
+    &:hover {
+        cursor: pointer;
+    }
 `
 
 const initialColorArray = [ '#f8bbd0', '#e1bee7', '#ffe0b2', '#b2dfdb', '#f06292', '#fff9c4', '#009688', '#5d4037', '#303f9f', '#000000']
@@ -79,6 +86,8 @@ export default function BingoCreate() {
     const { categoryList } = useContext(InitialContents)
     
     const [ selectedButton, setSelectedButton ] = useState(0)
+    const [ easyBingoEditCenterInput, setEasyBingoEditCenterInput ] = useState('')
+    const [ easyBingoEditInput, setEasyBingoEditInput ] = useState('')
 
     const [ bingoCategory, setBingoCategory ] = useState<any>(0)
     // const [ bingoPassword, setBingoPassword ] = useState('')
@@ -95,7 +104,6 @@ export default function BingoCreate() {
     const [ bingoBgSubColor, setBingoBgSubColor ] = useState('')
     const [ bingoFontColor, setBingoFontColor ] = useState('#000000')
     const [ bingoLineColor, setBingoLineColor ] = useState('#000000')
-    const [ bingoLinePixel, setBingoLinePixel ] = useState(2)
     const [ bingoCellColor, setBingoCellColor ] = useState('#ffffff')
 
     const [ enableAchievement, setEnableAchievement ] = useState(false)
@@ -121,6 +129,21 @@ export default function BingoCreate() {
         setModalWillChangeInput(bingoArr[willChangeIndex])
         setModalOpened(true)
     },[])
+
+    const insertEasyEdit = useCallback(() => {
+        let tempArr = []
+        for(let i = 0; i < bingoSize * bingoSize; i++) tempArr.push('')
+
+        let linesArray = easyBingoEditInput.split(/\r|\r\n|\n/) 
+        // console.log(linesArray)
+        let shuffledArray = shuffleArray(linesArray)
+        // console.log(shuffledArray)
+        tempArr.map( (v, index) => {
+            if(index !== Math.floor(bingoSize * bingoSize / 2)) tempArr[index] = shuffledArray.pop() //insert except center
+        })
+        tempArr[Math.floor(bingoSize * bingoSize / 2)] = easyBingoEditCenterInput //insert center
+        setBingoArr(tempArr)
+    },[easyBingoEditCenterInput, easyBingoEditInput])
 
     useEffect(() => {
         let elements = []
@@ -185,7 +208,6 @@ export default function BingoCreate() {
                     fontColor: bingoFontColor,
                     cellColor: bingoCellColor,
                     lineColor: bingoLineColor,
-                    // linePixel: bingoLinePixel,
                     achievements: bingoAchievement
                 })
             }
@@ -205,7 +227,7 @@ export default function BingoCreate() {
                 return e;
             }
         }
-    },[bingoTitle, bingoDescription, bingoAuthor, bingoCategory, bingoSize, bingoArr, bingoBgMainColor, bingoBgSubColor, bingoFontColor, bingoCellColor, bingoLineColor, bingoLinePixel, bingoAchievement, enableAchievement])
+    },[bingoTitle, bingoDescription, bingoAuthor, bingoCategory, bingoSize, bingoArr, bingoBgMainColor, bingoBgSubColor, bingoFontColor, bingoCellColor, bingoLineColor, bingoAchievement, enableAchievement])
 
     if (loading) {
         return <p>Loading…</p>
@@ -263,9 +285,9 @@ export default function BingoCreate() {
                         {
                             selectedButton === 1 &&
                             <>
-                                <ColorTab onClick={() => setColorPickerKey('bingoLineColor')}>
+                                <ColorTab>
                                     <TextLabel>{t("CREATE_LINE_COLOR")}</TextLabel>
-                                    <ColorSquare color={bingoLineColor} />
+                                    <ColorSquare color={bingoLineColor} onClick={() => setColorPickerKey('bingoLineColor')} />
                                 </ColorTab>
                                 {
                                     colorPickerKey === 'bingoLineColor' &&
@@ -274,29 +296,9 @@ export default function BingoCreate() {
                                     </CenteredCol>
                                 }
 
-                                {/* <ColorTab>
-                                    <div style={{width: 120}}>
-                                        {t("CREATE_LINE_THICK")}
-                                    </div>
-                                    <div>
-                                        <InputNumber min={1} max={3} defaultValue={2} onChange={(v: number) => setBingoLinePixel(v)} style={{width: 60}} />
-                                    </div>
-                                </ColorTab> */}
-
-                                {/* <ColorTab onClick={() => setColorPickerKey('bingoCellColor')}>
-                                    <TextLabel>셀 배경색 설정</TextLabel>
-                                    <ColorSquare color={bingoCellColor} />
-                                </ColorTab>
-                                {
-                                    colorPickerKey === 'bingoCellColor' &&
-                                    <CenteredCol>
-                                        <SwatchesPicker color={bingoCellColor} onChangeComplete={(v) => {setBingoCellColor(v.hex); setColorPickerKey('');}} />
-                                    </CenteredCol>
-                                } */}
-
-                                <ColorTab onClick={() => setColorPickerKey('bingoFontColor')}>
+                                <ColorTab>
                                     <TextLabel>{t("CREATE_FONT_COLOR")}</TextLabel>
-                                    <ColorSquare color={bingoFontColor} />
+                                    <ColorSquare color={bingoFontColor} onClick={() => setColorPickerKey('bingoFontColor')} />
                                 </ColorTab>
                                 {
                                     colorPickerKey === 'bingoFontColor' &&
@@ -309,24 +311,26 @@ export default function BingoCreate() {
                         {
                             selectedButton === 2 &&
                             <>
-                                <ColorTab onClick={() => setColorPickerKey('bingoBgMainColor')}>
+                                <ColorTab>
                                     <TextLabel>{t("CREATE_BACKGROUND_COLOR")}</TextLabel>
-                                    <ColorSquare color={bingoBgMainColor} />
+                                    <ColorSquare color={bingoBgMainColor} onClick={() => setColorPickerKey('bingoBgMainColor')} />
                                 </ColorTab>
                                 {
                                     colorPickerKey === 'bingoBgMainColor' && 
                                     <CenteredCol>
-                                        <SwatchesPicker color={bingoBgMainColor} onChangeComplete={(v) => {
+                                        <SwatchesPicker color={bingoBgMainColor} 
+                                        onChangeComplete={(v) => {
                                             if(!allowGradient) setBingoBgSubColor('')
                                             setBingoBgMainColor(v.hex); 
                                             setColorPickerKey('');
-                                            }} />
+                                        }} 
+                                        />
                                     </CenteredCol>
                                 }
 
                                 <Checkbox 
                                 checked={allowGradient}
-                                style={{color: 'var(--mono-2)', marginBottom: 8}}
+                                style={{color: 'var(--mono-2)', marginBottom: 16}}
                                 onChange={e => {
                                     bingoBgSubColor !== '' && setBingoBgSubColor('')
                                     setAllowGradient(e.target.checked)
@@ -336,9 +340,9 @@ export default function BingoCreate() {
                                 {
                                     allowGradient && 
                                     <>
-                                        <ColorTab onClick={() => setColorPickerKey('bingoBgSubColor')}>
+                                        <ColorTab>
                                             <TextLabel>{t("CREATE_SUB_BACKGROUND_COLOR")}</TextLabel>
-                                            <ColorSquare color={bingoBgSubColor} />
+                                            <ColorSquare color={bingoBgSubColor} onClick={() => setColorPickerKey('bingoBgSubColor')} />
                                         </ColorTab>
                                         {
                                             colorPickerKey === 'bingoBgSubColor' &&
@@ -347,6 +351,20 @@ export default function BingoCreate() {
                                             </CenteredCol>
                                         }
                                     </>
+                                }
+
+                                <ColorTab>
+                                    <TextLabel>셀 배경색 설정</TextLabel>
+                                    <ColorSquare color={bingoCellColor} onClick={() => setColorPickerKey('bingoCellColor')} />
+                                    <TransparentText onClick={() => { setBingoCellColor(''); setColorPickerKey(''); }}>
+                                        <BgColorsOutlined /> 투명 배경
+                                    </TransparentText>
+                                </ColorTab>
+                                {
+                                    colorPickerKey === 'bingoCellColor' &&
+                                    <CenteredCol>
+                                        <SwatchesPicker color={bingoCellColor} onChangeComplete={(v) => {setBingoCellColor(v.hex); setColorPickerKey('');}} />
+                                    </CenteredCol>
                                 }
                             </>
                         }
@@ -357,8 +375,21 @@ export default function BingoCreate() {
                                     빙고 요소 일괄 편집
                                 </TextLabel>
                                 <div>
-                                    준비 중
+                                    <Input placeholder="중앙에 들어갈 내용을 입력해주세요" onChange={e => setEasyBingoEditCenterInput(e.target.value)} style={{marginBottom: 8}} />
+                                    <TextArea 
+                                    placeholder="1줄에 빙고 한칸에 들어갈 내용을 입력해주세요" 
+                                    autoSize={{ minRows: 3, maxRows: 10 }}
+                                    allowClear 
+                                    // disabled={easyBingoEditInput.split(/\r|\r\n|\n/).length > bingoSize * bingoSize - 1}
+                                    onChange={e => setEasyBingoEditInput(e.target.value)} 
+                                    />
+                                    {easyBingoEditInput.split(/\r|\r\n|\n/).length} / {bingoSize * bingoSize - 1} Lines
                                 </div>
+                                <CenteredCol>
+                                    <Button onClick={() => insertEasyEdit()} style={{width: 80}}>
+                                        삽입
+                                    </Button>
+                                </CenteredCol>
                                 <div style={{marginTop: 32}}>
                                     빙고 칸을 클릭하여 빙고를 수정할 수도 있습니다!
                                 </div>
@@ -452,7 +483,6 @@ export default function BingoCreate() {
                     fontColor={bingoFontColor}
                     cellColor={bingoCellColor}
                     lineColor={bingoLineColor}
-                    linePixel={bingoLinePixel}
                     />
                     <Modal
                     title={t("CREATE_CHANGE_BINGO_ELEMENT")}
