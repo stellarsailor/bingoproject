@@ -243,15 +243,15 @@ export default function BingoRenderer( props ){
             </CreatePage>
             {
                 resultStatus === 'idle' || resultStatus === undefined ? null
-                : resultStatus === 'saving' ? <CenteredRow style={{height: 300}}><Spin /> 데이터를 저장 중 입니다.</CenteredRow>
-                : resultStatus === 'calculating' ? <CenteredRow style={{height: 300}}><Spin /> 데이터를 계산 중 입니다.</CenteredRow>
+                : resultStatus === 'saving' ? <CenteredRow style={{height: 300}}><Spin /> {t("PLAYPAGE_SAVING")}</CenteredRow>
+                : resultStatus === 'calculating' ? <CenteredRow style={{height: 300}}><Spin /> {t("PLAYPAGE_CALCULATING")}</CenteredRow>
                 : 
                 <ResultPage>
                     {
                         resultString !== '' &&
                         <Row style={{padding: 8}}>
                             <div style={{width: '100%', minHeight: 60, backgroundColor: bgMainColor, fontSize: 24, textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', color: pickTextColorBasedOnBgColor(bgMainColor, '#ffffff', '#000000'), border: '1px solid var(--mono-2)'}}>
-                                <div style={{fontSize: 12}}>당신은</div>
+                                <div style={{fontSize: 12}}>{t("PLAYPAGE_YOU_ARE")}</div>
                                 {resultString}
                             </div>
                         </Row>
@@ -260,22 +260,22 @@ export default function BingoRenderer( props ){
                         <Col xs={12} sm={8} md={8} lg={8} xl={8} style={{padding: 8}}>
                             <ResultBox bgColor={'#4285F4'}>
                                 <MiniTextInResultBox>
-                                    Your Marks
+                                    {t("PLAYPAGE_YOUR_MARKS")}
                                 </MiniTextInResultBox>
                                 <BigTextInResultBox>
                                     {selectedIndex.length}
-                                    <span style={{fontSize: 12, marginLeft: 16}}>Avg : {resultAvgCount.toFixed(2)}</span>
+                                    <span style={{fontSize: 12, marginLeft: 16}}>{t("STATIC_AVG")} : {resultAvgCount.toFixed(2)}</span>
                                 </BigTextInResultBox>
                             </ResultBox>
                         </Col>
                         <Col xs={12} sm={8} md={8} lg={8} xl={8} style={{padding: 8}}>
                             <ResultBox bgColor={'#0F9D58'}>
                                 <MiniTextInResultBox>
-                                    Completed Lines
+                                    {t("PLAYPAGE_YOUR_COMPLETED_LINES")}
                                 </MiniTextInResultBox>
                                 <BigTextInResultBox>
                                     {completedBingoLines}
-                                    <span style={{fontSize: 12, marginLeft: 16}}>Avg : {resultAvgBingoLines.toFixed(2)}</span>
+                                    <span style={{fontSize: 12, marginLeft: 16}}>{t("STATIC_AVG")} : {resultAvgBingoLines.toFixed(2)}</span>
                                 </BigTextInResultBox>
                             </ResultBox>
                         </Col>
@@ -285,7 +285,7 @@ export default function BingoRenderer( props ){
                                     {t("PLAYPAGE_PERCENTAGE_STATS")}
                                 </MiniTextInResultBox>
                                 <BigTextInResultBox onClick={() => setResultTableModalVisible(true)}>
-                                    <a style={{color: 'white'}}>보기 <SearchOutlined style={{fontSize: 16}} /></a>
+                                    <a style={{color: 'white'}}>{t("STATIC_VIEW")} <SearchOutlined style={{fontSize: 16}} /></a>
                                 </BigTextInResultBox>
                             </ResultBox>
                         </Col>
@@ -297,11 +297,11 @@ export default function BingoRenderer( props ){
                                         <span><ShareAltOutlined /> {t("PLAYPAGE_SHARE")}</span>
                                     </CopyToClipboard>
                                 </MenuButton>
-                                <MenuButton onClick={() => takeScreenShot('captureWithResult')}>
-                                    <span><CameraFilled /> {t("PLAYPAGE_CAPTURE")} with Result</span>
-                                </MenuButton>
                                 <MenuButton onClick={() => takeScreenShot('captureWithoutResult')}>
                                     <span><CameraFilled /> {t("PLAYPAGE_CAPTURE")}</span>
+                                </MenuButton>
+                                <MenuButton onClick={() => takeScreenShot('captureWithResult')}>
+                                    <span><CameraFilled /> {t("PLAYPAGE_CAPTURE_WITH_RESULT")}</span>
                                 </MenuButton>
                             </CenteredCol>
                         </Col>

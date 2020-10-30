@@ -139,9 +139,7 @@ export default function BingoDetail({ data }) {
 
             if(data.results === 'success'){
                 Router.push('/')
-                message.success('Bingo is successfully deleted.')
-            } else if(data.results === 'wrong'){
-                message.warning('Please check password.')
+                message.success(t("PLAYPAGE_DELETE_SUCCESS"))
             } else {
                 message.error('Error!')
             }
@@ -212,7 +210,7 @@ export default function BingoDetail({ data }) {
             const data = await fetchResponse.json()
 
             if(data.error === 'duplicated') {
-                message.error('something wrong while inserting! try few minutes later!')
+                message.error('Try few minutes later!')
                 // throw 'duplicated!'
             }
             setResultStatus('calculating')
@@ -307,7 +305,7 @@ export default function BingoDetail({ data }) {
                                                 title={
                                                     <div> 
                                                         {/* <Input.Password placeholder="input password" onChange={(e) => setPasswordInput(e.target.value)} style={{width: 200}} /> */}
-                                                        Do you want to delete this Bingo?
+                                                        {t("PLAYPAGE_DELETE_ASK")}
                                                     </div>
                                                 }
                                                 onConfirm={() => deleteBingo(passwordInput)}

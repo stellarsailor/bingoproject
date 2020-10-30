@@ -255,10 +255,6 @@ export default function BingoCreate() {
                 <Col style={{maxWidth: width < 768 ? width : 768, display: 'flex', flexDirection: width < 768 ? 'column' : 'row' }}>
                     <CreateButtonTab selectedButton={selectedButton} setSelectedButton={setSelectedButton} />
                     <ControllerPage width={width}>
-                        {/* <div style={{borderBottom: '1px solid var(--mono-2)', paddingBottom: '1rem'}}> */}
-                            {/* <Input placeholder={t("CREATE_PLACEHOLDER_AUTHOR")} value={session.user.name} onChange={e => setBingoAuthor(e.target.value)} style={{width: '45%', marginRight: 16}} /> */}
-                            {/* <Input.Password placeholder={t("CREATE_PLACEHOLDER_PASSWORD")} onChange={e => setBingoPassword(e.target.value)} style={{width: '45%'}} /> */}
-                        {/* </div> */}
                         {
                             selectedButton === 0 && 
                             <>
@@ -266,9 +262,17 @@ export default function BingoCreate() {
                                     {categoryList.slice(1).map((v, index) => <Option key={index} value={index}>{v.name_ko}</Option>)}
                                 </Select>
 
-                                <Input placeholder={t("CREATE_PLACEHOLDER_TITLE")} onChange={e => setBingoTitle(e.target.value)} style={{width: '100%', height: 40, borderRadius: 5}} />
+                                <Input 
+                                placeholder={t("CREATE_PLACEHOLDER_TITLE")} 
+                                onChange={e => setBingoTitle(e.target.value)} 
+                                style={{width: '100%', height: 40, borderRadius: 5}} 
+                                />
                                 
-                                <Input placeholder={t("CREATE_PLACEHOLDER_DESC")} onChange={e => setBingoDescription(e.target.value)} style={{width: '100%', height: 35, margin: '1rem 0px', borderRadius: 5}} />
+                                <Input 
+                                placeholder={t("CREATE_PLACEHOLDER_DESC")} 
+                                onChange={e => setBingoDescription(e.target.value)} 
+                                style={{width: '100%', height: 35, margin: '1rem 0px', borderRadius: 5}} 
+                                />
 
                                 <div style={{margin: '1rem 0px'}}>
                                     <TextLabel>
@@ -277,7 +281,6 @@ export default function BingoCreate() {
                                     <Radio.Group defaultValue={bingoSize} onChange={(e) => setBingoSize(e.target.value)} >
                                         <Radio.Button value={3} style={{width: 80, textAlign: 'center'}}>3x3</Radio.Button>
                                         <Radio.Button value={5} style={{width: 80, textAlign: 'center'}}>5x5</Radio.Button>
-                                        {/* <Radio.Button value="7">7x7</Radio.Button> */}
                                     </Radio.Group>
                                 </div>
                             </>
@@ -335,7 +338,7 @@ export default function BingoCreate() {
                                     bingoBgSubColor !== '' && setBingoBgSubColor('')
                                     setAllowGradient(e.target.checked)
                                 }}>
-                                    그라데이션 활성화
+                                    {t("CREATE_ENABLE_GRADIENT")}
                                 </Checkbox>
                                 {
                                     allowGradient && 
@@ -354,10 +357,10 @@ export default function BingoCreate() {
                                 }
 
                                 <ColorTab>
-                                    <TextLabel>셀 배경색 설정</TextLabel>
+                                    <TextLabel>{t("CREATE_CELL_COLOR")}</TextLabel>
                                     <ColorSquare color={bingoCellColor} onClick={() => setColorPickerKey('bingoCellColor')} />
                                     <TransparentText onClick={() => { setBingoCellColor(''); setColorPickerKey(''); }}>
-                                        <BgColorsOutlined /> 투명 배경
+                                        <BgColorsOutlined /> {t("CREATE_CELL_TRANSPARENT")}
                                     </TransparentText>
                                 </ColorTab>
                                 {
@@ -372,12 +375,13 @@ export default function BingoCreate() {
                             selectedButton === 3 &&
                             <>
                                 <TextLabel>
-                                    빙고 요소 일괄 편집
+                                    {t("CREATE_EDIT_EASY")}
                                 </TextLabel>
                                 <div>
-                                    <Input placeholder="중앙에 들어갈 내용을 입력해주세요" onChange={e => setEasyBingoEditCenterInput(e.target.value)} style={{marginBottom: 8}} />
+                                    <Input placeholder={t("CREATE_EDIT_EASY_CENTER_INPUT")} onChange={e => setEasyBingoEditCenterInput(e.target.value)} style={{marginBottom: 8}} />
+
                                     <TextArea 
-                                    placeholder="1줄에 빙고 한칸에 들어갈 내용을 입력해주세요" 
+                                    placeholder={t("CREATE_EDIT_EASY_INPUT")}
                                     autoSize={{ minRows: 3, maxRows: 10 }}
                                     allowClear 
                                     // disabled={easyBingoEditInput.split(/\r|\r\n|\n/).length > bingoSize * bingoSize - 1}
@@ -387,11 +391,11 @@ export default function BingoCreate() {
                                 </div>
                                 <CenteredCol>
                                     <Button onClick={() => insertEasyEdit()} style={{width: 80}}>
-                                        삽입
+                                        {t("STATIC_INSERT")}
                                     </Button>
                                 </CenteredCol>
                                 <div style={{marginTop: 32}}>
-                                    빙고 칸을 클릭하여 빙고를 수정할 수도 있습니다!
+                                    {t("CREATE_EDIT_EASY_TIP")}
                                 </div>
                             </>
                         }
@@ -407,7 +411,9 @@ export default function BingoCreate() {
                                         setEnableAchievement(e.target.checked)
                                     } else setEnableAchievement(e.target.checked)
                                 }}>
-                                    빙고 업적 설정
+                                    <span style={{marginLeft: 8}}>
+                                        {t("CREATE_BINGO_ACCOMPLISHMENTS")}
+                                    </span>
                                 </Checkbox>
                                 {
                                     enableAchievement &&
@@ -415,54 +421,56 @@ export default function BingoCreate() {
                                         <TextLabel>
                                             {t("CREATE_BINGO_ACCOMPLISHMENTS")}
                                         </TextLabel>
-                                        {bingoAchievement.map((v, index) => <div key={index}>{index} {t("STATIC_BINGO")}: {v}</div>)}
-                                        <div>
-                                            {
-                                                achievementMinimumPointer === 0 ?
-                                                <div>
-                                                    <Slider 
-                                                    defaultValue={achievementPointer} 
-                                                    min={0} max={(bingoSize * 2 + 2) + 1} 
-                                                    onChange={v => setAchievementPointer(v)} 
-                                                    marks={marks}
-                                                    />
-                                                    <Input 
-                                                    style={{width: '70%'}} 
-                                                    value={achievementInput}
-                                                    onChange={e => setAchievementInput(e.target.value)} 
-                                                    onPressEnter={() => {handleAcheievement(0, achievementPointer, achievementInput)}}
-                                                    />
-                                                    <Button 
-                                                    style={{marginLeft: '1rem'}} 
-                                                    onClick={() => {handleAcheievement(0, achievementPointer, achievementInput)}}
-                                                    > 
-                                                        {t("STATIC_ADD")} 
-                                                    </Button>
-                                                </div>
-                                                :
-                                                <div>
-                                                    <Slider 
-                                                    range 
-                                                    value={[achievementMinimumPointer, achievementPointer]} 
-                                                    min={0} max={(bingoSize * 2 + 2) + 1} 
-                                                    onChange={v => {setAchievementMinimumPointer(v[0]); setAchievementPointer(v[1])}} 
-                                                    marks={marks}
-                                                    />
-                                                    <Input 
-                                                    style={{width: '70%'}}
-                                                    value={achievementInput}
-                                                    onChange={e => setAchievementInput(e.target.value)} 
-                                                    onPressEnter={() => {handleAcheievement(achievementMinimumPointer, achievementPointer, achievementInput)}}
-                                                    />
-                                                    <Button 
-                                                    style={{marginLeft: '1rem'}} 
-                                                    onClick={() => {handleAcheievement(achievementMinimumPointer, achievementPointer, achievementInput)}}
-                                                    > 
-                                                        {t("STATIC_ADD")}  
-                                                    </Button>
-                                                </div>
-                                            }
-                                        </div>
+                                        {bingoAchievement.map((v, index) => 
+                                            <div key={index}>
+                                                {index} {t("STATIC_BINGO")}: {v}
+                                            </div>
+                                        )}
+                                        {
+                                            achievementMinimumPointer === 0 ?
+                                            <div>
+                                                <Slider 
+                                                defaultValue={achievementPointer} 
+                                                min={0} max={(bingoSize * 2 + 2) + 1} 
+                                                onChange={v => setAchievementPointer(v)} 
+                                                marks={marks}
+                                                />
+                                                <Input 
+                                                style={{width: '70%'}} 
+                                                value={achievementInput}
+                                                onChange={e => setAchievementInput(e.target.value)} 
+                                                onPressEnter={() => {handleAcheievement(0, achievementPointer, achievementInput)}}
+                                                />
+                                                <Button 
+                                                style={{marginLeft: '1rem'}} 
+                                                onClick={() => {handleAcheievement(0, achievementPointer, achievementInput)}}
+                                                > 
+                                                    {t("STATIC_ADD")} 
+                                                </Button>
+                                            </div>
+                                            :
+                                            <div>
+                                                <Slider 
+                                                range 
+                                                value={[achievementMinimumPointer, achievementPointer]} 
+                                                min={0} max={(bingoSize * 2 + 2) + 1} 
+                                                onChange={v => {setAchievementMinimumPointer(v[0]); setAchievementPointer(v[1])}} 
+                                                marks={marks}
+                                                />
+                                                <Input 
+                                                style={{width: '70%'}}
+                                                value={achievementInput}
+                                                onChange={e => setAchievementInput(e.target.value)} 
+                                                onPressEnter={() => {handleAcheievement(achievementMinimumPointer, achievementPointer, achievementInput)}}
+                                                />
+                                                <Button 
+                                                style={{marginLeft: '1rem'}} 
+                                                onClick={() => {handleAcheievement(achievementMinimumPointer, achievementPointer, achievementInput)}}
+                                                > 
+                                                    {t("STATIC_ADD")}  
+                                                </Button>
+                                            </div>
+                                        }
                                     </>
                                 }
                             </>
