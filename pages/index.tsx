@@ -88,15 +88,17 @@ const GrayLittleLink = styled.a`
 
 export default function Home({ }) {
     const { t, i18n } = useTranslation()
-    const { bingoList, bingoPage, setBingoPage, bingoLoading, bingoHasMore, selectedCategory, setSelectedCategory, sortBy, setSortBy, setSearchBy, setSearchTarget, fetchMainBingos, categoryList } = useContext(InitialContents)
+    const { bingoList, bingoPage, setBingoPage, bingoLoading, bingoHasMore, selectedCategory, setSelectedCategory, sortBy, setSortBy, setSearchBy, setSearchTarget, setPeriod, fetchMainBingos, categoryList } = useContext(InitialContents)
     const isMobile = useIsMobile()
     
     const [ mobileCategoryListVisible, setMobileCategoryListVisible ] = useState(false)
     const [ sortedCategoryList, setSortedCategoryList ] = useState([])
 
     useEffect(() => {
+        //when back to home from other routes, need to reset search options
         setSearchBy('')
         setSearchTarget('all')
+        setPeriod('all')
     },[])
     
     useEffect (() => {
