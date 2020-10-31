@@ -40,7 +40,7 @@ export default class Adfit extends React.Component {
                     data-ad-unit={this.props.adUnit}
                     data-ad-width={this.props.adWidth}
                     data-ad-height={this.props.adHeight}
-                    data-ad-test={false} //this.props.adTest || 'N'}
+                    data-ad-test={true} //this.props.adTest || 'N'}
                     data-ad-param-channel={this.props.adParamChannel}
                     data-ad-param-cp={this.props.adParamCp}
                     >

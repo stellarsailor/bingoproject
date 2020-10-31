@@ -165,6 +165,7 @@ export default function BingoRenderer( props ){
                                             display: 'flex', 
                                             justifyContent: 'center', 
                                             alignItems: 'center', 
+                                            position: 'relative', //key point to position accurately.
                                             textAlign: 'center', 
                                             color: `${fontColor}`, 
                                             fontSize: baseWidth / size / 9,
