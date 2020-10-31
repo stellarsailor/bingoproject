@@ -154,10 +154,6 @@ export default function BingoRenderer( props ){
                                 }} 
                                 onClick={() => elementOnClickEvent(index)}>
                                     <a>
-                                        {
-                                            markStyle !== 'paint' && selectedIndex.includes(index) && 
-                                            <MarkStyleSVG markStyle={markStyle} markColor={markColor} markWidth={(baseWidth - 50) / size} />
-                                        }
                                         <div 
                                         style={{
                                             width: (baseWidth - 50) / size, 
@@ -171,6 +167,10 @@ export default function BingoRenderer( props ){
                                             fontSize: baseWidth / size / 9,
                                             overflow: 'hidden'
                                         }}>
+                                            {
+                                                markStyle !== 'paint' && selectedIndex.includes(index) && 
+                                                <MarkStyleSVG markStyle={markStyle} markColor={markColor} markWidth={(baseWidth - 50) / size} />
+                                            }
                                             <span style={{width: (baseWidth - 50) / size, 
                                             height: (baseWidth - 50) / size,
                                             display: 'flex', 
