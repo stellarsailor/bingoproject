@@ -19,10 +19,11 @@ export default async (req, res) => {
         if (page < 1) page = 1
 
         const query = escape`
-            SELECT *
+            SELECT id, lang, categoryId, title, description, size, elements, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, achievements, popularity, createdAt
             FROM bingos
             WHERE lang = ${lang} 
         `
+
         if(category !== 0){
             query.append(escape` AND categoryId = ${category}`)
         }
@@ -49,9 +50,9 @@ export default async (req, res) => {
         if(period === 'month'){
             query.append(escape` AND createdAt >= ( CURDATE() - INTERVAL 30 DAY )`)
         } else if(period === 'week'){
-            query.append(escape` AND createdAt >= ( CURDATE() - INTERVAL 1 DAY )`)
+            query.append(escape` AND createdAt >= ( CURDATE() - INTERVAL 7 DAY )`)
         } else if(period === 'today'){
-            query.append(escape` AND createdAt >= NOW()`)
+            query.append(escape` AND createdAt >= ( CURDATE() - INTERVAL 1 DAY )`)
         }
 
         if(sortBy === 0){
