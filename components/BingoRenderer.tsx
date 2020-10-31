@@ -20,7 +20,6 @@ message.config({
 const MenuButton = styled.a`
     border-radius: 3px;
     background-color: ${props => props.selected ? 'var(--mono-1)' : 'white' };
-    width: 100%;
     height: 25px;
     display: flex;
     justify-content: center;
@@ -299,14 +298,20 @@ export default function BingoRenderer( props ){
                                 <MenuButton>
                                     <CopyToClipboard text={serverUrl + router.asPath}
                                     onCopy={() => message.success(t("MODAL_SHARE_LINK"))}>
-                                        <span><ShareAltOutlined /> {t("PLAYPAGE_SHARE")}</span>
+                                        <span style={{width: '100%'}}>
+                                            <ShareAltOutlined /> {t("PLAYPAGE_SHARE")}
+                                        </span>
                                     </CopyToClipboard>
                                 </MenuButton>
                                 <MenuButton onClick={() => takeScreenShot('captureWithoutResult')}>
-                                    <span><CameraFilled /> {t("PLAYPAGE_CAPTURE")}</span>
+                                    <span style={{width: '100%'}}>
+                                        <CameraFilled /> {t("PLAYPAGE_CAPTURE")}
+                                    </span>
                                 </MenuButton>
                                 <MenuButton onClick={() => takeScreenShot('captureWithResult')}>
-                                    <span><CameraFilled /> {t("PLAYPAGE_CAPTURE_WITH_RESULT")}</span>
+                                    <span style={{width: '100%'}}>
+                                        <CameraFilled /> {t("PLAYPAGE_CAPTURE_WITH_RESULT")}
+                                    </span>
                                 </MenuButton>
                             </CenteredCol>
                         </Col>

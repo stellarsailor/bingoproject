@@ -11,6 +11,7 @@ import { CenteredRow, CenteredCol } from '../components/sub/styled'
 import BingoListContainer from '../components/BingoListContainer';
 import useIsMobile from '../logics/useIsMobile';
 import dynamicSort from '../logics/dynamicSort';
+import Adfit from '../components/sub/Adfit'
 
 const CategoryRenderer = styled.div`
     display: flex;
@@ -232,6 +233,7 @@ export default function Home({ }) {
                                 © 2020 SelfBingo
                             </p>
                         </div>
+                        <Adfit adUnit="DAN-1hvb2gxdzyusi" adWidth="250" adHeight="250" />
                     </Sticky>
                 </Col>
             </Row>
