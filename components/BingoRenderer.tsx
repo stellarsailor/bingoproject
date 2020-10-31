@@ -20,6 +20,7 @@ message.config({
 const MenuButton = styled.a`
     border-radius: 3px;
     background-color: ${props => props.selected ? 'var(--mono-1)' : 'white' };
+    width: 100%;
     height: 25px;
     display: flex;
     justify-content: center;
@@ -63,6 +64,8 @@ const TitleText = styled.div`
 `
 
 const DescText = styled.div`
+    width: 100%;
+    text-align: center; /* consider change to left */
     color: ${props => props.color};
     font-size: ${props => props.cellWidth * 0.03}px;
 `
@@ -175,7 +178,9 @@ export default function BingoRenderer( props ){
                                             alignItems: 'center', 
                                             position: 'absolute', 
                                             zIndex: 10, 
-                                            overflow: 'hidden'}}>
+                                            overflow: 'hidden',
+                                            lineHeight: 1.2
+                                            }}>
                                                 {v}
                                             </span>
                                         </div>
