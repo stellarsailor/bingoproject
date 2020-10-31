@@ -110,7 +110,7 @@ export default function BingoCreate() {
     const [ bingoAchievement, setBingoAchievement ] = useState([])
     const [ achievementInput, setAchievementInput ] = useState('')
     const [ achievementMinimumPointer, setAchievementMinimumPointer ] = useState(0)
-    const [ achievementPointer, setAchievementPointer ] = useState(3)
+    const [ achievementPointer, setAchievementPointer ] = useState(1)
 
     const [ disableSubmitButton, setDisableSubmitButton ] = useState(false)
     const [ modalOpened, setModalOpened ] = useState(false)
@@ -258,18 +258,25 @@ export default function BingoCreate() {
                         {
                             selectedButton === 0 && 
                             <>
-                                <Select placeholder={t("CREATE_PLACEHOLDER_CATEGORY")} style={{ width: 200, margin: '1rem 0px', marginRight: 16 }} onChange={v => setBingoCategory(v)}>
+                                <Select 
+                                placeholder={t("CREATE_PLACEHOLDER_CATEGORY")} 
+                                style={{ width: 200, margin: '1rem 0px', marginRight: 16 }} 
+                                onChange={v => setBingoCategory(v)}
+                                value={bingoCategory}
+                                >
                                     {categoryList.slice(1).map((v, index) => <Option key={index} value={index}>{v.name_ko}</Option>)}
                                 </Select>
 
                                 <Input 
                                 placeholder={t("CREATE_PLACEHOLDER_TITLE")} 
+                                value={bingoTitle}
                                 onChange={e => setBingoTitle(e.target.value)} 
                                 style={{width: '100%', height: 40, borderRadius: 5}} 
                                 />
                                 
                                 <Input 
-                                placeholder={t("CREATE_PLACEHOLDER_DESC")} 
+                                placeholder={t("CREATE_PLACEHOLDER_DESC")}
+                                value={bingoDescription}
                                 onChange={e => setBingoDescription(e.target.value)} 
                                 style={{width: '100%', height: 35, margin: '1rem 0px', borderRadius: 5}} 
                                 />
@@ -378,11 +385,17 @@ export default function BingoCreate() {
                                     {t("CREATE_EDIT_EASY")}
                                 </TextLabel>
                                 <div>
-                                    <Input placeholder={t("CREATE_EDIT_EASY_CENTER_INPUT")} onChange={e => setEasyBingoEditCenterInput(e.target.value)} style={{marginBottom: 8}} />
+                                    <Input 
+                                    placeholder={t("CREATE_EDIT_EASY_CENTER_INPUT")} 
+                                    value={easyBingoEditCenterInput}
+                                    onChange={e => setEasyBingoEditCenterInput(e.target.value)} 
+                                    style={{marginBottom: 8}} 
+                                    />
 
                                     <TextArea 
                                     placeholder={t("CREATE_EDIT_EASY_INPUT")}
-                                    autoSize={{ minRows: 3, maxRows: 10 }}
+                                    value={easyBingoEditInput}
+                                    // autoSize={{ minRows: 3, maxRows: 10 }}
                                     allowClear 
                                     // disabled={easyBingoEditInput.split(/\r|\r\n|\n/).length > bingoSize * bingoSize - 1}
                                     onChange={e => setEasyBingoEditInput(e.target.value)} 
