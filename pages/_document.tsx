@@ -43,7 +43,8 @@ export default class MyDocument extends Document {
                 `,
             }}
           />
-          <link rel="shortcut icon" href="/static/favicon.ico" /> 
+          <link rel="shortcut icon" href="/static/favicon.ico" />
+          <script data-ad-client="ca-pub-1635386604461382" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         </Head>
         <body>
           <Main />
