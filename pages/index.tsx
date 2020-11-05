@@ -180,13 +180,14 @@ export default function Home({ }) {
                         :
                         null
                     }
+                    <Adfit adType="mobile-wide-100" margin="0px 0px 8px 0px" />
                     <BingoListContainer 
                     selectedCategory={selectedCategory}
                     sortBy={sortBy}
                     />
                 </Col>
                 <Col xs={0} sm={8} md={8} lg={8} xl={8} style={{paddingLeft: 8}}>
-                    <Sticky >
+                    <Sticky>
                         <CenteredCol>
                             <Link href="/bingo/create">
                                 <a style={{width: '100%'}}>
@@ -233,7 +234,7 @@ export default function Home({ }) {
                                 © 2020 SelfBingo
                             </p>
                         </div>
-                        <Adfit adUnit="DAN-1hvb2gxdzyusi" adWidth="250" adHeight="250" />
+                        {/* <Adfit adUnit="DAN-1hvb2gxdzyusi" adWidth="250" adHeight="250" /> */}
                     </Sticky>
                 </Col>
             </Row>

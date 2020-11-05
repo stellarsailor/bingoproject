@@ -18,6 +18,7 @@ import useIsMobile from '../../logics/useIsMobile'
 import useWindowSize from '../../logics/useWindowSize'
 import MarkStyleModal from '../../components/MarkStyleModal'
 import ReportModal from '../../components/ReportModal'
+import Adfit from '../../components/sub/Adfit'
 
 message.config({
     top: 58,
@@ -356,7 +357,15 @@ export default function BingoDetail({ data }) {
                             takeScreenShot={takeScreenShot}
                             /> 
                         </CenteredCol>
-                        <CenteredCol style={{margin: '1.5rem 0px'}}>
+                        <CenteredCol style={{marginBottom: '1rem'}}>
+                            {
+                                width < 578 &&
+                                <Adfit adType="mobile-wide-50" margin="8px 0px 8px 0px" />
+                            }
+                            {
+                                width >= 578 &&
+                                <Adfit adType="pc-wide" margin="8px 0px 8px 0px" />
+                            }
                             {
                                 resultStatus !== 'idle' ? null
                                 :

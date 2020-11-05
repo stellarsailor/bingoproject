@@ -9,6 +9,7 @@ import BingoListContainer from '../../components/BingoListContainer';
 import { CenteredCol } from '../../components/sub/styled';
 import useIsMobile from '../../logics/useIsMobile';
 import { InitialContents } from '../../store/InitialContentsProvider'
+import Adfit from '../../components/sub/Adfit';
 
 const FilteringTab = styled.div`
     margin-top: ${(props) => props.isMobile ? '4px' : '8px'};
@@ -83,13 +84,13 @@ export default function List({ }) {
                                             </Radio.Button> */}
                                         </Radio.Group>
                                     </FilteringTab>
-
                                     {/* <Checkbox onChange={e => console.log(e.target.value)}>언어 무관</Checkbox> */}
                                 </div>
                             </CenteredCol>
                         </Sticky>
                     </Col>
                 <Col xs={24} sm={16} md={16} lg={16} xl={16}>
+                    <Adfit adType="mobile-wide-100" margin="0px 0px 8px 0px" />
                     <BingoListContainer />
                 </Col>
             </Row>
