@@ -34,7 +34,6 @@ export default async (req, res) => {
 
             res.status(200).json({ error: 'duplicated', results })
         } else {
-            // console.log(insertResult) 이때 모든 요소가 숫자인지 검사하고 예외처리가 필요한가?
             const insertResult = await db.query(escape`
                 INSERT INTO results (bingoId, binaryResult, completedMarks, completedLines, ipAddress)
                 VALUES (${bingoId}, ${JSON.stringify(binaryResult)}, ${completedMarks}, ${completedLines}, ${ipAddress});
@@ -49,11 +48,24 @@ export default async (req, res) => {
     
                 //all results of that bingo after added one of user's
                 const results = await db.query(escape`
-                SELECT binaryResult, completedMarks, completedLines
-                FROM results
-                WHERE bingoId = ${bingoId};
+                    SELECT binaryResult, completedMarks, completedLines
+                    FROM results
+                    WHERE bingoId = ${bingoId};
                 `)
-                res.status(200).json({ results })
+
+                const percentage = await db.query(escape`
+                    SELECT * FROM (
+                        SELECT completedMarks, PERCENT_RANK() OVER ( ORDER BY completedMarks DESC ) AS percentage
+                        FROM results
+                        WHERE bingoId = ${bingoId}
+                    ) sub
+                    WHERE sub.completedMarks = ${completedMarks}
+                `)
+
+                res.status(200).json({ 
+                    percentage: percentage[0].percentage, 
+                    results 
+                })
             } else {
                 res.status(404)
             }

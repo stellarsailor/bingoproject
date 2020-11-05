@@ -73,6 +73,7 @@ export default function BingoDetail({ data }) {
     const [ resultStatus, setResultStatus ] = useState('idle')
     const [ resultCount, setResultCount ] = useState([])
     const [ resultAvgCount, setResultAvgCount ] = useState(0)
+    const [ resultTopCountPercentage, setResultTopCountPercentage ] = useState(0)
     const [ resultAvgBingoLines, setResultAvgBingoLines ] = useState(0)
     const [ resultPercent, setResultPercent ] = useState([])
 
@@ -216,11 +217,13 @@ export default function BingoDetail({ data }) {
         try {
             const fetchResponse = await fetch(url, settings)
             const data = await fetchResponse.json()
+            // console.log(data)
 
             if(data.error === 'duplicated') {
                 message.error('Try few minutes later!')
                 // throw 'duplicated!'
             }
+
             setResultStatus('calculating')
             let resultLength = data.results.length
             let bingoLength = bingo.size * bingo.size //JSON.parse(data.results[0].binaryResult.length)
@@ -248,6 +251,7 @@ export default function BingoDetail({ data }) {
 
             setResultCount(countArr)
             setResultAvgCount(sumCompletedMarks / resultLength)
+            setResultTopCountPercentage( Math.round(data.percentage * 100) )
             setResultAvgBingoLines(sumCompletedLines / resultLength)
             setResultPercent(percentArr)
             setResultStatus('done')
@@ -360,6 +364,7 @@ export default function BingoDetail({ data }) {
                             resultStatus={resultStatus}
                             resultCount={resultCount}
                             resultAvgCount={resultAvgCount}
+                            resultTopCountPercentage={resultTopCountPercentage}
                             resultAvgBingoLines={resultAvgBingoLines}
                             resultPercent={resultPercent}
 

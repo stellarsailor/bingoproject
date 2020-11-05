@@ -60,6 +60,7 @@
     "PLAYPAGE_YOUR_MARKS": "체크 개수",
     "PLAYPAGE_YOUR_COMPLETED_LINES": "완성된 빙고 개수",
     "PLAYPAGE_PERCENTAGE_STATS": "유저 선택 비율 통계",
+    "PLAYPAGE_PERCENTAGE_TOP": "상위",
 
     "MODAL_MARKSTYLE_CHECK": "체크",
     "MODAL_MARKSTYLE_CIRCLE": "동그라미",

@@ -80,7 +80,7 @@ const ResultBox = styled.div`
 
 const MiniTextInResultBox = styled.div`
     font-size: 14px;
-    font-weight: bold;
+    /* font-weight: bold; */
 `
 
 const BigTextInResultBox = styled.div`
@@ -114,6 +114,7 @@ export default function BingoRenderer( props ){
         resultStatus, 
         resultCount, 
         resultAvgCount, 
+        resultTopCountPercentage,
         resultAvgBingoLines,
         resultPercent, 
 
@@ -271,6 +272,9 @@ export default function BingoRenderer( props ){
                                     {selectedIndex.length}
                                     <span style={{fontSize: 12, marginLeft: 16}}>{t("STATIC_AVG")} : {resultAvgCount.toFixed(2)}</span>
                                 </BigTextInResultBox>
+                                <MiniTextInResultBox>
+                                    {t("PLAYPAGE_PERCENTAGE_TOP")}   {resultTopCountPercentage}%
+                                </MiniTextInResultBox>
                             </ResultBox>
                         </Col>
                         <Col xs={12} sm={8} md={8} lg={8} xl={8} style={{padding: 8}}>
