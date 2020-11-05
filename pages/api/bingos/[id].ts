@@ -8,7 +8,7 @@ export default async (req, res) => {
 
     if(req.method === 'GET'){
         const [bingo] = await db.query(escape`
-        SELECT id, lang, categoryId, title, description, size, elements, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, achievements, popularity, createdAt
+        SELECT id, lang, categoryId, title, description, userId, size, elements, bgMainColor, bgSubColor, fontColor, cellColor, lineColor, achievements, popularity, createdAt
         FROM bingos
         WHERE id = ${req.query.id};
         `)

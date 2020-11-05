@@ -312,7 +312,7 @@ export default function BingoDetail({ data }) {
                                         <CameraFilled /> 
                                     </MenuButton>
                                 </Tooltip>
-                                { session && session.user.id === bingo.userId ? 
+                                { session && session.user.id === bingo.userId &&
                                     <Tooltip title={t("PLAYPAGE_DELETE")}>
                                         <MenuButton>
                                             <Popconfirm
@@ -333,7 +333,7 @@ export default function BingoDetail({ data }) {
                                             </Popconfirm>
                                         </MenuButton>
                                     </Tooltip>
-                                 : null}
+                                }
                             </CenteredRow>
                         </ControllerPage>
                     </Col>
