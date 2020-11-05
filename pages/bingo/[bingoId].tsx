@@ -190,8 +190,14 @@ export default function BingoDetail({ data }) {
         })
 
         let arr = []
+        let numberOfMarks = 0
         for(let i = 0; i < bingo.size * bingo.size; i++){
-            arr.push(selectedIndex.includes(i) ? 1 : 0 )
+            if(selectedIndex.includes(i)) {
+                numberOfMarks++
+                arr.push(1)
+            } else {
+                arr.push(0)
+            }
         }
 
         let url = `${serverUrl}/api/bingos/${bingoId}`
@@ -203,6 +209,7 @@ export default function BingoDetail({ data }) {
             },
             body: JSON.stringify({
                 binaryResult: arr,
+                completedMarks: numberOfMarks,
                 completedLines: completedBingoLines //added to calc
             })
         }
