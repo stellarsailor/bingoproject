@@ -230,22 +230,24 @@ export default function BingoDetail({ data }) {
                 countArr.push(0)
             }
 
+            let sumCompletedMarks = 0
             let sumCompletedLines = 0
 
             data.results.map((v) => {
                 JSON.parse(v.binaryResult).map((v, index) => {
                     if(typeof(v) === 'number') countArr[index] += v
-                })
+                }) 
+                sumCompletedMarks += v.completedMarks
                 sumCompletedLines += v.completedLines
             })
 
-            let sumCount = 0
-            countArr.map(v => sumCount += v)
+            // let sumCount = 0
+            // countArr.map(v => sumCount += v)
 
             let percentArr = countArr.map(v => Math.round((v / resultLength) * 100))
 
             setResultCount(countArr)
-            setResultAvgCount(sumCount / resultLength)
+            setResultAvgCount(sumCompletedMarks / resultLength)
             setResultAvgBingoLines(sumCompletedLines / resultLength)
             setResultPercent(percentArr)
             setResultStatus('done')

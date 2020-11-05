@@ -49,7 +49,7 @@ export default async (req, res) => {
     
                 //all results of that bingo after added one of user's
                 const results = await db.query(escape`
-                SELECT binaryResult, completedLines
+                SELECT binaryResult, completedMarks, completedLines
                 FROM results
                 WHERE bingoId = ${bingoId};
                 `)
