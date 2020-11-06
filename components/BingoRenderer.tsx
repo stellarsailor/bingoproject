@@ -313,11 +313,6 @@ export default function BingoRenderer( props ){
                                         <CameraFilled /> {t("PLAYPAGE_CAPTURE")}
                                     </span>
                                 </MenuButton>
-                                <MenuButton onClick={() => takeScreenShot('captureWithResult')}>
-                                    <span style={{width: '100%'}}>
-                                        <CameraFilled /> {t("PLAYPAGE_CAPTURE_WITH_RESULT")}
-                                    </span>
-                                </MenuButton>
                             </CenteredCol>
                         </Col>
                     </Row>
