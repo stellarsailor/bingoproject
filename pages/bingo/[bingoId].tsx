@@ -263,8 +263,19 @@ export default function BingoDetail({ data }) {
     return(
         <>
             <NextSeo
-            title={bingo.title + ' - SelfBingo'}
+            title={bingo.title}
             description={bingo.description}
+            openGraph={{
+                type: 'website',
+                url: serverUrl + router.asPath,
+                title: bingo.title,
+                description: bingo.description + ' ' + JSON.parse(bingo.elements).toString(),
+            }}
+            twitter={{
+                handle: '@handle',
+                site: '@site',
+                cardType: 'summary_large_image',
+            }}
             />
             <CenteredRow>
                 <MarkStyleModal 
@@ -404,7 +415,6 @@ export async function getServerSideProps({ params, req }) {
     // console.log(req.language)
 
     let url = `${serverUrl}/api/bingos/${params.bingoId}`
-    // console.log(url)
 
     const res = await fetch(url)
     const data = await res.json()
