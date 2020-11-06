@@ -268,8 +268,8 @@ export default function BingoDetail({ data }) {
             openGraph={{
                 type: 'website',
                 url: serverUrl + router.asPath,
-                title: bingo.title,
-                description: bingo.description + ' ' + JSON.parse(bingo.elements).toString(),
+                title: bingo.title + ' - ' + bingo.description,
+                description: JSON.parse(bingo.elements).sort(() => Math.random() - Math.random()).slice(0, 3).toString(),
             }}
             twitter={{
                 handle: '@handle',
