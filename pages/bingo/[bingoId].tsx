@@ -62,14 +62,14 @@ export default function BingoDetail({ data }) {
     const isMobile = useIsMobile()
     const [ width, height ] = useWindowSize()
     const [ cookies, setCookie ] = useCookies(['setting'])
-    const [ fisrtTimeMsg, setFirstTimeMsg ] = useState(false)
+    const [ newcomerMsg, setNewcomerMsg ] = useState(false)
 
     const [ styleModal, setStyleModal ] = useState(false)
     const [ markStyle, setMarkStyle ] = useState('')
     const [ markColor, setMarkColor ] = useState('')
+    const [ markOpacity, setMarkOpacity ] = useState(0)
     
     const [ reportModal, setReportModal ] = useState(false)
-    const [ passwordInput, setPasswordInput ] = useState('')
 
     const [ bingo, setBingo ] = useState(data.bingo)
     const [ selectedIndex, setSelectedIndex ] = useState([])
@@ -85,17 +85,19 @@ export default function BingoDetail({ data }) {
     useEffect(() => {
         //cookie 불러와서 설정이 있으면 그대로 세팅, 없으면 기본 마크 스타일 세팅
         if(cookies.setting === undefined){
-            const defaultSetting = {style: 'circle', color: '#EB144C'}
+            const defaultSetting = {style: 'circle', color: '#EB144C', opacity: 0.5}
             setCookie('setting', defaultSetting, { path: '/' })
             setMarkStyle(defaultSetting.style)
             setMarkColor(defaultSetting.color)
+            setMarkOpacity(defaultSetting.opacity)
 
-            setFirstTimeMsg(true)
+            setNewcomerMsg(true)
         } else {
             setMarkStyle(cookies.setting.style)
             setMarkColor(cookies.setting.color)
+            setMarkOpacity(cookies.setting.opacity)
 
-            setFirstTimeMsg(false)
+            setNewcomerMsg(false)
         }
     },[])
 
@@ -139,7 +141,6 @@ export default function BingoDetail({ data }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                // password: passwordInput
                 userId: session.user.id,
                 accessToken: session.accessToken,
             })
@@ -226,7 +227,6 @@ export default function BingoDetail({ data }) {
         try {
             const fetchResponse = await fetch(url, settings)
             const data = await fetchResponse.json()
-            // console.log(data)
 
             if(data.error === 'duplicated') {
                 message.info(t("PLAYPAGE_DUPLICATED_MSG"))
@@ -291,6 +291,8 @@ export default function BingoDetail({ data }) {
                 setMarkStyle={setMarkStyle}
                 markColor={markColor}
                 setMarkColor={setMarkColor}
+                markOpacity={markOpacity}
+                setMarkOpacity={setMarkOpacity}
                 visible={styleModal} 
                 setStyleModal={setStyleModal} 
                 />
@@ -357,7 +359,7 @@ export default function BingoDetail({ data }) {
                             </CenteredRow>
                         </ControllerPage>
                     </Col>
-                    { fisrtTimeMsg && 
+                    { newcomerMsg && 
                     <CenteredRow style={{width: '100%'}}>
                         <Alert message={t("NEWCOMER_HELP_MESSAGE")} type="success" showIcon closable style={{ minWidth: 300, marginBottom: 8 }} />
                     </CenteredRow> }
@@ -381,6 +383,7 @@ export default function BingoDetail({ data }) {
 
                             markStyle={markStyle}
                             markColor={markColor}
+                            markOpacity={markOpacity}
 
                             completedBingoLines={completedBingoLines}
                             resultString={JSON.parse(bingo.achievements)[completedBingoLines]}

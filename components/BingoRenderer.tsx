@@ -6,10 +6,10 @@ import { CenteredRow, CenteredCol } from './sub/styled'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import pickTextColorBasedOnBgColor from '../logics/pickTextColorBasedOnBgColor'
 import useWindowSize from '../logics/useWindowSize'
+import hexToRgbA from '../logics/hexToRgbA'
 import { ShareAltOutlined, CameraFilled, UserOutlined, SearchOutlined } from '../assets/icons'
 import { serverUrl } from '../lib/serverUrl'
 import { useRouter } from 'next/router'
-import useIsMobile from '../logics/useIsMobile'
 import { useTranslation } from '../i18n'
 import MarkStyleSVG from './sub/MarkStyleSVG'
 
@@ -93,7 +93,6 @@ export default function BingoRenderer( props ){
     const { 
         title, 
         description, 
-        author, 
         size, 
         elements, 
         elementOnClickEvent, 
@@ -103,11 +102,11 @@ export default function BingoRenderer( props ){
         fontColor, 
         cellColor, 
         lineColor, 
-        linePixel, 
         ipAddress, 
 
         markStyle,
         markColor,
+        markOpacity,
 
         completedBingoLines, 
         resultString, 
@@ -122,7 +121,6 @@ export default function BingoRenderer( props ){
     } = props
 
     const router = useRouter()
-    // const isMobile = useIsMobile()
     const ref = useRef(null)
 
     const [ width, height ] = useWindowSize()
@@ -147,7 +145,7 @@ export default function BingoRenderer( props ){
                                 key={index} 
                                 style={{
                                     border: `${width < 768 ? 1 : 2}px solid ${lineColor}`, 
-                                    backgroundColor: markStyle === 'paint' && selectedIndex.includes(index) ? markColor 
+                                    backgroundColor: markStyle === 'paint' && selectedIndex.includes(index) ? hexToRgbA(markColor, markOpacity) 
                                     : cellColor !== '' ? cellColor : ''
                                     // backgroundColor: `${selectedIndex.includes(index) ? markColor : 'white'}`, 
                                     // backgroundImage: markStyle === 'paint' ? null : `url("/static/images/${markStyle}.png")`, 
@@ -170,17 +168,18 @@ export default function BingoRenderer( props ){
                                         }}>
                                             {
                                                 markStyle !== 'paint' && selectedIndex.includes(index) && 
-                                                <MarkStyleSVG markStyle={markStyle} markColor={markColor} markWidth={(baseWidth - 50) / size} />
+                                                <MarkStyleSVG markStyle={markStyle} markColor={hexToRgbA(markColor, markOpacity)} markWidth={(baseWidth - 50) / size} />
                                             }
-                                            <span style={{width: (baseWidth - 50) / size, 
-                                            height: (baseWidth - 50) / size,
-                                            display: 'flex', 
-                                            justifyContent: 'center', 
-                                            alignItems: 'center', 
-                                            position: 'absolute', 
-                                            zIndex: 10, 
-                                            overflow: 'hidden',
-                                            lineHeight: 1.2
+                                            <span style={{
+                                                width: (baseWidth - 50) / size, 
+                                                height: (baseWidth - 50) / size,
+                                                display: 'flex', 
+                                                justifyContent: 'center', 
+                                                alignItems: 'center', 
+                                                position: 'absolute', 
+                                                zIndex: 10, 
+                                                overflow: 'hidden',
+                                                lineHeight: 1.2
                                             }}>
                                                 {v}
                                             </span>

@@ -1,10 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
-import { Modal, Radio } from 'antd'
+import { Modal, Radio, Slider } from 'antd'
 import TwitterPicker  from 'react-color/lib/Twitter'
 import { useCookies } from 'react-cookie'
 import { useTranslation } from '../i18n'
 import MarkStyleSVG from './sub/MarkStyleSVG'
+import hexToRgbA from '../logics/hexToRgbA'
 
 const SampleView = styled.div`
     width: 100px;
@@ -26,10 +27,11 @@ export default function MarkStyleModal (props){
     const { t, i18n } = useTranslation()
     const [ cookies, setCookie ] = useCookies(['setting'])
     
-    const { markStyle, setMarkStyle, markColor, setMarkColor, visible, setStyleModal } = props
+    const { markStyle, setMarkStyle, markColor, setMarkColor, markOpacity, setMarkOpacity, visible, setStyleModal } = props
     
     const [ sampleStyle, setSampleStyle ] = useState('')
     const [ sampleColor, setSampleColor ] = useState('')
+    const [ sampleOpacity, setSampleOpacity ] = useState(0.9)
     
     const options = [
         { label: t("MODAL_MARKSTYLE_CHECK"), value: 'check' },
@@ -41,14 +43,16 @@ export default function MarkStyleModal (props){
     useEffect(() => {
         setSampleStyle(markStyle)
         setSampleColor(markColor)
-    },[markStyle, markColor])
+        setSampleOpacity(markOpacity)
+    },[markStyle, markColor, markOpacity])
 
-    const saveStyleAndColor = useCallback((nextStyle, nextColor) => {
+    const saveStyleAndColor = useCallback((nextStyle, nextColor, nextOpacity) => {
         setStyleModal(false)
-        const nextSetting = {style: nextStyle, color: nextColor}
+        const nextSetting = { style: nextStyle, color: nextColor, opacity: nextOpacity }
         setCookie('setting', nextSetting, { path: '/' })
         setMarkStyle(nextStyle)
         setMarkColor(nextColor)
+        setMarkOpacity(nextOpacity)
     },[])
 
     const cancelStyleAndColor = useCallback(() => {
@@ -56,14 +60,15 @@ export default function MarkStyleModal (props){
         setTimeout(() => { //모달 사라질때 이전 옵션 잠깐 깜빡이면서 남아있는거 방지
             setSampleStyle(markStyle)
             setSampleColor(markColor)
+            setMarkOpacity(markOpacity)
         }, 500);
-    },[markStyle, markColor])
+    },[markStyle, markColor, markOpacity])
 
     return (
         <Modal
             title={t("PLAYPAGE_SETTING")}
             visible={visible}
-            onOk={() => saveStyleAndColor(sampleStyle, sampleColor)}
+            onOk={() => saveStyleAndColor(sampleStyle, sampleColor, sampleOpacity)}
             onCancel={() => cancelStyleAndColor()}
         >
             <Radio.Group
@@ -74,14 +79,17 @@ export default function MarkStyleModal (props){
             buttonStyle="solid"
             style={{marginBottom: 16}}
             />
-
-            <MarkStyleSVG markStyle={sampleStyle} markColor={sampleColor} markWidth={100} />
-            <SampleView markStyle={sampleStyle} markColor={sampleColor}>
+            <MarkStyleSVG markStyle={sampleStyle} markColor={sampleColor !== '' && hexToRgbA(sampleColor, sampleOpacity)} markWidth={100} />
+            <SampleView markStyle={sampleStyle} markColor={sampleColor !== '' && hexToRgbA(sampleColor, sampleOpacity)}>
                 {/* {t("MODAL_MARKSTYLE_SAMPLE")} */}
             </SampleView>
             
             <div style={{marginTop: 16}}>
                 <TwitterPicker color={sampleColor} onChangeComplete={(v) => {setSampleColor(v.hex)}} />
+            </div>
+            <div style={{marginTop: 16}}>
+                {t("MODAL_MARKSTYLE_OPACITY")}
+                <Slider defaultValue={markOpacity * 100} max={100} min={20} tooltipVisible onChange={(v) => setSampleOpacity(v / 100)} />
             </div>
 
         </Modal>
