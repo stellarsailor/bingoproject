@@ -64,6 +64,9 @@
     "PLAYPAGE_YOUR_COMPLETED_LINES": "완성된 빙고 개수",
     "PLAYPAGE_PERCENTAGE_STATS": "유저 선택 비율 통계",
     "PLAYPAGE_PERCENTAGE_TOP": "상위",
+    "PLAYPAGE_DUPLICATED_MSG": "백분율을 확인하시려면 잠시 후 다시 시도해주세요.",
+
+    "NEWCOMER_HELP_MESSAGE": "빙고 칸을 클릭하여 빙고를 완성한 뒤 통계를 확인해보세요!",
 
     "MODAL_MARKSTYLE_CHECK": "체크",
     "MODAL_MARKSTYLE_CIRCLE": "동그라미",

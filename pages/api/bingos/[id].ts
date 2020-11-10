@@ -26,15 +26,9 @@ export default async (req, res) => {
             SELECT count(*) as spamCount FROM results WHERE bingoId=${bingoId} AND createdAt > date_sub(now(), interval 10 minute) AND ipAddress=${ipAddress}
         `)
 
-        if(spamCheck[0].spamCount > 0){
-            const results = await db.query(escape`
-                SELECT binaryResult
-                FROM results
-                WHERE bingoId = ${bingoId};
-            `)
+        const duplicated = spamCheck[0].spamCount > 0
 
-            res.status(200).json({ error: 'duplicated', results })
-        } else {
+        if(!duplicated){
             const insertResult = await db.query(escape`
                 INSERT INTO results (bingoId, binaryResult, completedMarks, completedLines, ipAddress)
                 VALUES (${bingoId}, ${JSON.stringify(binaryResult)}, ${completedMarks}, ${completedLines}, ${ipAddress});
@@ -46,41 +40,31 @@ export default async (req, res) => {
                     SET popularity = popularity + 1
                     WHERE id = ${bingoId};
                 `)
-    
-                //all results of that bingo after added one of user's
-                const results = await db.query(escape`
-                    SELECT binaryResult, completedMarks, completedLines
-                    FROM results
-                    WHERE bingoId = ${bingoId};
-                `)
-
-                const percentage = await db.query(escape`
-                    SELECT * FROM (
-                        SELECT completedMarks, PERCENT_RANK() OVER ( ORDER BY completedMarks DESC ) AS percentage
-                        FROM results
-                        WHERE bingoId = ${bingoId}
-                    ) sub
-                    WHERE sub.completedMarks = ${completedMarks}
-                `)
-
-                res.status(200).json({ 
-                    percentage: percentage[0].percentage, 
-                    results 
-                })
-            } else {
-                res.status(404)
             }
         }
+        //all results of that bingo after added one of user's
+        const results = await db.query(escape`
+            SELECT binaryResult, completedMarks, completedLines
+            FROM results
+            WHERE bingoId = ${bingoId};
+        `)
 
+        const percentage = await db.query(escape`
+            SELECT * FROM (
+                SELECT completedMarks, PERCENT_RANK() OVER ( ORDER BY completedMarks DESC ) AS percentage
+                FROM results
+                WHERE bingoId = ${bingoId}
+            ) sub
+            WHERE sub.completedMarks = ${completedMarks}
+        `)
+
+        res.status(200).json({ 
+            error: duplicated ? 'duplicated' : null,
+            percentage: duplicated ? null : percentage[0].percentage, 
+            results 
+        })
 
     } else if(req.method === 'PATCH') {
-        // userId: session.user.id,
-        // accessToken: session.accessToken,
-
-        // category: bingoCategory,
-        // title: bingoTitle,
-        // description: bingoDescription,
-        // achievement: bingoAchievement,
         const bingoId = parseInt(req.query.id)
         const userId = parseInt(req.body.userId)
         const accessToken = req.body.accessToken

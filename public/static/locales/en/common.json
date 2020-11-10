@@ -64,6 +64,9 @@
     "PLAYPAGE_YOUR_COMPLETED_LINES": "Completed Lines",
     "PLAYPAGE_PERCENTAGE_STATS": "Bingo Percentage Statistics",
     "PLAYPAGE_PERCENTAGE_TOP": "Top",
+    "PLAYPAGE_DUPLICATED_MSG": "Try few minutes later to see the top percentage.",
+
+    "NEWCOMER_HELP_MESSAGE": "Click bingo elements and then try submitting it!",
 
     "MODAL_MARKSTYLE_CHECK": "Check",
     "MODAL_MARKSTYLE_CIRCLE": "Circle",

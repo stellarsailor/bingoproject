@@ -229,8 +229,7 @@ export default function BingoDetail({ data }) {
             // console.log(data)
 
             if(data.error === 'duplicated') {
-                message.error('Try few minutes later!')
-                // throw 'duplicated!'
+                message.info(t("PLAYPAGE_DUPLICATED_MSG"))
             }
 
             setResultStatus('calculating')
@@ -260,7 +259,7 @@ export default function BingoDetail({ data }) {
 
             setResultCount(countArr)
             setResultAvgCount(sumCompletedMarks / resultLength)
-            setResultTopCountPercentage( Math.round(data.percentage * 100) )
+            setResultTopCountPercentage( data.percentage === null ? null : Math.round(data.percentage * 100) )
             setResultAvgBingoLines(sumCompletedLines / resultLength)
             setResultPercent(percentArr)
             setResultStatus('done')
@@ -343,7 +342,7 @@ export default function BingoDetail({ data }) {
                                         <MenuButton>
                                             <Popconfirm
                                             title={ <div> {t("PLAYPAGE_DELETE_ASK")} </div> }
-                                            onConfirm={() => deleteBingo(passwordInput)}
+                                            onConfirm={() => deleteBingo()}
                                             onCancel={() => console.log('cancelled')}
                                             okText="Delete"
                                             cancelText="Cancel"
@@ -360,7 +359,7 @@ export default function BingoDetail({ data }) {
                     </Col>
                     { fisrtTimeMsg && 
                     <CenteredRow style={{width: '100%'}}>
-                        <Alert message="빙고 칸을 클릭하여 빙고를 완성한 뒤 통계를 확인해보세요!" type="success" showIcon closable style={{ minWidth: 300, marginBottom: 8 }} />
+                        <Alert message={t("NEWCOMER_HELP_MESSAGE")} type="success" showIcon closable style={{ minWidth: 300, marginBottom: 8 }} />
                     </CenteredRow> }
                     <Col xs={24} sm={24} md={24} lg={24} xl={24} >
                         <CenteredCol>
