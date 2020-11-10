@@ -1,3 +1,4 @@
+import { userInfo } from 'os'
 import { cors } from '../../../lib/cors'
 const db = require('../../../lib/db')
 const escape = require('sql-template-strings')
@@ -72,29 +73,43 @@ export default async (req, res) => {
         }
 
 
+    } else if(req.method === 'PATCH') {
+        // userId: session.user.id,
+        // accessToken: session.accessToken,
+
+        // category: bingoCategory,
+        // title: bingoTitle,
+        // description: bingoDescription,
+        // achievement: bingoAchievement,
+        const bingoId = parseInt(req.query.id)
+        const userId = parseInt(req.body.userId)
+        const accessToken = req.body.accessToken
+
+        const category = req.body.category
+        const title = req.body.title
+        const description = req.body.description
+        const achievements = req.body.achievements
+
+        const compareUserId = await db.query(escape`
+            SELECT count(*) as TF
+            FROM bingos b, sessions s
+            WHERE b.userId = s.user_id AND b.id = ${bingoId} AND b.userId = ${userId} AND s.access_token = ${accessToken};
+        `)
+
+        if(compareUserId[0].TF === 1){
+            const editBingo = await db.query(escape`
+                UPDATE bingos SET categoryId = ${category}, title = ${title}, description = ${description}, achievements = ${JSON.stringify(achievements)}, modifiedAt = now()
+                WHERE id = ${bingoId};
+            `)
+            if(editBingo.affectedRows === 1){
+                res.status(200).json({ results: 'success' })
+            }
+        } else {
+            res.status(401).json({ results: 'error' })
+        }
+
     } else if(req.method === 'DELETE'){
         const bingoId = parseInt(req.query.id)
-        // const password = req.body.password
-
-        // const hashFromDB = await db.query(escape`
-        //     SELECT password 
-        //     FROM bingos
-        //     WHERE id = ${bingoId};
-        // `)
-
-        // if (bcrypt.compareSync(password, hashFromDB[0].password) === true){
-        //     const deleteBingo = await db.query(escape`
-        //         DELETE FROM bingos
-        //         WHERE id = ${bingoId};
-        //     `)
-        //     if(deleteBingo.affectedRows === 1){
-        //         res.status(200).json({ results: 'success' })
-        //     } else {
-        //         res.status(200).json({ results: 'error' })
-        //     }
-        // } else {
-        //     res.status(200).json({ results: 'wrong' })
-        // }
         const userId = parseInt(req.body.userId)
         const accessToken = req.body.accessToken
 
@@ -113,7 +128,7 @@ export default async (req, res) => {
                 res.status(200).json({ results: 'success' })
             }
         } else {
-            res.status(200).json({ results: 'error' })
+            res.status(401).json({ results: 'error' })
         }
     }
 }

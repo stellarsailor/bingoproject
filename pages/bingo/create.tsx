@@ -15,18 +15,10 @@ import { Row, Col, Input, Radio, Select, Modal, InputNumber, Button, message, Sl
 import CreateButtonTab from '../../components/sub/CreateButtonTab'
 import useWindowSize from '../../logics/useWindowSize'
 import shuffleArray from '../../logics/shuffleArray'
+import BingoCreateInformationPane from '../../components/BingoCreateInformationPane'
+import BingoCreateAchievementPane from '../../components/BingoCreateAchievementPane'
 const { TextArea } = Input;
 const { Option } = Select;
-const marks = {
-    0: '0',
-    // 1: '1',
-    2: '2',
-    // 3: '3',
-    4: '4',
-    // 5: '5',
-    6: '6',
-    // 7: '7',
-};
 
 const TopBar = styled.div`
     background: -webkit-linear-gradient(45deg, dodgerblue, darkblue);
@@ -90,10 +82,8 @@ export default function BingoCreate() {
     const [ easyBingoEditInput, setEasyBingoEditInput ] = useState('')
 
     const [ bingoCategory, setBingoCategory ] = useState<any>(0)
-    // const [ bingoPassword, setBingoPassword ] = useState('')
     const [ bingoTitle, setBingoTitle ] = useState('')
     const [ bingoDescription, setBingoDescription ] = useState('')
-    const [ bingoAuthor, setBingoAuthor ] = useState('')
     const [ bingoSize, setBingoSize ] = useState(5)
     const [ bingoArr, setBingoArr ] = useState([])
 
@@ -108,9 +98,6 @@ export default function BingoCreate() {
 
     const [ enableAchievement, setEnableAchievement ] = useState(false)
     const [ bingoAchievement, setBingoAchievement ] = useState([])
-    const [ achievementInput, setAchievementInput ] = useState('')
-    const [ achievementMinimumPointer, setAchievementMinimumPointer ] = useState(0)
-    const [ achievementPointer, setAchievementPointer ] = useState(1)
 
     const [ disableSubmitButton, setDisableSubmitButton ] = useState(false)
     const [ modalOpened, setModalOpened ] = useState(false)
@@ -147,39 +134,26 @@ export default function BingoCreate() {
 
     useEffect(() => {
         let elements = []
-        let acheievements = []
+        let achievements = []
 
         for(let i = 0; i < bingoSize*bingoSize; i++){
             elements.push('')
         }
 
         for(let i = 0; i < (bingoSize * 2 + 2) + 1; i++){
-            acheievements.push('')
+            achievements.push('')
         }
 
         setBingoArr(elements)
-        setBingoAchievement(acheievements)
+        setBingoAchievement(achievements)
     },[bingoSize])
 
-    const handleAcheievement = useCallback((rangeMin, rangeMax, value) => {
-        for(let i = rangeMin; i < rangeMax; i++){
-            bingoAchievement[i] = value
-        }
-        setBingoAchievement([...bingoAchievement])
-        setAchievementMinimumPointer(rangeMax)
-        setAchievementPointer(bingoSize * 2 + 2)
-        setAchievementInput('')
-    },[bingoAchievement])
-
     const handleSubmit = useCallback(async () => {
-        // console.log(bingoAchievement)
         let blankError = [] //에러는 역순으로
         if(enableAchievement){
             bingoAchievement.map(v => {if(v === '' || v === null) blankError.push(t("CREATE_EMPTY_ALERT_ACCOMPLISHMENTS"))})
         } //else, Achievement is disabled so not to check blank
         bingoArr.map(v => {if(v === '' || v === null) blankError.push(t("CREATE_EMPTY_ALERT_ELEMENT"))})
-        // if(bingoAuthor === '') blankError.push(t("CREATE_EMPTY_ALERT_NAME"))
-        // if(bingoPassword === '') blankError.push(t("CREATE_EMPTY_ALERT_PASSWORD"))
         if(bingoTitle === '') blankError.push(t("CREATE_EMPTY_ALERT_TITLE"))
 
         if(blankError.length !== 0){
@@ -194,11 +168,8 @@ export default function BingoCreate() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    // lock: 0,
-                    // author: bingoAuthor,
                     userId: session.user.id,
-                    // password: bingoPassword,
-                    category: bingoCategory,
+                    category: bingoCategory + 1, //due to cut 'All' category which is 0
                     title: bingoTitle,
                     description: bingoDescription,
                     size: bingoSize,
@@ -227,7 +198,7 @@ export default function BingoCreate() {
                 return e;
             }
         }
-    },[bingoTitle, bingoDescription, bingoAuthor, bingoCategory, bingoSize, bingoArr, bingoBgMainColor, bingoBgSubColor, bingoFontColor, bingoCellColor, bingoLineColor, bingoAchievement, enableAchievement])
+    },[bingoTitle, bingoDescription, bingoCategory, bingoSize, bingoArr, bingoBgMainColor, bingoBgSubColor, bingoFontColor, bingoCellColor, bingoLineColor, bingoAchievement, enableAchievement])
 
     if (loading) {
         return <p>Loading…</p>
@@ -258,27 +229,14 @@ export default function BingoCreate() {
                         {
                             selectedButton === 0 && 
                             <>
-                                <Select 
-                                placeholder={t("CREATE_PLACEHOLDER_CATEGORY")} 
-                                style={{ width: 200, margin: '1rem 0px', marginRight: 16 }} 
-                                onChange={v => setBingoCategory(v)}
-                                value={bingoCategory}
-                                >
-                                    {categoryList.slice(1).map((v, index) => <Option key={index} value={index}>{v.name_ko}</Option>)}
-                                </Select>
-
-                                <Input 
-                                placeholder={t("CREATE_PLACEHOLDER_TITLE")} 
-                                value={bingoTitle}
-                                onChange={e => setBingoTitle(e.target.value)} 
-                                style={{width: '100%', height: 40, borderRadius: 5}} 
-                                />
-                                
-                                <Input 
-                                placeholder={t("CREATE_PLACEHOLDER_DESC")}
-                                value={bingoDescription}
-                                onChange={e => setBingoDescription(e.target.value)} 
-                                style={{width: '100%', height: 35, margin: '1rem 0px', borderRadius: 5}} 
+                                <BingoCreateInformationPane 
+                                categoryList={categoryList}
+                                bingoCategory={bingoCategory}
+                                setBingoCategory={setBingoCategory}
+                                bingoTitle={bingoTitle}
+                                setBingoTitle={setBingoTitle}
+                                bingoDescription={bingoDescription}
+                                setBingoDescription={setBingoDescription}
                                 />
 
                                 <div style={{margin: '1rem 0px'}}>
@@ -413,14 +371,14 @@ export default function BingoCreate() {
                             </>
                         }
                         {
-                            selectedButton === 4 &&
+                            selectedButton === 4 && 
                             <>
                                 <Checkbox 
                                 checked={enableAchievement}
                                 style={{color: 'var(--mono-2)', marginBottom: 8}}
                                 onChange={e => {
-                                    if(enableAchievement) {
-                                        handleAcheievement(0, bingoSize * 2 + 2 + 1, '') // reset achievement, consider number.
+                                    if(enableAchievement) { //when becomes false
+                                        //handleAchievement(0, bingoSize * 2 + 2 + 1, '') // reset achievement, consider number.
                                         setEnableAchievement(e.target.checked)
                                     } else setEnableAchievement(e.target.checked)
                                 }}>
@@ -428,64 +386,12 @@ export default function BingoCreate() {
                                         {t("CREATE_BINGO_ACCOMPLISHMENTS")}
                                     </span>
                                 </Checkbox>
-                                {
-                                    enableAchievement &&
-                                    <>
-                                        <TextLabel>
-                                            {t("CREATE_BINGO_ACCOMPLISHMENTS")}
-                                        </TextLabel>
-                                        {bingoAchievement.map((v, index) => 
-                                            <div key={index}>
-                                                {index} {t("STATIC_BINGO")}: {v}
-                                            </div>
-                                        )}
-                                        {
-                                            achievementMinimumPointer === 0 ?
-                                            <div>
-                                                <Slider 
-                                                defaultValue={achievementPointer} 
-                                                min={0} max={(bingoSize * 2 + 2) + 1} 
-                                                onChange={v => setAchievementPointer(v)} 
-                                                marks={marks}
-                                                />
-                                                <Input 
-                                                style={{width: '70%'}} 
-                                                value={achievementInput}
-                                                onChange={e => setAchievementInput(e.target.value)} 
-                                                onPressEnter={() => {handleAcheievement(0, achievementPointer, achievementInput)}}
-                                                />
-                                                <Button 
-                                                style={{marginLeft: '1rem'}} 
-                                                onClick={() => {handleAcheievement(0, achievementPointer, achievementInput)}}
-                                                > 
-                                                    {t("STATIC_ADD")} 
-                                                </Button>
-                                            </div>
-                                            :
-                                            <div>
-                                                <Slider 
-                                                range 
-                                                value={[achievementMinimumPointer, achievementPointer]} 
-                                                min={0} max={(bingoSize * 2 + 2) + 1} 
-                                                onChange={v => {setAchievementMinimumPointer(v[0]); setAchievementPointer(v[1])}} 
-                                                marks={marks}
-                                                />
-                                                <Input 
-                                                style={{width: '70%'}}
-                                                value={achievementInput}
-                                                onChange={e => setAchievementInput(e.target.value)} 
-                                                onPressEnter={() => {handleAcheievement(achievementMinimumPointer, achievementPointer, achievementInput)}}
-                                                />
-                                                <Button 
-                                                style={{marginLeft: '1rem'}} 
-                                                onClick={() => {handleAcheievement(achievementMinimumPointer, achievementPointer, achievementInput)}}
-                                                > 
-                                                    {t("STATIC_ADD")}  
-                                                </Button>
-                                            </div>
-                                        }
-                                    </>
-                                }
+                                <BingoCreateAchievementPane
+                                enableAchievement={enableAchievement}
+                                bingoAchievement={bingoAchievement}
+                                setBingoAchievement={setBingoAchievement}
+                                bingoSize={bingoSize}
+                                />
                             </>
                         }
                     </ControllerPage>

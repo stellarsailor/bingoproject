@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/client'
 import styled from 'styled-components'
 import { useCookies } from 'react-cookie'
-import { Row, Col, Button, Popconfirm, Input, message, Tooltip } from 'antd'
+import { Row, Col, Button, Popconfirm, Input, message, Tooltip, Alert } from 'antd'
 import { Link, useTranslation, Router } from '../../i18n'
 import { Element , scroller } from 'react-scroll'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -13,7 +13,7 @@ import domtoimage from 'dom-to-image'
 import { serverUrl } from '../../lib/serverUrl'
 import BingoRenderer from '../../components/BingoRenderer'
 import { CenteredCol, CenteredRow } from '../../components/sub/styled'
-import { ShareAltOutlined, LeftOutlined, AlertFilled, CameraFilled, CheckSquareOutlined, DeleteOutlined, LockOutlined } from '../../assets/icons'
+import { ShareAltOutlined, LeftOutlined, AlertFilled, CameraFilled, CheckSquareOutlined, DeleteOutlined, LockOutlined, EditOutlined } from '../../assets/icons'
 import useIsMobile from '../../logics/useIsMobile'
 import useWindowSize from '../../logics/useWindowSize'
 import MarkStyleModal from '../../components/MarkStyleModal'
@@ -48,6 +48,10 @@ const MenuButton = styled.a`
         background-color: var(--mono-2);
         color: ${props => props.selected ? 'dodgerblue' : 'var(--mono-7)' };
     }
+
+    @media (max-width: 400px) {
+        margin-left: 0rem;
+    }
 `
 
 export default function BingoDetail({ data }) {
@@ -58,6 +62,7 @@ export default function BingoDetail({ data }) {
     const isMobile = useIsMobile()
     const [ width, height ] = useWindowSize()
     const [ cookies, setCookie ] = useCookies(['setting'])
+    const [ fisrtTimeMsg, setFirstTimeMsg ] = useState(false)
 
     const [ styleModal, setStyleModal ] = useState(false)
     const [ markStyle, setMarkStyle ] = useState('')
@@ -84,9 +89,13 @@ export default function BingoDetail({ data }) {
             setCookie('setting', defaultSetting, { path: '/' })
             setMarkStyle(defaultSetting.style)
             setMarkColor(defaultSetting.color)
+
+            setFirstTimeMsg(true)
         } else {
             setMarkStyle(cookies.setting.style)
             setMarkColor(cookies.setting.color)
+
+            setFirstTimeMsg(false)
         }
     },[])
 
@@ -121,7 +130,7 @@ export default function BingoDetail({ data }) {
         })
     }
 
-    const deleteBingo = async (passwordInput) => {
+    const deleteBingo = async () => {
         let url = `${serverUrl}/api/bingos/${bingoId}`
         const settings = {
             method: 'DELETE',
@@ -324,32 +333,36 @@ export default function BingoDetail({ data }) {
                                     </MenuButton>
                                 </Tooltip>
                                 { session && session.user.id === bingo.userId &&
+                                <>
+                                    <Tooltip title={t("PLAYPAGE_EDIT")}>
+                                        <MenuButton onClick={() => Router.push(`/bingo/edit/${bingoId}`)}>
+                                            <EditOutlined />
+                                        </MenuButton>
+                                    </Tooltip>
                                     <Tooltip title={t("PLAYPAGE_DELETE")}>
                                         <MenuButton>
                                             <Popconfirm
-                                                title={
-                                                    <div> 
-                                                        {/* <Input.Password placeholder="input password" onChange={(e) => setPasswordInput(e.target.value)} style={{width: 200}} /> */}
-                                                        {t("PLAYPAGE_DELETE_ASK")}
-                                                    </div>
-                                                }
-                                                onConfirm={() => deleteBingo(passwordInput)}
-                                                onCancel={() => console.log('cancelled')}
-                                                okText="Delete"
-                                                cancelText="Cancel"
-                                                icon={<LockOutlined style={{fontSize: 16}} />}
-                                            
+                                            title={ <div> {t("PLAYPAGE_DELETE_ASK")} </div> }
+                                            onConfirm={() => deleteBingo(passwordInput)}
+                                            onCancel={() => console.log('cancelled')}
+                                            okText="Delete"
+                                            cancelText="Cancel"
+                                            icon={<LockOutlined style={{fontSize: 16}} />}
                                             >
                                                 <DeleteOutlined /> 
                                             </Popconfirm>
                                         </MenuButton>
                                     </Tooltip>
+                                </>
                                 }
                             </CenteredRow>
                         </ControllerPage>
                     </Col>
+                    { fisrtTimeMsg && 
+                    <CenteredRow style={{width: '100%'}}>
+                        <Alert message="빙고 칸을 클릭하여 빙고를 완성한 뒤 통계를 확인해보세요!" type="success" showIcon closable style={{ minWidth: 300, marginBottom: 8 }} />
+                    </CenteredRow> }
                     <Col xs={24} sm={24} md={24} lg={24} xl={24} >
-                        {/* <Checkbox onChange={e => console.log(e)}>NSFW</Checkbox> */}
                         <CenteredCol>
                             <BingoRenderer 
                             title={bingo.title}
