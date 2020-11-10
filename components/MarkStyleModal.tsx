@@ -88,8 +88,8 @@ export default function MarkStyleModal (props){
                 <TwitterPicker color={sampleColor} onChangeComplete={(v) => {setSampleColor(v.hex)}} />
             </div>
             <div style={{marginTop: 16}}>
-                {t("MODAL_MARKSTYLE_OPACITY")}
-                <Slider defaultValue={markOpacity * 100} max={100} min={20} tooltipVisible onChange={(v) => setSampleOpacity(v / 100)} />
+                {t("MODAL_MARKSTYLE_OPACITY")} ({Math.round(sampleOpacity * 100)}%)
+                <Slider defaultValue={markOpacity * 100} max={100} min={20} onChange={(v) => setSampleOpacity(Math.round(v) / 100)} />
             </div>
 
         </Modal>
