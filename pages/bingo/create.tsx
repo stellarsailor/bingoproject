@@ -81,7 +81,7 @@ export default function BingoCreate() {
     const [ easyBingoEditCenterInput, setEasyBingoEditCenterInput ] = useState('')
     const [ easyBingoEditInput, setEasyBingoEditInput ] = useState('')
 
-    const [ bingoCategory, setBingoCategory ] = useState<any>(0)
+    const [ bingoCategory, setBingoCategory ] = useState<any>(1)
     const [ bingoTitle, setBingoTitle ] = useState('')
     const [ bingoDescription, setBingoDescription ] = useState('')
     const [ bingoSize, setBingoSize ] = useState(5)
@@ -169,7 +169,7 @@ export default function BingoCreate() {
                 },
                 body: JSON.stringify({
                     userId: session.user.id,
-                    category: bingoCategory + 1, //due to cut 'All' category which is 0
+                    category: bingoCategory, //due to cut 'All' category which is 0
                     title: bingoTitle,
                     description: bingoDescription,
                     size: bingoSize,

@@ -76,7 +76,7 @@ export default function Edit( ){
                 body: JSON.stringify({
                     userId: session.user.id,
                     accessToken: session.accessToken,
-                    category: bingoCategory + 1,
+                    category: bingoCategory,
                     title: bingoTitle,
                     description: bingoDescription,
                     achievements: bingoAchievement,
