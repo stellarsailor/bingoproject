@@ -38,6 +38,9 @@
     "CREATE_EDIT_EASY_TIP": "빙고 칸을 클릭하여 빙고를 수정할 수도 있습니다!", 
     "CREATE_BINGO_ACCOMPLISHMENTS": "빙고 갯수 업적 설정",
     "CREATE_BINGO_ACCOMPLISHMENTS_HELP": "빙고 갯수 달성시 출력될 메세지를 입력해주세요",
+    "CREATE_BINGO_ACCOMPLISHMENTS_BREAKPOINT": "기준점",
+    "CREATE_BINGO_ACCOMPLISHMENTS_LESSEQUAL": "체크 이하",
+    "CREATE_BINGO_ACCOMPLISHMENTS_GREATER": "체크 이상",
     "CREATE_CHANGE_BINGO_ELEMENT": "빙고 내용 변경",
 
     "CREATE_EMPTY_ALERT_TITLE": "제목을 입력해주세요.",

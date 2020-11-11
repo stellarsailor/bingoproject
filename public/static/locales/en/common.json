@@ -37,7 +37,10 @@
     "CREATE_EDIT_EASY_INPUT": "Enter the element for each line.", 
     "CREATE_EDIT_EASY_TIP": "You can edit Bingo by click the element!", 
     "CREATE_BINGO_ACCOMPLISHMENTS": "Bingo Lines Accomplishments",
-    "CREATE_BINGO_ACCOMPLISHMENTS_HELP": "Enter messages when the user submits the bingo",
+    "CREATE_BINGO_ACCOMPLISHMENTS_HELP": "Enter result messages when the user submits the bingo",
+    "CREATE_BINGO_ACCOMPLISHMENTS_BREAKPOINT": "Break Point",
+    "CREATE_BINGO_ACCOMPLISHMENTS_LESSEQUAL": "Marks(less or equal)",
+    "CREATE_BINGO_ACCOMPLISHMENTS_GREATER": "Marks(greater or equal)",
     "CREATE_CHANGE_BINGO_ELEMENT": "Change Bingo Element",
 
     "CREATE_EMPTY_ALERT_TITLE": "Please enter title.",

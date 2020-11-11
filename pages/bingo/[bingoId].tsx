@@ -386,7 +386,15 @@ export default function BingoDetail({ data }) {
                             markOpacity={markOpacity}
 
                             completedBingoLines={completedBingoLines}
-                            resultString={JSON.parse(bingo.achievements)[completedBingoLines]}
+                            resultString={ 
+                                completedBingoLines === 0 ?
+                                    selectedIndex.length <= JSON.parse(bingo.achievements)[0].breakPoint ? //if zero bingo, user selected 5 marks, equal or less than 5
+                                        JSON.parse(bingo.achievements)[0].preBreakPoint 
+                                    :
+                                        JSON.parse(bingo.achievements)[0].postBreakPoint
+                                : 
+                                JSON.parse(bingo.achievements)[completedBingoLines]
+                            }
                             resultStatus={resultStatus}
                             resultCount={resultCount}
                             resultAvgCount={resultAvgCount}

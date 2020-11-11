@@ -50,7 +50,7 @@ export default function Edit( ){
             setBingoDescription(data.bingo.description)
 
             let ach = JSON.parse(data.bingo.achievements)
-            if(ach[0] !== ''){
+            if(ach[1] !== ''){
                 setEnableAchievement(true)
             }
             setBingoAchievement(ach)

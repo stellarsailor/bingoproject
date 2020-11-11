@@ -140,7 +140,13 @@ export default function BingoCreate() {
             elements.push('')
         }
 
-        for(let i = 0; i < (bingoSize * 2 + 2) + 1; i++){
+        achievements.push({
+            breakPoint: 5, //0~5체크 이하, 노 빙고 6체크 이상
+            preBreakPoint: '',
+            postBreakPoint: ''
+        })
+
+        for(let i = 1; i < (bingoSize * 2 + 2) + 1; i++){
             achievements.push('')
         }
 
