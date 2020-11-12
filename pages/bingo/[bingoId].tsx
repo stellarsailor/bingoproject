@@ -419,7 +419,7 @@ export default function BingoDetail({ data }) {
                                 :
                                 <Button 
                                 type="primary" 
-                                onClick={() => submitIndexToFlag()} style={{width: 300, height: 45, borderRadius: 8}}
+                                onClick={() => submitIndexToFlag()} style={{width: 300, height: 45, borderRadius: 8, marginBottom: 50}}
                                 disabled={resultStatus !== 'idle'}
                                 >
                                     {t("PLAYPAGE_SUBMIT")}
