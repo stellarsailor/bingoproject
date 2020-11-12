@@ -7,11 +7,12 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import pickTextColorBasedOnBgColor from '../logics/pickTextColorBasedOnBgColor'
 import useWindowSize from '../logics/useWindowSize'
 import hexToRgbA from '../logics/hexToRgbA'
-import { ShareAltOutlined, CameraFilled, UserOutlined, SearchOutlined } from '../assets/icons'
+import { ShareAltOutlined, CameraFilled, UserOutlined, SearchOutlined, CheckOutlined } from '../assets/icons'
 import { serverUrl } from '../lib/serverUrl'
 import { useRouter } from 'next/router'
 import { useTranslation } from '../i18n'
 import MarkStyleSVG from './sub/MarkStyleSVG'
+import numberToK from '../logics/numberToK'
 
 message.config({
     top: 58,
@@ -198,7 +199,7 @@ export default function BingoRenderer( props ){
     const backColor = (percent) => {
         let r = percent<50 ? 255 : Math.floor(255-(percent*2-100)*255/100);
         let g = percent>50 ? 255 : Math.floor((percent*2)*255/100);
-        return 'rgb('+r+', '+g+', 0, 0.6)';
+        return 'rgb('+r+', '+g+', 100, 0.7)';
     }
 
     const renderResultTable = (size) => {
@@ -210,9 +211,9 @@ export default function BingoRenderer( props ){
                     {resultPercent.map((v, index) => {
                         if( size * i <= index && index < size * (i+1) ){
                             return (
-                                <td key={index} style={{border: '1px solid black', backgroundColor: `${backColor(v)}`, textAlign: 'center', color: `${selectedIndex.includes(index) ? 'black' : 'var(--mono-6)'}`, padding: '4px 8px'}}>
-                                    <span style={{fontWeight: 'bold'}}>{v}%</span>
-                                    <div style={{fontSize: '0.8rem'}}><UserOutlined />{resultCount[index]} </div>
+                                <td key={index} style={{border: '1px solid black', backgroundColor: `${backColor(v)}`, textAlign: 'center', color: `${selectedIndex.includes(index) ? 'black' : 'black'}`, padding: '4px 8px'}}>
+                                    <span style={{fontSize: 18}}>{v}</span> <span style={{fontSize: 11}}>%</span>
+                                    <div style={{fontSize: '0.7rem'}}>{selectedIndex.includes(index) ? <CheckOutlined /> : <UserOutlined />}{numberToK(resultCount[index])} </div>
                                 </td>
                             )
                         }

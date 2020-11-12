@@ -93,3 +93,7 @@ export {
 export {
     default as SearchOutlined
 } from '@ant-design/icons/lib/icons/SearchOutlined';
+
+export {
+    default as CheckOutlined
+} from '@ant-design/icons/lib/icons/CheckOutlined';
