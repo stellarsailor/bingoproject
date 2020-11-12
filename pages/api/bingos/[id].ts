@@ -28,18 +28,20 @@ export default async (req, res) => {
 
         const duplicated = spamCheck[0].spamCount > 0
 
-        if(!duplicated){
-            const insertResult = await db.query(escape`
-                INSERT INTO results (bingoId, binaryResult, completedMarks, completedLines, ipAddress)
-                VALUES (${bingoId}, ${JSON.stringify(binaryResult)}, ${completedMarks}, ${completedLines}, ${ipAddress});
-            `)
-
-            if(insertResult.affectedRows === 1){
-                const updateBingoPopularity = await db.query(escape`
-                    UPDATE bingos
-                    SET popularity = popularity + 1
-                    WHERE id = ${bingoId};
+        if(!duplicated){ //when the submit is not duplicated recent within 10 minutes
+            if(completedMarks !== 0){ //and there must be any check on bingo.
+                const insertResult = await db.query(escape`
+                    INSERT INTO results (bingoId, binaryResult, completedMarks, completedLines, ipAddress)
+                    VALUES (${bingoId}, ${JSON.stringify(binaryResult)}, ${completedMarks}, ${completedLines}, ${ipAddress});
                 `)
+    
+                if(insertResult.affectedRows === 1){
+                    const updateBingoPopularity = await db.query(escape`
+                        UPDATE bingos
+                        SET popularity = popularity + 1
+                        WHERE id = ${bingoId};
+                    `)
+                }
             }
         }
         //all results of that bingo after added one of user's
@@ -60,7 +62,8 @@ export default async (req, res) => {
 
         res.status(200).json({ 
             error: duplicated ? 'duplicated' : null,
-            percentage: duplicated ? null : percentage[0].percentage, 
+            percentage: duplicated ? null : //when the result is duplicated
+                            completedMarks === 0 ? 1 : percentage[0].percentage, //when user submit 0 mark bingo, it shows 1(will be *100, so 100% percentage)
             results 
         })
 
