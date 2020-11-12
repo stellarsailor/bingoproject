@@ -270,7 +270,7 @@ export default function BingoRenderer( props ){
                                 </MiniTextInResultBox>
                                 <BigTextInResultBox>
                                     {selectedIndex.length}
-                                    <span style={{fontSize: 12, marginLeft: 16}}>{t("STATIC_AVG")} : {resultAvgCount.toFixed(2)}</span>
+                                    <span style={{fontSize: 12, marginLeft: 8}}>{t("STATIC_AVG")} : {resultAvgCount.toFixed(2)}</span>
                                 </BigTextInResultBox>
                                 <MiniTextInResultBox>
                                     {resultTopCountPercentage !== null && <> {t("PLAYPAGE_PERCENTAGE_TOP")} {resultTopCountPercentage}% </>}
@@ -284,7 +284,7 @@ export default function BingoRenderer( props ){
                                 </MiniTextInResultBox>
                                 <BigTextInResultBox>
                                     {completedBingoLines}
-                                    <span style={{fontSize: 12, marginLeft: 16}}>{t("STATIC_AVG")} : {resultAvgBingoLines.toFixed(2)}</span>
+                                    <span style={{fontSize: 12, marginLeft: 8}}>{t("STATIC_AVG")} : {resultAvgBingoLines.toFixed(2)}</span>
                                 </BigTextInResultBox>
                             </ResultBox>
                         </Col>
