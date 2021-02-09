@@ -17,7 +17,7 @@ export default function BingoCreateInformationPane(props) {
             onChange={v => setBingoCategory(v)}
             value={bingoCategory}
             >
-                {categoryList.slice(1).map((v, index) => <Option key={index} value={v.id}>{v.name_ko}</Option>)}
+                {categoryList.slice(1).map((v, index) => <Option key={v.id} value={v.id}>{v[`name_${i18n.language}`]}</Option>)}
             </Select>
 
             <Input 

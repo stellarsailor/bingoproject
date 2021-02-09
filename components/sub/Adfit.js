@@ -58,25 +58,26 @@ export default function Adfit(props){
 
     useEffect(() => {
         // window.adfit || loadScript('https://t1.daumcdn.net/kas/static/ba.min.js', function(){})
-        loadScript('https://t1.daumcdn.net/kas/static/ba.min.js', function(){})
+        // loadScript('https://t1.daumcdn.net/kas/static/ba.min.js', function(){}) //이것 사용
     },[])
 
         return (
-            <div key={Math.random} style={{display: 'flex', justifyContent: 'center', margin: props.margin, height: parseInt(h), zIndex: 0}}>
-                <ins className={'kakao_ad_area'}
-                    style={{
-                        display: 'block',
-                        width: '100%'
-                    }}
-                    data-ad-unit={id}
-                    data-ad-width={w}
-                    data-ad-height={h}
-                    data-ad-test={true} //props.adTest || 'N'}
-                    data-ad-param-channel={props.adParamChannel}
-                    data-ad-param-cp={props.adParamCp}
-                    >
-                </ins>
-            </div>
+            <></>
+            // <div key={Math.random} style={{display: 'flex', justifyContent: 'center', margin: props.margin, height: parseInt(h), zIndex: 0}}>
+            //     <ins className={'kakao_ad_area'}
+            //         style={{
+            //             display: 'block',
+            //             width: '100%'
+            //         }}
+            //         data-ad-unit={id}
+            //         data-ad-width={w}
+            //         data-ad-height={h}
+            //         data-ad-test={true} //props.adTest || 'N'}
+            //         data-ad-param-channel={props.adParamChannel}
+            //         data-ad-param-cp={props.adParamCp}
+            //         >
+            //     </ins>
+            // </div>
             )
     // }
 }
