@@ -405,7 +405,7 @@ export default function BingoDetail({ data }) {
                             takeScreenShot={takeScreenShot}
                             /> 
                         </CenteredCol>
-                        <CenteredCol style={{marginBottom: '1rem'}}>
+                        <CenteredCol style={{marginTop: '1rem'}}>
                             {
                                 width < 578 &&
                                 <Adfit adType="mobile-wide-50" margin="8px 0px 8px 0px" />
