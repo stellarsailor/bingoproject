@@ -1,7 +1,7 @@
 import Navbar from './Navbar'
 import { Row, Col } from 'antd'
 import Head from 'next/head'
-import GoogleFonts from "next-google-fonts";
+import { GoogleFonts } from "next-google-fonts";
 import { useRouter } from 'next/router'
 import Adfit from './sub/Adfit';
 import Sticky from 'react-sticky-el';
