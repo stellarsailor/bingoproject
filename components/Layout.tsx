@@ -1,7 +1,6 @@
 import Navbar from './Navbar'
 import { Row, Col } from 'antd'
 import Head from 'next/head'
-import { GoogleFonts } from "next-google-fonts";
 import { useRouter } from 'next/router'
 import Adfit from './sub/Adfit';
 import Sticky from 'react-sticky-el';
@@ -11,7 +10,11 @@ export default function Layout(props) {
 
     return(
         <div>
-            {/* <GoogleFonts href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" /> */}
+            <link
+                href="https://fonts.googleapis.com/css2?family=Noto+Sans"
+                rel="stylesheet"
+            />
+
             <Head>
                 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
             </Head>
