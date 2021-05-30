@@ -1,5 +1,5 @@
-import App from "next/App";
-import type { AppProps /*, AppContext */ } from 'next/App'
+import App from "next/app";
+import type { AppProps /*, AppContext */ } from 'next/app'
 import '../styles/style.css'
 
 import { Provider } from 'next-auth/client'
