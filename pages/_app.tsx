@@ -21,9 +21,6 @@ Router.events.on('routeChangeError', () => NProgress.done())
 NProgress.configure({ showSpinner: false })
 
 function MyApp({ Component, pageProps }: AppProps) {
-    // useEffect(() => {
-        //최초 렌더링시 오직 한번만 실행됨 여기서 최초 데이터 전부 한번 불러오고 context api에 저장하는거 고려해보기. 페이지 이동 시 메인이 계속 렌더링됨
-    // },[])
 
     return (
         <Provider session={pageProps.session}>
