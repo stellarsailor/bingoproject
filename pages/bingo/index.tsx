@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import styled from "styled-components";
 import { Row, Col, BackTop, Radio } from "antd";
 import Sticky from "react-sticky-el";
 
-import { Link, useTranslation } from "../../i18n";
+import { useTranslation } from "../../i18n";
 import { useRouter } from "next/router";
 import BingoListContainer from "../../components/BingoListContainer";
 import { CenteredCol } from "../../components/sub/styled";
