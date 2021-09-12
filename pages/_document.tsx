@@ -1,5 +1,5 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document'
-import { ServerStyleSheet } from 'styled-components';
+import Document, { Html, Head, Main, NextScript } from "next/document";
+import { ServerStyleSheet } from "styled-components";
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -32,10 +32,13 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <script async src="https://www.googletagmanager.com/gtag/js?id=UA-154973389-2" />
+          <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=UA-154973389-2"
+          />
           <script
             dangerouslySetInnerHTML={{
-            __html: `
+              __html: `
                     window.dataLayer = window.dataLayer || [];
                     function gtag(){dataLayer.push(arguments);}
                     gtag('js', new Date());
@@ -44,7 +47,11 @@ export default class MyDocument extends Document {
             }}
           />
           <link rel="shortcut icon" href="/static/favicon.ico" />
-          <script data-ad-client="ca-pub-1635386604461382" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+          <script
+            data-ad-client="ca-pub-1635386604461382"
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+          ></script>
         </Head>
         <body>
           <Main />
@@ -52,6 +59,6 @@ export default class MyDocument extends Document {
           <script> </script>
         </body>
       </Html>
-    )
+    );
   }
 }

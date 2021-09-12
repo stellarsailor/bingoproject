@@ -20,7 +20,9 @@
     "next": "latest",
     "next-auth": "^3.1.0",
     "next-i18next": "^6.0.2",
+    "next-plugin-antd-less": "^1.4.2",
     "next-seo": "^4.11.0",
+    "next-with-less": "^1.0.1",
     "nprogress": "^0.2.0",
     "null-loader": "2.0.0",
     "postcss": "^8.3.0",
@@ -49,6 +51,6 @@
     "babel-plugin-styled-components": "^1.11.1",
     "globby": "^11.0.1",
     "html-webpack-plugin": "^5.3.1",
-    "typescript": "^3.9.7"
+    "typescript": "^4.4.3"
   }
 }

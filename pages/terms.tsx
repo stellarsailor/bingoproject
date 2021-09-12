@@ -1,19 +1,18 @@
-import styled from 'styled-components';
-import { useTranslation } from '../i18n';
-const ReactMarkdown = require('react-markdown')
+import styled from "styled-components";
+import { useTranslation } from "../i18n";
+const ReactMarkdown = require("react-markdown");
 
 const Container = styled.div`
-    border-radius: 3px;
-    background-color: white;
-    border: 1px solid lightgray;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-`
+  border-radius: 3px;
+  background-color: white;
+  border: 1px solid lightgray;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+`;
 
 const input = {
-en:
-`
+  en: `
 # Terms of Use
 
 Welcome to SelfBingo!
@@ -48,8 +47,7 @@ SelfBingo 서비스를 제공하기 위해서는 회원님의 정보를 수집�
 
 개정: 2020년 1월 1일
 `,
-ko: 
-`
+  ko: `
 # 이용약관
 
 SelfBingo에 오신 것을 환영합니다!
@@ -86,16 +84,16 @@ SelfBingo 서비스를 제공하기 위해서는 회원님의 정보를 수집�
 
 개정: 2020년 1월 1일
 `,
-}
+};
 
 export default function Terms() {
-    const { t, i18n } = useTranslation()
+  const { t, i18n } = useTranslation();
 
-    return (
-        <>
-            <Container>
-                <ReactMarkdown source={input[i18n.language]} />
-            </Container>
-        </>
-    )
+  return (
+    <>
+      <Container>
+        <ReactMarkdown source={input[i18n.language]} />
+      </Container>
+    </>
+  );
 }
