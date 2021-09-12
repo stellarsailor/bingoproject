@@ -213,7 +213,7 @@ export default function BingoCreate() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: session.user.id,
+          userId: (session.user as any).id,
           category: bingoCategory, //due to cut 'All' category which is 0
           title: bingoTitle,
           description: bingoDescription,
