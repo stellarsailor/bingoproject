@@ -77,7 +77,7 @@ export default function Edit() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: session.user.id,
+          userId: (session.user as any).id,
           accessToken: session.accessToken,
           category: bingoCategory,
           title: bingoTitle,
@@ -109,7 +109,6 @@ export default function Edit() {
     Router.push("/auth/signin");
     return <p>Loading…</p>;
   }
-  // session.user.id !== bingo.userId
 
   return (
     <ControllerPage>

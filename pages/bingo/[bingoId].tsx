@@ -162,7 +162,7 @@ export default function BingoDetail({ data }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userId: session.user.id,
+        userId: (session.user as any).id,
         accessToken: session.accessToken,
       }),
     };
@@ -414,7 +414,7 @@ export default function BingoDetail({ data }) {
                     <CameraFilled />
                   </MenuButton>
                 </Tooltip>
-                {session && session.user.id === bingo.userId && (
+                {session && (session.user as any).id === bingo.userId && (
                   <>
                     <Tooltip title={t("PLAYPAGE_EDIT")}>
                       <MenuButton
