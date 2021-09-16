@@ -42,36 +42,6 @@ message.config({
   top: 58,
 });
 
-const ControllerPage = styled.div`
-  height: 50px;
-  background-color: white;
-  border: 1px solid lightgray;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0px 16px;
-`;
-
-const MenuButton = styled.a`
-  font-size: 18px;
-  border-radius: 3px;
-  background-color: ${(props) => (props.selected ? "var(--mono-1)" : "white")};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 4px 8px;
-  margin-left: 0.6rem;
-  color: ${(props) => (props.selected ? "dodgerblue" : "gray")};
-  :hover {
-    background-color: var(--mono-2);
-    color: ${(props) => (props.selected ? "dodgerblue" : "var(--mono-7)")};
-  }
-
-  @media (max-width: 400px) {
-    margin-left: 0rem;
-  }
-`;
-
 export default function BingoDetail({ data }) {
   const [session, loading] = useSession();
   const router = useRouter();
@@ -521,6 +491,36 @@ export default function BingoDetail({ data }) {
     </>
   );
 }
+
+const ControllerPage = styled.div`
+  height: 50px;
+  background-color: white;
+  border: 1px solid lightgray;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 16px;
+`;
+
+const MenuButton = styled.a`
+  font-size: 18px;
+  border-radius: 3px;
+  background-color: ${(props) => (props.selected ? "var(--mono-1)" : "white")};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 8px;
+  margin-left: 0.6rem;
+  color: ${(props) => (props.selected ? "dodgerblue" : "gray")};
+  :hover {
+    background-color: var(--mono-2);
+    color: ${(props) => (props.selected ? "dodgerblue" : "var(--mono-7)")};
+  }
+
+  @media (max-width: 400px) {
+    margin-left: 0rem;
+  }
+`;
 
 export async function getServerSideProps({ params, req }) {
   // console.log(req.language)
