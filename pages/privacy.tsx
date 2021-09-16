@@ -1,19 +1,18 @@
-import styled from 'styled-components';
-import { useTranslation } from '../i18n';
-const ReactMarkdown = require('react-markdown')
+import styled from "styled-components";
+import { useTranslation } from "../i18n";
+const ReactMarkdown = require("react-markdown");
 
 const Container = styled.div`
-    border-radius: 3px;
-    background-color: white;
-    border: 1px solid lightgray;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-`
+  border-radius: 3px;
+  background-color: white;
+  border: 1px solid lightgray;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+`;
 
 const input = {
-en:
-`
+  en: `
 # Privacy Policy
 
 1. 개인정보의 처리 목적 <셀프빙고>(‘https://selfbingo.com’이하 ‘selfbingo’) 은(는) 다음의 목적을 위하여 개인정보를 처리하고 있으며, 다음의 목적 이외의 용도로는 이용하지 않습니다.
@@ -85,8 +84,7 @@ en:
     개인정보를 처리하는 데이터베이스시스템에 대한 접근권한의 부여,변경,말소를 통하여 개인정보에 대한 접근통제를 위하여 필요한 조치를 하고 있으며 침입차단시스템을 이용하여 외부로부터의 무단 접근을 통제하고 있습니다.
     
 `,
-ko: 
-`
+  ko: `
 # 개인정보처리방침
 
 1. 개인정보의 처리 목적 <셀프빙고>(‘https://selfbingo.com’이하 ‘selfbingo’) 은(는) 다음의 목적을 위하여 개인정보를 처리하고 있으며, 다음의 목적 이외의 용도로는 이용하지 않습니다.
@@ -158,16 +156,22 @@ ko:
     개인정보를 처리하는 데이터베이스시스템에 대한 접근권한의 부여,변경,말소를 통하여 개인정보에 대한 접근통제를 위하여 필요한 조치를 하고 있으며 침입차단시스템을 이용하여 외부로부터의 무단 접근을 통제하고 있습니다.
     
 `,
-}
+};
 
 export default function Privacy() {
-    const { t, i18n } = useTranslation()
+  const { t, i18n } = useTranslation();
 
-    return (
-        <>
-            <Container>
-                <ReactMarkdown source={input[i18n.language] === undefined ? input['en'] : input[i18n.language] } />
-            </Container>
-        </>
-    )
+  return (
+    <>
+      <Container>
+        <ReactMarkdown
+          source={
+            input[i18n.language] === undefined
+              ? input["en"]
+              : input[i18n.language]
+          }
+        />
+      </Container>
+    </>
+  );
 }
