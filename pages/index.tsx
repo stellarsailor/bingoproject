@@ -19,81 +19,6 @@ import useIsMobile from "../logics/useIsMobile";
 import dynamicSort from "../logics/dynamicSort";
 import Adfit from "../components/sub/Adfit";
 
-const CategoryRenderer = styled.div`
-  display: flex;
-  align-items: center;
-  background-color: ${(props) => (props.selected ? "white" : "white")};
-  border-left: ${(props) =>
-    !props.color ? `5px solid black` : `5px solid ${props.color}`};
-  border-bottom: 1px solid lightgray;
-  padding: 0.5rem;
-  color: ${(props) => (props.selected ? "dodgerblue" : "gray")};
-  /* font-weight: ${(props) => (props.selected ? "bold" : null)} */
-  :hover {
-    background-color: var(--mono-1);
-    color: ${(props) => (props.selected ? "dodgerblue" : "var(--mono-7)")};
-  }
-`;
-
-const FilterButton = styled.div`
-  border-radius: 20px;
-  background-color: ${(props) => (props.selected ? "var(--mono-1)" : "white")};
-  height: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0px 16px;
-  margin-left: 1rem;
-  font-weight: bold;
-  color: ${(props) => (props.selected ? "dodgerblue" : "gray")};
-  :hover {
-    background-color: var(--mono-2);
-    color: ${(props) => (props.selected ? "dodgerblue" : "var(--mono-7)")};
-  }
-`;
-
-const RefreshButton = styled(RedoOutlined)`
-  color: gray;
-  border-radius: 5px;
-  font-size: 1.4rem;
-  margin-right: 1rem;
-  background-color: white;
-  padding: 5px;
-  :hover {
-    background-color: var(--mono-2);
-    color: var(--mono-7);
-  }
-`;
-
-const MobileCategoryContainer = styled.div`
-  border: 1px solid lightgray;
-  border-bottom: 0px;
-  margin-bottom: 1rem;
-`;
-
-const CreateBingoButton = styled.div`
-  width: 100%;
-  height: 50px;
-  background-color: white;
-  border: 1px solid lightgray;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.1rem;
-  color: rgba(0, 0, 0, 0.65);
-  :hover {
-    background-color: var(--mono-1);
-    transition: 0.2s;
-    transition-timing-function: ease-in;
-    color: dodgerblue;
-  }
-`;
-
-const GrayLittleLink = styled.a`
-  color: var(--mono-4);
-  margin-right: 10px;
-`;
-
 export default function Home({}) {
   const { t, i18n } = useTranslation();
   const {
@@ -185,7 +110,7 @@ export default function Home({}) {
                   fetchMainBingos(1);
                 }}
               />
-              {isMobile ? (
+              {isMobile && (
                 <MoreOutlined
                   onClick={() =>
                     setMobileCategoryListVisible(
@@ -194,7 +119,7 @@ export default function Home({}) {
                   }
                   style={{ fontSize: "1.4rem", marginRight: "1rem" }}
                 />
-              ) : null}
+              )}
             </CenteredRow>
           </div>
           {mobileCategoryListVisible ? (
@@ -306,3 +231,78 @@ export default function Home({}) {
     </>
   );
 }
+
+const CategoryRenderer = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: ${(props) => (props.selected ? "white" : "white")};
+  border-left: ${(props) =>
+    !props.color ? `5px solid black` : `5px solid ${props.color}`};
+  border-bottom: 1px solid lightgray;
+  padding: 0.5rem;
+  color: ${(props) => (props.selected ? "dodgerblue" : "gray")};
+  /* font-weight: ${(props) => (props.selected && "bold")} */
+  :hover {
+    background-color: var(--mono-1);
+    color: ${(props) => (props.selected ? "dodgerblue" : "var(--mono-7)")};
+  }
+`;
+
+const FilterButton = styled.div`
+  border-radius: 20px;
+  background-color: ${(props) => (props.selected ? "var(--mono-1)" : "white")};
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 16px;
+  margin-left: 1rem;
+  font-weight: bold;
+  color: ${(props) => (props.selected ? "dodgerblue" : "gray")};
+  :hover {
+    background-color: var(--mono-2);
+    color: ${(props) => (props.selected ? "dodgerblue" : "var(--mono-7)")};
+  }
+`;
+
+const RefreshButton = styled(RedoOutlined)`
+  color: gray;
+  border-radius: 5px;
+  font-size: 1.4rem;
+  margin-right: 1rem;
+  background-color: white;
+  padding: 5px;
+  :hover {
+    background-color: var(--mono-2);
+    color: var(--mono-7);
+  }
+`;
+
+const MobileCategoryContainer = styled.div`
+  border: 1px solid lightgray;
+  border-bottom: 0px;
+  margin-bottom: 1rem;
+`;
+
+const CreateBingoButton = styled.div`
+  width: 100%;
+  height: 50px;
+  background-color: white;
+  border: 1px solid lightgray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+  color: rgba(0, 0, 0, 0.65);
+  :hover {
+    background-color: var(--mono-1);
+    transition: 0.2s;
+    transition-timing-function: ease-in;
+    color: dodgerblue;
+  }
+`;
+
+const GrayLittleLink = styled.a`
+  color: var(--mono-4);
+  margin-right: 10px;
+`;
