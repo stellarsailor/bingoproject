@@ -6,21 +6,6 @@ import styled from "styled-components";
 import { CenteredCol } from "./sub/styled";
 import { Button } from "antd";
 
-const SignInButton = styled(Button)`
-  border: 1px solid var(--mono-3);
-  width: 220px;
-  height: 40px;
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 8px 0px;
-`;
-
-const ButtonText = styled.span`
-  margin-left: 4px;
-`;
-
 export default function LoginContainer() {
   const router = useRouter();
 
@@ -88,3 +73,18 @@ export default function LoginContainer() {
     </CenteredCol>
   );
 }
+
+const SignInButton = styled(Button)`
+  border: 1px solid var(--mono-3);
+  width: 220px;
+  height: 40px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 8px 0px;
+`;
+
+const ButtonText = styled.span`
+  margin-left: 4px;
+`;

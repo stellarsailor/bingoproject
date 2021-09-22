@@ -8,25 +8,6 @@ import {
 import styled from "styled-components";
 import useWindowSize from "../../logics/useWindowSize";
 
-const EachButton = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 70px;
-  height: 70px;
-  color: ${(props) => (props.isSelected ? "white" : "gray")};
-  background-color: ${(props) =>
-    props.isSelected ? "#293039" : "var(--mono-8)"};
-  font-size: 10px;
-  transition: 0.2s;
-  transition-timing-function: ease-in;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
 export default function CreateButtonTab(props) {
   const [width, height] = useWindowSize();
 
@@ -79,3 +60,22 @@ export default function CreateButtonTab(props) {
     </div>
   );
 }
+
+const EachButton = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 70px;
+  height: 70px;
+  color: ${(props) => (props.isSelected ? "white" : "gray")};
+  background-color: ${(props) =>
+    props.isSelected ? "#293039" : "var(--mono-8)"};
+  font-size: 10px;
+  transition: 0.2s;
+  transition-timing-function: ease-in;
+  &:hover {
+    cursor: pointer;
+  }
+`;

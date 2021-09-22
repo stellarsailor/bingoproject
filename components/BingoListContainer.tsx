@@ -8,44 +8,6 @@ import numberToK from "../logics/numberToK";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { InitialContents } from "../store/InitialContentsProvider";
 
-const BingoPane = styled.div`
-  border-bottom: 1px solid var(--mono-2);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  padding: 8px;
-  :hover {
-    background-color: var(--mono-1);
-    transition: 0.2s;
-    transition-timing-function: ease-in;
-  }
-`;
-
-const BingoPaneText = styled.div`
-  display: flex;
-  flex-direction: column;
-  color: var(--mono-5);
-  overflow: hidden;
-`;
-
-const SquareBingoIcon = styled.div`
-  color: ${(props) => props.fontColor};
-  /* background: ${(props) =>
-    `-webkit-linear-gradient(${props.bgMainColor}, ${props.bgSubColor})`}; */
-  background-color: ${(props) => props.bgMainColor};
-  border: 1px solid var(--mono-2);
-  width: 80px;
-  min-width: 80px;
-  height: 80px;
-  font-size: 1.6rem;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 1rem;
-`;
-
 export default function BingoListContainer(props) {
   const { t, i18n } = useTranslation();
   const {
@@ -194,3 +156,41 @@ export default function BingoListContainer(props) {
     </div>
   );
 }
+
+const BingoPane = styled.div`
+  border-bottom: 1px solid var(--mono-2);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  padding: 8px;
+  :hover {
+    background-color: var(--mono-1);
+    transition: 0.2s;
+    transition-timing-function: ease-in;
+  }
+`;
+
+const BingoPaneText = styled.div`
+  display: flex;
+  flex-direction: column;
+  color: var(--mono-5);
+  overflow: hidden;
+`;
+
+const SquareBingoIcon = styled.div`
+  color: ${(props) => props.fontColor};
+  /* background: ${(props) =>
+    `-webkit-linear-gradient(${props.bgMainColor}, ${props.bgSubColor})`}; */
+  background-color: ${(props) => props.bgMainColor};
+  border: 1px solid var(--mono-2);
+  width: 80px;
+  min-width: 80px;
+  height: 80px;
+  font-size: 1.6rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1rem;
+`;
