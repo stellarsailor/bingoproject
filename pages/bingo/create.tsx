@@ -36,55 +36,6 @@ import BingoCreateAchievementPane from "../../components/BingoCreateAchievementP
 const { TextArea } = Input;
 const { Option } = Select;
 
-const TopBar = styled.div`
-  background: -webkit-linear-gradient(45deg, dodgerblue, darkblue);
-  width: 100%;
-  height: 60px;
-  background-color: dodgerblue;
-  padding-top: 1rem;
-  padding-left: 1rem;
-`;
-
-const TextLabel = styled.div`
-  color: var(--mono-2);
-  font-weight: bold;
-  font-size: 1rem;
-  margin-bottom: 8px;
-`;
-
-const ControllerPage = styled.div`
-  background-color: #293039;
-  color: white;
-  /* border: 1px solid lightgray; */
-  width: ${(props) => (props.width < 768 ? "100%" : "350px")};
-  padding: 1rem;
-`;
-
-const ColorSquare = styled.div`
-  width: 120px;
-  height: 30px;
-  background-color: ${(props) => props.color};
-  border-radius: 6px;
-  border: 1px solid lightgray;
-  margin-left: 16px;
-  margin-bottom: 8px;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const ColorTab = styled.span`
-  margin: 8px 0px;
-`;
-
-const TransparentText = styled.div`
-  margin-left: 16px;
-  margin-bottom: 8px;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
 const initialColorArray = [
   "#f8bbd0",
   "#e1bee7",
@@ -575,3 +526,52 @@ export default function BingoCreate() {
     </>
   );
 }
+
+const TopBar = styled.div`
+  background: -webkit-linear-gradient(45deg, dodgerblue, darkblue);
+  width: 100%;
+  height: 60px;
+  background-color: dodgerblue;
+  padding-top: 1rem;
+  padding-left: 1rem;
+`;
+
+const TextLabel = styled.div`
+  color: var(--mono-2);
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 8px;
+`;
+
+const ControllerPage = styled.div`
+  background-color: #293039;
+  color: white;
+  /* border: 1px solid lightgray; */
+  width: ${(props) => (props.width < 768 ? "100%" : "350px")};
+  padding: 1rem;
+`;
+
+const ColorSquare = styled.div`
+  width: 120px;
+  height: 30px;
+  background-color: ${(props) => props.color};
+  border-radius: 6px;
+  border: 1px solid lightgray;
+  margin-left: 16px;
+  margin-bottom: 8px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const ColorTab = styled.span`
+  margin: 8px 0px;
+`;
+
+const TransparentText = styled.div`
+  margin-left: 16px;
+  margin-bottom: 8px;
+  &:hover {
+    cursor: pointer;
+  }
+`;

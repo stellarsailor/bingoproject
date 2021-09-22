@@ -11,10 +11,6 @@ import useIsMobile from "../../logics/useIsMobile";
 import { InitialContents } from "../../store/InitialContentsProvider";
 import Adfit from "../../components/sub/Adfit";
 
-const FilteringTab = styled.div`
-  margin-top: ${(props) => (props.isMobile ? "4px" : "8px")};
-`;
-
 export default function List({}) {
   const { t, i18n } = useTranslation();
   const {
@@ -148,6 +144,10 @@ export default function List({}) {
     </>
   );
 }
+
+const FilteringTab = styled.div`
+  margin-top: ${(props) => (props.isMobile ? "4px" : "8px")};
+`;
 
 // export async function getServerSideProps({ req }) {
 //     console.log(req.language)

@@ -34,14 +34,6 @@ const marks = [
   },
 ];
 
-const TextLabel = styled.div`
-  /* color: ${(props) =>
-    props.reverse ? "var(--mono-7)" : "var(--mono-2)"}; */
-  font-weight: bold;
-  font-size: 1rem;
-  margin-bottom: 8px;
-`;
-
 export default function BingoCreateAchievementPane(props) {
   const { t, i18n } = useTranslation();
 
@@ -233,3 +225,11 @@ export default function BingoCreateAchievementPane(props) {
     </>
   );
 }
+
+const TextLabel = styled.div`
+  /* color: ${(props) =>
+    props.reverse ? "var(--mono-7)" : "var(--mono-2)"}; */
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 8px;
+`;

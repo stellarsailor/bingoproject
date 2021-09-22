@@ -24,76 +24,6 @@ message.config({
   top: 58,
 });
 
-const MenuButton = styled.a`
-  border-radius: 3px;
-  background-color: ${(props) => (props.selected ? "var(--mono-1)" : "white")};
-  height: 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0px 8px;
-  margin: 4px;
-  color: ${(props) => (props.selected ? "dodgerblue" : "gray")};
-  :hover {
-    background-color: var(--mono-2);
-    color: ${(props) => (props.selected ? "dodgerblue" : "var(--mono-7)")};
-  }
-`;
-
-const CreatePage = styled.div`
-  ${(props) =>
-    props.bgSubColor === ""
-      ? `background-color: ${props.bgMainColor};`
-      : `background: -webkit-linear-gradient(${props.bgMainColor}, ${props.bgSubColor})`};
-  width: 100%;
-  max-width: 800px;
-  padding: 1rem;
-  border: 1px solid lightgray;
-`;
-
-const ResultPage = styled.div`
-  margin-top: 8px;
-  width: 100%;
-  /* margin-top: -1px; */
-  border: 1px solid lightgray;
-  border-radius: 3px;
-  background-color: white;
-  padding: 1rem;
-`;
-
-const TitleText = styled.div`
-  width: 100%;
-  text-align: center;
-  color: ${(props) => props.color};
-  font-weight: bold;
-  font-size: ${(props) => props.cellWidth * 0.05}px;
-`;
-
-const DescText = styled.div`
-  width: 100%;
-  text-align: center; /* consider change to left */
-  color: ${(props) => props.color};
-  font-size: ${(props) => props.cellWidth * 0.03}px;
-`;
-
-const ResultBox = styled.div`
-  background-color: ${(props) => props.bgColor};
-  color: white;
-  width: 100%;
-  height: 120px;
-  padding: 16px;
-  border: 1px solid var(--mono-2);
-`;
-
-const MiniTextInResultBox = styled.div`
-  font-size: 14px;
-  /* font-weight: bold; */
-`;
-
-const BigTextInResultBox = styled.div`
-  font-size: 24px;
-`;
-
 export default function BingoRenderer(props) {
   const { t, i18n } = useTranslation();
 
@@ -458,3 +388,73 @@ export default function BingoRenderer(props) {
     </div>
   );
 }
+
+const MenuButton = styled.a`
+  border-radius: 3px;
+  background-color: ${(props) => (props.selected ? "var(--mono-1)" : "white")};
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 8px;
+  margin: 4px;
+  color: ${(props) => (props.selected ? "dodgerblue" : "gray")};
+  :hover {
+    background-color: var(--mono-2);
+    color: ${(props) => (props.selected ? "dodgerblue" : "var(--mono-7)")};
+  }
+`;
+
+const CreatePage = styled.div`
+  ${(props) =>
+    props.bgSubColor === ""
+      ? `background-color: ${props.bgMainColor};`
+      : `background: -webkit-linear-gradient(${props.bgMainColor}, ${props.bgSubColor})`};
+  width: 100%;
+  max-width: 800px;
+  padding: 1rem;
+  border: 1px solid lightgray;
+`;
+
+const ResultPage = styled.div`
+  margin-top: 8px;
+  width: 100%;
+  /* margin-top: -1px; */
+  border: 1px solid lightgray;
+  border-radius: 3px;
+  background-color: white;
+  padding: 1rem;
+`;
+
+const TitleText = styled.div`
+  width: 100%;
+  text-align: center;
+  color: ${(props) => props.color};
+  font-weight: bold;
+  font-size: ${(props) => props.cellWidth * 0.05}px;
+`;
+
+const DescText = styled.div`
+  width: 100%;
+  text-align: center; /* consider change to left */
+  color: ${(props) => props.color};
+  font-size: ${(props) => props.cellWidth * 0.03}px;
+`;
+
+const ResultBox = styled.div`
+  background-color: ${(props) => props.bgColor};
+  color: white;
+  width: 100%;
+  height: 120px;
+  padding: 16px;
+  border: 1px solid var(--mono-2);
+`;
+
+const MiniTextInResultBox = styled.div`
+  font-size: 14px;
+  /* font-weight: bold; */
+`;
+
+const BigTextInResultBox = styled.div`
+  font-size: 24px;
+`;

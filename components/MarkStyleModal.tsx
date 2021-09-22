@@ -7,25 +7,6 @@ import { useTranslation } from "../i18n";
 import MarkStyleSVG from "./sub/MarkStyleSVG";
 import hexToRgbA from "../logics/hexToRgbA";
 
-const SampleView = styled.div`
-  width: 100px;
-  height: 100px;
-  border: 1px solid rgba(0, 0, 0, 0.9);
-  background-color: ${(props) =>
-    props.markStyle === "paint" ? props.markColor : "white"};
-  /* background-image: ${(props) =>
-    props.markStyle === "paint"
-      ? null
-      : `url("/static/images/${props.markStyle}.png")`} ;  */
-  background-size: cover;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  /* margin-top: 1rem;
-    margin-bottom: 1rem; */
-`;
-
 export default function MarkStyleModal(props) {
   const { t, i18n } = useTranslation();
   const [cookies, setCookie] = useCookies(["setting"]);
@@ -128,3 +109,20 @@ export default function MarkStyleModal(props) {
     </Modal>
   );
 }
+
+const SampleView = styled.div`
+  width: 100px;
+  height: 100px;
+  border: 1px solid rgba(0, 0, 0, 0.9);
+  background-color: ${(props) =>
+    props.markStyle === "paint" ? props.markColor : "white"};
+  /* background-image: ${(props) =>
+    props.markStyle === "paint" || `url("/static/images/${props.markStyle}.png")`} ;  */
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* margin-top: 1rem;
+    margin-bottom: 1rem; */
+`;

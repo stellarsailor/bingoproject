@@ -32,34 +32,6 @@ message.config({
 });
 const { confirm } = Modal;
 
-const NavigationBar = styled.div`
-  width: 100%;
-  position: fixed;
-  top: 0;
-  /* display: flex; */
-  /* justify-content: space-between; */
-  /* align-items: center; */
-  /* max-width: 100%; */
-  border-bottom: 1px solid lightgray;
-  background-color: rgba(255, 255, 255, 1);
-  z-index: 101;
-`;
-
-const NavigationButton = styled.span`
-  color: var(--mono-5);
-`;
-
-const CenterAlign = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const HamburgerMenuTab = styled.div`
-  color: rgba(0, 0, 0, 0.85);
-  margin: 5px 0px;
-`;
-
 export default function NavBar({}) {
   const [session, loading] = useSession();
   // const { formatMessage: tr } = useIntl();
@@ -245,3 +217,31 @@ export default function NavBar({}) {
     </NavigationBar>
   );
 }
+
+const NavigationBar = styled.div`
+  width: 100%;
+  position: fixed;
+  top: 0;
+  /* display: flex; */
+  /* justify-content: space-between; */
+  /* align-items: center; */
+  /* max-width: 100%; */
+  border-bottom: 1px solid lightgray;
+  background-color: rgba(255, 255, 255, 1);
+  z-index: 101;
+`;
+
+const NavigationButton = styled.span`
+  color: var(--mono-5);
+`;
+
+const CenterAlign = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const HamburgerMenuTab = styled.div`
+  color: rgba(0, 0, 0, 0.85);
+  margin: 5px 0px;
+`;

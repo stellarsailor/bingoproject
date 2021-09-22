@@ -14,15 +14,6 @@ message.config({
   top: 58,
 });
 
-const ControllerPage = styled.div`
-  background-color: white;
-  border: 1px solid lightgray;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0px 16px;
-`;
-
 export default function Edit() {
   const { t, i18n } = useTranslation();
   const router = useRouter();
@@ -164,3 +155,12 @@ export default function Edit() {
     </ControllerPage>
   );
 }
+
+const ControllerPage = styled.div`
+  background-color: white;
+  border: 1px solid lightgray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 16px;
+`;

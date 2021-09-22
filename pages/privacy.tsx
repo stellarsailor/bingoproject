@@ -2,15 +2,6 @@ import styled from "styled-components";
 import { useTranslation } from "../i18n";
 const ReactMarkdown = require("react-markdown");
 
-const Container = styled.div`
-  border-radius: 3px;
-  background-color: white;
-  border: 1px solid lightgray;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-`;
-
 const input = {
   en: `
 # Privacy Policy
@@ -175,3 +166,12 @@ export default function Privacy() {
     </>
   );
 }
+
+const Container = styled.div`
+  border-radius: 3px;
+  background-color: white;
+  border: 1px solid lightgray;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+`;
