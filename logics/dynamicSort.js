@@ -1,7 +1,7 @@
 export default function dynamicSort(property) {
   let sortOrder = 1;
 
-  if (property[0] === "-") {
+  if (property[0] === '-') {
     sortOrder = -1;
     property = property.substr(1);
   }

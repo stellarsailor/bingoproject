@@ -1,15 +1,15 @@
-import styled from "styled-components";
-import { Link, useTranslation } from "../i18n";
-import { Button, Row, Col } from "antd";
-import { CenteredRow, CenteredCol } from "../components/sub/styled";
-import useIsMobile from "../logics/useIsMobile";
+import styled from 'styled-components';
+import { Link, useTranslation } from '../i18n';
+import { Button, Row, Col } from 'antd';
+import { CenteredRow, CenteredCol } from '../components/sub/styled';
+import useIsMobile from '../logics/useIsMobile';
 
 export default function About() {
   const isMobile = useIsMobile();
 
   return (
     <>
-      <Row style={{ padding: 50, backgroundColor: "white" }}>
+      <Row style={{ padding: 50, backgroundColor: 'white' }}>
         <Col span={24}>
           <CenteredCol>
             <MainText type={1} isMobile={isMobile}>
@@ -29,8 +29,8 @@ export default function About() {
             <Link href="/">
               <a>
                 <MainButton size="large" theme="white">
-                  {" "}
-                  View List{" "}
+                  {' '}
+                  View List{' '}
                 </MainButton>
               </a>
             </Link>
@@ -54,8 +54,8 @@ export default function About() {
             <Link href="/bingo/create">
               <a>
                 <MainButton type="primary" size="large" theme="black">
-                  {" "}
-                  Make My Own{" "}
+                  {' '}
+                  Make My Own{' '}
                 </MainButton>
               </a>
             </Link>
@@ -77,15 +77,15 @@ const MainContent = styled.div`
 
 const MainText = styled.div`
   /* font-family: 'Gothic A1', sans-serif; */
-  font-size: ${(props) => (props.isMobile ? "4rem" : "8rem")};
+  font-size: ${(props) => (props.isMobile ? '4rem' : '8rem')};
   font-weight: 900;
   letter-spacing: -3px;
   background: ${(props) =>
     props.type === 1
-      ? "-webkit-linear-gradient(45deg, #007CF0, #00DFD8)"
+      ? '-webkit-linear-gradient(45deg, #007CF0, #00DFD8)'
       : props.type === 2
-      ? "-webkit-linear-gradient(45deg, #7928CA, #FF0080)"
-      : "-webkit-linear-gradient(45deg, #007CF0, #00DFD8)"};
+      ? '-webkit-linear-gradient(45deg, #7928CA, #FF0080)'
+      : '-webkit-linear-gradient(45deg, #007CF0, #00DFD8)'};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
@@ -96,8 +96,8 @@ const MainButton = styled(Button)`
   width: 200px;
   height: 50px;
   margin: 0px 1rem;
-  color: ${(props) => (props.theme === "white" ? "black" : "white")};
-  background-color: ${(props) => (props.theme === "black" ? "black" : "white")};
+  color: ${(props) => (props.theme === 'white' ? 'black' : 'white')};
+  background-color: ${(props) => (props.theme === 'black' ? 'black' : 'white')};
 `;
 
 const ExplanationText = styled.div`

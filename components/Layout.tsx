@@ -1,9 +1,9 @@
-import Navbar from "./Navbar";
-import { Row, Col } from "antd";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import Adfit from "./sub/Adfit";
-import Sticky from "react-sticky-el";
+import Navbar from './Navbar';
+import { Row, Col } from 'antd';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import Adfit from './sub/Adfit';
+import Sticky from 'react-sticky-el';
 
 export default function Layout(props) {
   const router = useRouter();
@@ -22,8 +22,8 @@ export default function Layout(props) {
         />
       </Head>
 
-      {router.pathname === "/bingo/create" || router.pathname === "/about" ? (
-        <Row style={{ width: "100%", backgroundColor: "var(--mono-1)" }}>
+      {router.pathname === '/bingo/create' || router.pathname === '/about' ? (
+        <Row style={{ width: '100%', backgroundColor: 'var(--mono-1)' }}>
           {props.children}
         </Row>
       ) : (
@@ -31,7 +31,7 @@ export default function Layout(props) {
           <Navbar />
           <Row
             justify="center"
-            style={{ backgroundColor: "var(--mono-1)", minHeight: "100vh" }}
+            style={{ backgroundColor: 'var(--mono-1)', minHeight: '100vh' }}
           >
             <Col xs={0} sm={0} md={0} lg={4} xl={6} style={{ marginTop: 58 }} />
             <Col

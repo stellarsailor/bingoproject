@@ -1,14 +1,14 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useSession } from "next-auth/client";
-import { useTranslation, Router } from "../../../i18n";
-import styled from "styled-components";
-import { InitialContents } from "../../../store/InitialContentsProvider";
-import { Row, Col, message, Checkbox, Button } from "antd";
-import { serverUrl } from "../../../lib/serverUrl";
-import { useRouter } from "next/router";
-import BingoCreateInformationPane from "../../../components/BingoCreateInformationPane";
-import { CenteredCol } from "../../../components/sub/styled";
-import BingoCreateAchievementPane from "../../../components/BingoCreateAchievementPane";
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useSession } from 'next-auth/client';
+import { useTranslation, Router } from '../../../i18n';
+import styled from 'styled-components';
+import { InitialContents } from '../../../store/InitialContentsProvider';
+import { Row, Col, message, Checkbox, Button } from 'antd';
+import { serverUrl } from '../../../lib/serverUrl';
+import { useRouter } from 'next/router';
+import BingoCreateInformationPane from '../../../components/BingoCreateInformationPane';
+import { CenteredCol } from '../../../components/sub/styled';
+import BingoCreateAchievementPane from '../../../components/BingoCreateAchievementPane';
 
 message.config({
   top: 58,
@@ -23,8 +23,8 @@ export default function Edit() {
   const [bingo, setBingo] = useState<any>({});
 
   const [bingoCategory, setBingoCategory] = useState<any>(0);
-  const [bingoTitle, setBingoTitle] = useState("");
-  const [bingoDescription, setBingoDescription] = useState("");
+  const [bingoTitle, setBingoTitle] = useState('');
+  const [bingoDescription, setBingoDescription] = useState('');
   const [enableAchievement, setEnableAchievement] = useState(false);
   const [bingoAchievement, setBingoAchievement] = useState([]);
 
@@ -41,7 +41,7 @@ export default function Edit() {
       setBingoDescription(data.bingo.description);
 
       let ach = JSON.parse(data.bingo.achievements);
-      if (ach[1] !== "") {
+      if (ach[1] !== '') {
         setEnableAchievement(true);
       }
       setBingoAchievement(ach);
@@ -53,8 +53,8 @@ export default function Edit() {
     let blankError = []; //에러는 역순으로
     if (enableAchievement) {
       bingoAchievement.map((v) => {
-        if (v === "" || v === null)
-          blankError.push(t("CREATE_EMPTY_ALERT_ACCOMPLISHMENTS"));
+        if (v === '' || v === null)
+          blankError.push(t('CREATE_EMPTY_ALERT_ACCOMPLISHMENTS'));
       });
     } //else, Achievement is disabled so not to check blank
     if (blankError.length !== 0) {
@@ -62,10 +62,10 @@ export default function Edit() {
     } else {
       let url = `${serverUrl}/api/bingos/${router.query.bingoId}`;
       const settings = {
-        method: "PATCH",
+        method: 'PATCH',
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           userId: (session.user as any).id,
@@ -80,11 +80,11 @@ export default function Edit() {
         const fetchResponse = await fetch(url, settings);
         const data = await fetchResponse.json();
 
-        if (data.results === "success") {
-          Router.push("/");
-          message.success(t("PLAYPAGE_EDIT_SUCCESS"));
+        if (data.results === 'success') {
+          Router.push('/');
+          message.success(t('PLAYPAGE_EDIT_SUCCESS'));
         } else {
-          message.error("Error!");
+          message.error('Error!');
         }
       } catch (e) {
         return e;
@@ -97,7 +97,7 @@ export default function Edit() {
   }
 
   if (!loading && !session) {
-    Router.push("/auth/signin");
+    Router.push('/auth/signin');
     return <p>Loading…</p>;
   }
 
@@ -116,10 +116,10 @@ export default function Edit() {
           />
         </Col>
         <Col xs={24} sm={12} md={12} lg={12} xl={12} style={{ padding: 16 }}>
-          <div style={{ color: "black", padding: 8 }}>
+          <div style={{ color: 'black', padding: 8 }}>
             <Checkbox
               checked={enableAchievement}
-              style={{ color: "var(--mono-8)", marginBottom: 8 }}
+              style={{ color: 'var(--mono-8)', marginBottom: 8 }}
               onChange={(e) => {
                 if (enableAchievement) {
                   //when becomes false
@@ -129,7 +129,7 @@ export default function Edit() {
               }}
             >
               <span style={{ marginLeft: 8 }}>
-                {t("CREATE_BINGO_ACCOMPLISHMENTS")}
+                {t('CREATE_BINGO_ACCOMPLISHMENTS')}
               </span>
             </Checkbox>
             <BingoCreateAchievementPane
@@ -141,14 +141,14 @@ export default function Edit() {
           </div>
         </Col>
         <CenteredCol
-          style={{ width: "100%", margin: "2rem", marginBottom: "3rem" }}
+          style={{ width: '100%', margin: '2rem', marginBottom: '3rem' }}
         >
           <Button
             type="primary"
             onClick={editBingo}
             style={{ width: 300, height: 45, borderRadius: 8 }}
           >
-            {t("STATIC_EDIT")}
+            {t('STATIC_EDIT')}
           </Button>
         </CenteredCol>
       </Row>

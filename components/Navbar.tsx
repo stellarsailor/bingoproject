@@ -1,5 +1,5 @@
 // import Link from 'next/link'
-import styled from "styled-components";
+import styled from 'styled-components';
 import {
   Input,
   Row,
@@ -10,21 +10,21 @@ import {
   Modal,
   Dropdown,
   Menu,
-} from "antd";
-import { Link, useTranslation, Router } from "../i18n";
+} from 'antd';
+import { Link, useTranslation, Router } from '../i18n';
 import {
   MenuOutlined,
   GlobalOutlined,
   UserOutlined,
   EditOutlined,
-} from "../assets/icons";
-import { useEffect, useState, useCallback, useContext } from "react";
-import { InitialContents } from "../store/InitialContentsProvider";
-import { CenteredCol, CenteredRow } from "./sub/styled";
-import langCodeToLanguage from "../logics/langCodeToLanguage";
-import useIsMobile from "../logics/useIsMobile";
+} from '../assets/icons';
+import { useEffect, useState, useCallback, useContext } from 'react';
+import { InitialContents } from '../store/InitialContentsProvider';
+import { CenteredCol, CenteredRow } from './sub/styled';
+import langCodeToLanguage from '../logics/langCodeToLanguage';
+import useIsMobile from '../logics/useIsMobile';
 
-import { signIn, signOut, useSession } from "next-auth/client";
+import { signIn, signOut, useSession } from 'next-auth/client';
 
 const { Search } = Input;
 message.config({
@@ -43,8 +43,8 @@ export default function NavBar({}) {
   );
 
   const handleSearch = useCallback((searchParam) => {
-    if (searchParam === "") {
-      message.warning(t("SEARCH_INPUT_NULL_ALERT"));
+    if (searchParam === '') {
+      message.warning(t('SEARCH_INPUT_NULL_ALERT'));
     } else {
       Router.push(`/bingo?search=${searchParam}`);
     }
@@ -60,7 +60,7 @@ export default function NavBar({}) {
               onClick={() => {
                 i18n.changeLanguage(v);
               }}
-              style={{ padding: "8px 20px" }}
+              style={{ padding: '8px 20px' }}
             >
               {langCodeToLanguage(v)}
             </Menu.Item>
@@ -73,22 +73,22 @@ export default function NavBar({}) {
   const hamburgerMenu = (
     <Menu style={{ width: 240 }}>
       {!session ? (
-        <Menu.Item style={{ padding: "8px 20px" }}>
+        <Menu.Item style={{ padding: '8px 20px' }}>
           <Link href="/auth/signin">
             {/* <Button type="primary" style={{width: 150, margin: '8px 20px'}} onClick={(e) => console.log()}> */}
-            <a style={{ color: "dodgerblue" }}>{t("SIGN_IN")}</a>
+            <a style={{ color: 'dodgerblue' }}>{t('SIGN_IN')}</a>
             {/* </Button> */}
           </Link>
         </Menu.Item>
       ) : (
         <div
-          style={{ padding: "8px 20px", display: "flex", flexDirection: "row" }}
+          style={{ padding: '8px 20px', display: 'flex', flexDirection: 'row' }}
         >
           {/* {session.user.image && <span style={{backgroundImage: `url(${session.user.image})` }} />} */}
           <CenteredCol>
             <UserOutlined style={{ fontSize: 20, marginRight: 10 }} />
           </CenteredCol>
-          <div style={{ display: "flex", flexDirection: "column" }}>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
             <span>
               <strong>{session.user.name}</strong>
               {/* <small style={{color: 'dodgerblue'}}><EditOutlined /></small> */}
@@ -97,30 +97,30 @@ export default function NavBar({}) {
           </div>
         </div>
       )}
-      <Menu.Item style={{ padding: "8px 20px" }}>
+      <Menu.Item style={{ padding: '8px 20px' }}>
         <Link href="/bingo/create">
-          <a> {t("CREATE_SELFBINGO")} </a>
+          <a> {t('CREATE_SELFBINGO')} </a>
         </Link>
       </Menu.Item>
-      <Menu.Item style={{ padding: "8px 20px" }}>
+      <Menu.Item style={{ padding: '8px 20px' }}>
         <Link href="/about">
-          <a> {t("ETC_ABOUT")} </a>
+          <a> {t('ETC_ABOUT')} </a>
         </Link>
       </Menu.Item>
-      <Menu.Item style={{ padding: "8px 20px" }}>
+      <Menu.Item style={{ padding: '8px 20px' }}>
         <Link href="/terms">
-          <a> {t("ETC_TERMS_OF_SERVICE")} </a>
+          <a> {t('ETC_TERMS_OF_SERVICE')} </a>
         </Link>
       </Menu.Item>
-      <Menu.Item style={{ padding: "8px 20px" }}>
+      <Menu.Item style={{ padding: '8px 20px' }}>
         <Link href="/privacy">
-          <a> {t("ETC_PRIVACY_POLICY")} </a>
+          <a> {t('ETC_PRIVACY_POLICY')} </a>
         </Link>
       </Menu.Item>
       {session && <Menu.Divider />}
       {session && (
-        <Menu.Item style={{ padding: "8px 20px" }}>
-          <a onClick={() => signOut()}> {t("SIGN_OUT")} </a>
+        <Menu.Item style={{ padding: '8px 20px' }}>
+          <a onClick={() => signOut()}> {t('SIGN_OUT')} </a>
         </Menu.Item>
       )}
     </Menu>
@@ -130,7 +130,7 @@ export default function NavBar({}) {
     <NavigationBar>
       <Row
         justify="center"
-        style={{ height: 50, display: "flex", alignItems: "center" }}
+        style={{ height: 50, display: 'flex', alignItems: 'center' }}
       >
         <Col xs={0} sm={22} md={20} lg={20} xl={12}>
           <CenterAlign>
@@ -149,7 +149,7 @@ export default function NavBar({}) {
               </a>
             </Link>
             <Search
-              placeholder={t("SEARCH_INPUT_PLACEHOLER")}
+              placeholder={t('SEARCH_INPUT_PLACEHOLER')}
               onSearch={(value) => handleSearch(value)}
               style={{ width: 250, height: 30 }}
             />
@@ -157,20 +157,20 @@ export default function NavBar({}) {
               <Dropdown
                 overlay={langMenu}
                 placement="bottomRight"
-                trigger={["click"]}
+                trigger={['click']}
                 arrow
               >
                 <GlobalOutlined
-                  style={{ fontSize: "1.2rem", color: "gray", marginRight: 16 }}
+                  style={{ fontSize: '1.2rem', color: 'gray', marginRight: 16 }}
                 />
               </Dropdown>
               <Dropdown
                 overlay={hamburgerMenu}
                 placement="bottomRight"
-                trigger={["click"]}
+                trigger={['click']}
                 arrow
               >
-                <MenuOutlined style={{ fontSize: "1.3rem", color: "gray" }} />
+                <MenuOutlined style={{ fontSize: '1.3rem', color: 'gray' }} />
               </Dropdown>
             </CenteredRow>
           </CenterAlign>
@@ -187,7 +187,7 @@ export default function NavBar({}) {
               </a>
             </Link>
             <Search
-              placeholder={t("SEARCH_INPUT_PLACEHOLER")}
+              placeholder={t('SEARCH_INPUT_PLACEHOLER')}
               onSearch={(value) => handleSearch(value)}
               style={{ width: 150, height: 28 }}
             />
@@ -195,20 +195,20 @@ export default function NavBar({}) {
               <Dropdown
                 overlay={langMenu}
                 placement="bottomRight"
-                trigger={["click"]}
+                trigger={['click']}
                 arrow
               >
                 <GlobalOutlined
-                  style={{ fontSize: "1.2rem", color: "gray", marginRight: 12 }}
+                  style={{ fontSize: '1.2rem', color: 'gray', marginRight: 12 }}
                 />
               </Dropdown>
               <Dropdown
                 overlay={hamburgerMenu}
                 placement="bottomRight"
-                trigger={["click"]}
+                trigger={['click']}
                 arrow
               >
-                <MenuOutlined style={{ fontSize: "1.3rem", color: "gray" }} />
+                <MenuOutlined style={{ fontSize: '1.3rem', color: 'gray' }} />
               </Dropdown>
             </CenteredRow>
           </CenterAlign>

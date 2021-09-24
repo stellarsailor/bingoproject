@@ -1,15 +1,15 @@
-import React, { useState, useCallback, useEffect } from "react";
-import styled from "styled-components";
-import { Modal, Radio, Slider } from "antd";
-import TwitterPicker from "react-color/lib/Twitter";
-import { useCookies } from "react-cookie";
-import { useTranslation } from "../i18n";
-import MarkStyleSVG from "./sub/MarkStyleSVG";
-import hexToRgbA from "../logics/hexToRgbA";
+import React, { useState, useCallback, useEffect } from 'react';
+import styled from 'styled-components';
+import { Modal, Radio, Slider } from 'antd';
+import TwitterPicker from 'react-color/lib/Twitter';
+import { useCookies } from 'react-cookie';
+import { useTranslation } from '../i18n';
+import MarkStyleSVG from './sub/MarkStyleSVG';
+import hexToRgbA from '../logics/hexToRgbA';
 
 export default function MarkStyleModal(props) {
   const { t, i18n } = useTranslation();
-  const [cookies, setCookie] = useCookies(["setting"]);
+  const [cookies, setCookie] = useCookies(['setting']);
 
   const {
     markStyle,
@@ -22,15 +22,15 @@ export default function MarkStyleModal(props) {
     setStyleModal,
   } = props;
 
-  const [sampleStyle, setSampleStyle] = useState("");
-  const [sampleColor, setSampleColor] = useState("");
+  const [sampleStyle, setSampleStyle] = useState('');
+  const [sampleColor, setSampleColor] = useState('');
   const [sampleOpacity, setSampleOpacity] = useState(0.9);
 
   const options = [
-    { label: t("MODAL_MARKSTYLE_CHECK"), value: "check" },
-    { label: t("MODAL_MARKSTYLE_CIRCLE"), value: "circle" },
-    { label: t("MODAL_MARKSTYLE_X"), value: "x" },
-    { label: t("MODAL_MARKSTYLE_PAINT"), value: "paint" },
+    { label: t('MODAL_MARKSTYLE_CHECK'), value: 'check' },
+    { label: t('MODAL_MARKSTYLE_CIRCLE'), value: 'circle' },
+    { label: t('MODAL_MARKSTYLE_X'), value: 'x' },
+    { label: t('MODAL_MARKSTYLE_PAINT'), value: 'paint' },
   ];
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function MarkStyleModal(props) {
       color: nextColor,
       opacity: nextOpacity,
     };
-    setCookie("setting", nextSetting, { path: "/" });
+    setCookie('setting', nextSetting, { path: '/' });
     setMarkStyle(nextStyle);
     setMarkColor(nextColor);
     setMarkOpacity(nextOpacity);
@@ -64,7 +64,7 @@ export default function MarkStyleModal(props) {
 
   return (
     <Modal
-      title={t("PLAYPAGE_SETTING")}
+      title={t('PLAYPAGE_SETTING')}
       visible={visible}
       onOk={() => saveStyleAndColor(sampleStyle, sampleColor, sampleOpacity)}
       onCancel={() => cancelStyleAndColor()}
@@ -79,12 +79,12 @@ export default function MarkStyleModal(props) {
       />
       <MarkStyleSVG
         markStyle={sampleStyle}
-        markColor={sampleColor !== "" && hexToRgbA(sampleColor, sampleOpacity)}
+        markColor={sampleColor !== '' && hexToRgbA(sampleColor, sampleOpacity)}
         markWidth={100}
       />
       <SampleView
         markStyle={sampleStyle}
-        markColor={sampleColor !== "" && hexToRgbA(sampleColor, sampleOpacity)}
+        markColor={sampleColor !== '' && hexToRgbA(sampleColor, sampleOpacity)}
       >
         {/* {t("MODAL_MARKSTYLE_SAMPLE")} */}
       </SampleView>
@@ -98,7 +98,7 @@ export default function MarkStyleModal(props) {
         />
       </div>
       <div style={{ marginTop: 16 }}>
-        {t("MODAL_MARKSTYLE_OPACITY")} ({Math.round(sampleOpacity * 100)}%)
+        {t('MODAL_MARKSTYLE_OPACITY')} ({Math.round(sampleOpacity * 100)}%)
         <Slider
           defaultValue={markOpacity * 100}
           max={100}
@@ -115,9 +115,10 @@ const SampleView = styled.div`
   height: 100px;
   border: 1px solid rgba(0, 0, 0, 0.9);
   background-color: ${(props) =>
-    props.markStyle === "paint" ? props.markColor : "white"};
+    props.markStyle === 'paint' ? props.markColor : 'white'};
   /* background-image: ${(props) =>
-    props.markStyle === "paint" || `url("/static/images/${props.markStyle}.png")`} ;  */
+    props.markStyle === 'paint' ||
+    `url("/static/images/${props.markStyle}.png")`} ;  */
   background-size: cover;
   display: flex;
   justify-content: center;

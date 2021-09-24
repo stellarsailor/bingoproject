@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { NextSeo } from "next-seo";
-import { useRouter } from "next/router";
-import { useSession } from "next-auth/client";
-import styled from "styled-components";
-import { useCookies } from "react-cookie";
+import React, { useState, useEffect, useCallback } from 'react';
+import { NextSeo } from 'next-seo';
+import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/client';
+import styled from 'styled-components';
+import { useCookies } from 'react-cookie';
 import {
   Row,
   Col,
@@ -13,15 +13,15 @@ import {
   message,
   Tooltip,
   Alert,
-} from "antd";
-import { Link, useTranslation, Router } from "../../i18n";
-import { Element, scroller } from "react-scroll";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import domtoimage from "dom-to-image";
+} from 'antd';
+import { Link, useTranslation, Router } from '../../i18n';
+import { Element, scroller } from 'react-scroll';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import domtoimage from 'dom-to-image';
 
-import { serverUrl } from "../../lib/serverUrl";
-import BingoRenderer from "../../components/BingoRenderer";
-import { CenteredCol, CenteredRow } from "../../components/sub/styled";
+import { serverUrl } from '../../lib/serverUrl';
+import BingoRenderer from '../../components/BingoRenderer';
+import { CenteredCol, CenteredRow } from '../../components/sub/styled';
 import {
   ShareAltOutlined,
   LeftOutlined,
@@ -31,12 +31,12 @@ import {
   DeleteOutlined,
   LockOutlined,
   EditOutlined,
-} from "../../assets/icons";
-import useIsMobile from "../../logics/useIsMobile";
-import useWindowSize from "../../logics/useWindowSize";
-import MarkStyleModal from "../../components/MarkStyleModal";
-import ReportModal from "../../components/ReportModal";
-import Adfit from "../../components/sub/Adfit";
+} from '../../assets/icons';
+import useIsMobile from '../../logics/useIsMobile';
+import useWindowSize from '../../logics/useWindowSize';
+import MarkStyleModal from '../../components/MarkStyleModal';
+import ReportModal from '../../components/ReportModal';
+import Adfit from '../../components/sub/Adfit';
 
 message.config({
   top: 58,
@@ -49,12 +49,12 @@ export default function BingoDetail({ data }) {
   const { t, i18n } = useTranslation();
   const isMobile = useIsMobile();
   const [width, height] = useWindowSize();
-  const [cookies, setCookie] = useCookies(["setting"]);
+  const [cookies, setCookie] = useCookies(['setting']);
   const [newcomerMsg, setNewcomerMsg] = useState(false);
 
   const [styleModal, setStyleModal] = useState(false);
-  const [markStyle, setMarkStyle] = useState("");
-  const [markColor, setMarkColor] = useState("");
+  const [markStyle, setMarkStyle] = useState('');
+  const [markColor, setMarkColor] = useState('');
   const [markOpacity, setMarkOpacity] = useState(0);
 
   const [reportModal, setReportModal] = useState(false);
@@ -63,7 +63,7 @@ export default function BingoDetail({ data }) {
   const [selectedIndex, setSelectedIndex] = useState([]);
   const [completedBingoLines, setCompletedBingoLines] = useState(0);
 
-  const [resultStatus, setResultStatus] = useState("idle");
+  const [resultStatus, setResultStatus] = useState('idle');
   const [resultCount, setResultCount] = useState([]);
   const [resultAvgCount, setResultAvgCount] = useState(0);
   const [resultTopCountPercentage, setResultTopCountPercentage] = useState(0);
@@ -74,11 +74,11 @@ export default function BingoDetail({ data }) {
     //cookie 불러와서 설정이 있으면 그대로 세팅, 없으면 기본 마크 스타일 세팅
     if (cookies.setting === undefined) {
       const defaultSetting = {
-        style: "circle",
-        color: "#EB144C",
+        style: 'circle',
+        color: '#EB144C',
         opacity: 0.5,
       };
-      setCookie("setting", defaultSetting, { path: "/" });
+      setCookie('setting', defaultSetting, { path: '/' });
       setMarkStyle(defaultSetting.style);
       setMarkColor(defaultSetting.color);
       setMarkOpacity(defaultSetting.opacity);
@@ -102,10 +102,10 @@ export default function BingoDetail({ data }) {
     let node = document.getElementById(id);
 
     const style = {
-      transform: "scale(" + scale + ")",
-      transformOrigin: "top left",
-      width: node.offsetWidth + "px",
-      height: node.offsetHeight + "px",
+      transform: 'scale(' + scale + ')',
+      transformOrigin: 'top left',
+      width: node.offsetWidth + 'px',
+      height: node.offsetHeight + 'px',
     };
 
     const option = {
@@ -116,7 +116,7 @@ export default function BingoDetail({ data }) {
     };
 
     domtoimage.toJpeg(node, option).then(function (dataUrl) {
-      let link = document.createElement("a");
+      let link = document.createElement('a');
       link.download = `selfbingo.com-${bingo.title}.jpg`;
       link.href = dataUrl;
       link.click();
@@ -126,10 +126,10 @@ export default function BingoDetail({ data }) {
   const deleteBingo = async () => {
     let url = `${serverUrl}/api/bingos/${bingoId}`;
     const settings = {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         userId: (session.user as any).id,
@@ -140,11 +140,11 @@ export default function BingoDetail({ data }) {
       const fetchResponse = await fetch(url, settings);
       const data = await fetchResponse.json();
 
-      if (data.results === "success") {
-        Router.push("/");
-        message.success(t("PLAYPAGE_DELETE_SUCCESS"));
+      if (data.results === 'success') {
+        Router.push('/');
+        message.success(t('PLAYPAGE_DELETE_SUCCESS'));
       } else {
-        message.error("Error!");
+        message.error('Error!');
       }
     } catch (e) {
       return e;
@@ -222,12 +222,12 @@ export default function BingoDetail({ data }) {
   }, [selectedIndex]);
 
   const submitIndexToFlag = useCallback(async () => {
-    setResultStatus("saving");
+    setResultStatus('saving');
 
-    scroller.scrollTo("scroll-to-element", {
+    scroller.scrollTo('scroll-to-element', {
       duration: 1200,
       delay: 0,
-      smooth: "easeInOutQuart",
+      smooth: 'easeInOutQuart',
     });
 
     let arr = [];
@@ -243,10 +243,10 @@ export default function BingoDetail({ data }) {
 
     let url = `${serverUrl}/api/bingos/${bingoId}`;
     const settings = {
-      method: "POST",
+      method: 'POST',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         binaryResult: arr,
@@ -258,11 +258,11 @@ export default function BingoDetail({ data }) {
       const fetchResponse = await fetch(url, settings);
       const data = await fetchResponse.json();
 
-      if (data.error === "duplicated") {
-        message.info(t("PLAYPAGE_DUPLICATED_MSG"));
+      if (data.error === 'duplicated') {
+        message.info(t('PLAYPAGE_DUPLICATED_MSG'));
       }
 
-      setResultStatus("calculating");
+      setResultStatus('calculating');
       let resultLength = data.results.length;
       let bingoLength = bingo.size * bingo.size; //JSON.parse(data.results[0].binaryResult.length)
 
@@ -276,7 +276,7 @@ export default function BingoDetail({ data }) {
 
       data.results.map((v) => {
         JSON.parse(v.binaryResult).map((v, index) => {
-          if (typeof v === "number") countArr[index] += v;
+          if (typeof v === 'number') countArr[index] += v;
         });
         sumCompletedMarks += v.completedMarks;
         sumCompletedLines += v.completedLines;
@@ -296,7 +296,7 @@ export default function BingoDetail({ data }) {
       );
       setResultAvgBingoLines(sumCompletedLines / resultLength);
       setResultPercent(percentArr);
-      setResultStatus("done");
+      setResultStatus('done');
     } catch (e) {
       return e;
     }
@@ -308,21 +308,21 @@ export default function BingoDetail({ data }) {
         title={bingo.title}
         description={bingo.description}
         openGraph={{
-          type: "website",
+          type: 'website',
           url: serverUrl + router.asPath,
           title: bingo.title,
           description:
             bingo.description +
-            " - " +
+            ' - ' +
             JSON.parse(bingo.elements)
               .sort(() => Math.random() - Math.random())
               .slice(0, 3)
               .toString(),
         }}
         twitter={{
-          handle: "@handle",
-          site: "@site",
-          cardType: "summary_large_image",
+          handle: '@handle',
+          site: '@site',
+          cardType: 'summary_large_image',
         }}
       />
       <CenteredRow>
@@ -341,7 +341,7 @@ export default function BingoDetail({ data }) {
           visible={reportModal}
           setReportModal={setReportModal}
         />
-        <Row style={{ width: "100%", maxWidth: height - 100 }}>
+        <Row style={{ width: '100%', maxWidth: height - 100 }}>
           <Col
             xs={24}
             sm={24}
@@ -352,53 +352,53 @@ export default function BingoDetail({ data }) {
           >
             <ControllerPage>
               <Link href="/">
-                <a style={{ fontSize: "1.1rem" }}>
+                <a style={{ fontSize: '1.1rem' }}>
                   <LeftOutlined /> Back
                 </a>
               </Link>
               <CenteredRow>
-                <Tooltip title={t("PLAYPAGE_SETTING")}>
+                <Tooltip title={t('PLAYPAGE_SETTING')}>
                   <MenuButton onClick={() => setStyleModal(true)}>
                     <CheckSquareOutlined />
                   </MenuButton>
                 </Tooltip>
-                <Tooltip title={t("PLAYPAGE_REPORT")}>
+                <Tooltip title={t('PLAYPAGE_REPORT')}>
                   <MenuButton onClick={() => setReportModal(true)}>
                     <AlertFilled />
                   </MenuButton>
                 </Tooltip>
-                <Tooltip title={t("PLAYPAGE_SHARE")}>
+                <Tooltip title={t('PLAYPAGE_SHARE')}>
                   <MenuButton>
                     <CopyToClipboard
                       text={serverUrl + router.asPath}
-                      onCopy={() => message.success(t("MODAL_SHARE_LINK"))}
+                      onCopy={() => message.success(t('MODAL_SHARE_LINK'))}
                     >
                       <ShareAltOutlined />
                     </CopyToClipboard>
                   </MenuButton>
                 </Tooltip>
-                <Tooltip title={t("PLAYPAGE_CAPTURE")}>
+                <Tooltip title={t('PLAYPAGE_CAPTURE')}>
                   <MenuButton
-                    onClick={() => takeScreenShot("captureWithoutResult")}
+                    onClick={() => takeScreenShot('captureWithoutResult')}
                   >
                     <CameraFilled />
                   </MenuButton>
                 </Tooltip>
                 {session && (session.user as any).id === bingo.userId && (
                   <>
-                    <Tooltip title={t("PLAYPAGE_EDIT")}>
+                    <Tooltip title={t('PLAYPAGE_EDIT')}>
                       <MenuButton
                         onClick={() => Router.push(`/bingo/edit/${bingoId}`)}
                       >
                         <EditOutlined />
                       </MenuButton>
                     </Tooltip>
-                    <Tooltip title={t("PLAYPAGE_DELETE")}>
+                    <Tooltip title={t('PLAYPAGE_DELETE')}>
                       <MenuButton>
                         <Popconfirm
-                          title={<div> {t("PLAYPAGE_DELETE_ASK")} </div>}
+                          title={<div> {t('PLAYPAGE_DELETE_ASK')} </div>}
                           onConfirm={() => deleteBingo()}
-                          onCancel={() => console.log("cancelled")}
+                          onCancel={() => console.log('cancelled')}
                           okText="Delete"
                           cancelText="Cancel"
                           icon={<LockOutlined style={{ fontSize: 16 }} />}
@@ -413,9 +413,9 @@ export default function BingoDetail({ data }) {
             </ControllerPage>
           </Col>
           {newcomerMsg && (
-            <CenteredRow style={{ width: "100%" }}>
+            <CenteredRow style={{ width: '100%' }}>
               <Alert
-                message={t("NEWCOMER_HELP_MESSAGE")}
+                message={t('NEWCOMER_HELP_MESSAGE')}
                 type="success"
                 showIcon
                 closable
@@ -461,14 +461,14 @@ export default function BingoDetail({ data }) {
                 takeScreenShot={takeScreenShot}
               />
             </CenteredCol>
-            <CenteredCol style={{ marginTop: "1rem" }}>
+            <CenteredCol style={{ marginTop: '1rem' }}>
               {width < 578 && (
                 <Adfit adType="mobile-wide-50" margin="8px 0px 8px 0px" />
               )}
               {width >= 578 && (
                 <Adfit adType="pc-wide" margin="8px 0px 8px 0px" />
               )}
-              {resultStatus !== "idle" ? null : (
+              {resultStatus !== 'idle' ? null : (
                 <Button
                   type="primary"
                   onClick={() => submitIndexToFlag()}
@@ -478,9 +478,9 @@ export default function BingoDetail({ data }) {
                     borderRadius: 8,
                     marginBottom: 50,
                   }}
-                  disabled={resultStatus !== "idle"}
+                  disabled={resultStatus !== 'idle'}
                 >
-                  {t("PLAYPAGE_SUBMIT")}
+                  {t('PLAYPAGE_SUBMIT')}
                 </Button>
               )}
             </CenteredCol>
@@ -505,16 +505,16 @@ const ControllerPage = styled.div`
 const MenuButton = styled.a`
   font-size: 18px;
   border-radius: 3px;
-  background-color: ${(props) => (props.selected ? "var(--mono-1)" : "white")};
+  background-color: ${(props) => (props.selected ? 'var(--mono-1)' : 'white')};
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 4px 8px;
   margin-left: 0.6rem;
-  color: ${(props) => (props.selected ? "dodgerblue" : "gray")};
+  color: ${(props) => (props.selected ? 'dodgerblue' : 'gray')};
   :hover {
     background-color: var(--mono-2);
-    color: ${(props) => (props.selected ? "dodgerblue" : "var(--mono-7)")};
+    color: ${(props) => (props.selected ? 'dodgerblue' : 'var(--mono-7)')};
   }
 
   @media (max-width: 400px) {

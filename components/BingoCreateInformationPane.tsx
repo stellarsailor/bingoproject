@@ -1,6 +1,6 @@
-import React from "react";
-import { Input, Select } from "antd";
-import { useTranslation } from "../i18n";
+import React from 'react';
+import { Input, Select } from 'antd';
+import { useTranslation } from '../i18n';
 
 const { Option } = Select;
 
@@ -20,8 +20,8 @@ export default function BingoCreateInformationPane(props) {
   return (
     <>
       <Select
-        placeholder={t("CREATE_PLACEHOLDER_CATEGORY")}
-        style={{ width: 200, margin: "1rem 0px", marginRight: 16 }}
+        placeholder={t('CREATE_PLACEHOLDER_CATEGORY')}
+        style={{ width: 200, margin: '1rem 0px', marginRight: 16 }}
         onChange={(v) => setBingoCategory(v)}
         value={bingoCategory}
       >
@@ -33,20 +33,20 @@ export default function BingoCreateInformationPane(props) {
       </Select>
 
       <Input
-        placeholder={t("CREATE_PLACEHOLDER_TITLE")}
+        placeholder={t('CREATE_PLACEHOLDER_TITLE')}
         value={bingoTitle}
         onChange={(e) => setBingoTitle(e.target.value)}
-        style={{ width: "100%", height: 40, borderRadius: 5 }}
+        style={{ width: '100%', height: 40, borderRadius: 5 }}
       />
 
       <Input
-        placeholder={t("CREATE_PLACEHOLDER_DESC")}
+        placeholder={t('CREATE_PLACEHOLDER_DESC')}
         value={bingoDescription}
         onChange={(e) => setBingoDescription(e.target.value)}
         style={{
-          width: "100%",
+          width: '100%',
           height: 35,
-          margin: "1rem 0px",
+          margin: '1rem 0px',
           borderRadius: 5,
         }}
       />

@@ -1,10 +1,10 @@
-import React from "react";
-import { signIn } from "next-auth/client";
-import { useRouter } from "next/router";
-import { serverUrl } from "../lib/serverUrl";
-import styled from "styled-components";
-import { CenteredCol } from "./sub/styled";
-import { Button } from "antd";
+import React from 'react';
+import { signIn } from 'next-auth/client';
+import { useRouter } from 'next/router';
+import { serverUrl } from '../lib/serverUrl';
+import styled from 'styled-components';
+import { CenteredCol } from './sub/styled';
+import { Button } from 'antd';
 
 export default function LoginContainer() {
   const router = useRouter();
@@ -12,7 +12,7 @@ export default function LoginContainer() {
   return (
     <CenteredCol>
       <SignInButton
-        onClick={() => signIn("google", { callbackUrl: serverUrl })}
+        onClick={() => signIn('google', { callbackUrl: serverUrl })}
       >
         <svg width="25" height="25">
           <g fill="none" fillRule="evenodd">
@@ -43,7 +43,7 @@ export default function LoginContainer() {
                 </ButtonText>
             </SignInButton> */}
       <SignInButton
-        onClick={() => signIn("facebook", { callbackUrl: serverUrl })}
+        onClick={() => signIn('facebook', { callbackUrl: serverUrl })}
       >
         <svg width="25" height="25" fill="#3B5998">
           <path
@@ -62,9 +62,9 @@ export default function LoginContainer() {
 
       <div
         style={{
-          color: "var(--mono-3)",
-          margin: "32px 16px",
-          textAlign: "center",
+          color: 'var(--mono-3)',
+          margin: '32px 16px',
+          textAlign: 'center',
         }}
       >
         Click “Sign In” to agree to SelfBingo's Terms of Service and acknowledge

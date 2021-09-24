@@ -1,9 +1,9 @@
-import React from "react";
-import { Row, Col } from "antd";
-import { providers, signIn } from "next-auth/client";
-import LoginContainer from "../../components/LoginContainer";
-import { CenteredCol } from "../../components/sub/styled";
-import { useTranslation } from "../../i18n";
+import React from 'react';
+import { Row, Col } from 'antd';
+import { providers, signIn } from 'next-auth/client';
+import LoginContainer from '../../components/LoginContainer';
+import { CenteredCol } from '../../components/sub/styled';
+import { useTranslation } from '../../i18n';
 
 export default function SignIn({ providers }) {
   const { t, i18n } = useTranslation();
@@ -16,13 +16,13 @@ export default function SignIn({ providers }) {
         md={24}
         lg={24}
         xl={24}
-        style={{ backgroundColor: "white", border: "1px solid lightgray" }}
+        style={{ backgroundColor: 'white', border: '1px solid lightgray' }}
       >
-        <CenteredCol style={{ fontSize: "2rem", margin: "32px 0px" }}>
+        <CenteredCol style={{ fontSize: '2rem', margin: '32px 0px' }}>
           Join SelfBingo.
         </CenteredCol>
-        <CenteredCol style={{ fontSize: "1rem", margin: "32px 0px" }}>
-          {t("SIGN_IN_WARNING")}
+        <CenteredCol style={{ fontSize: '1rem', margin: '32px 0px' }}>
+          {t('SIGN_IN_WARNING')}
         </CenteredCol>
         {/* {Object.values(providers).map(provider => (
                     <div key={provider.name}>

@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { useTranslation } from "../i18n";
-const ReactMarkdown = require("react-markdown");
+import styled from 'styled-components';
+import { useTranslation } from '../i18n';
+const ReactMarkdown = require('react-markdown');
 
 const input = {
   en: `
@@ -158,7 +158,7 @@ export default function Privacy() {
         <ReactMarkdown
           source={
             input[i18n.language] === undefined
-              ? input["en"]
+              ? input['en']
               : input[i18n.language]
           }
         />

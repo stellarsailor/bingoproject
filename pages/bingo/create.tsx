@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useCallback, useContext } from "react";
-import { useSession, signIn } from "next-auth/client";
-import { NextSeo } from "next-seo";
-import { Link } from "../../i18n";
-import styled from "styled-components";
+import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { useSession, signIn } from 'next-auth/client';
+import { NextSeo } from 'next-seo';
+import { Link } from '../../i18n';
+import styled from 'styled-components';
 // import ReCAPTCHA from "react-google-recaptcha";
-import SwatchesPicker from "react-color/lib/Swatches";
-import { serverUrl } from "../../lib/serverUrl";
-import { useTranslation, Router } from "../../i18n";
-import { InitialContents } from "../../store/InitialContentsProvider";
+import SwatchesPicker from 'react-color/lib/Swatches';
+import { serverUrl } from '../../lib/serverUrl';
+import { useTranslation, Router } from '../../i18n';
+import { InitialContents } from '../../store/InitialContentsProvider';
 import {
   BgColorsOutlined,
   LeftOutlined,
   TableOutlined,
-} from "../../assets/icons";
-import BingoRenderer from "../../components/BingoRenderer";
-import { CenteredCol, CenteredRow } from "../../components/sub/styled";
+} from '../../assets/icons';
+import BingoRenderer from '../../components/BingoRenderer';
+import { CenteredCol, CenteredRow } from '../../components/sub/styled';
 import {
   Row,
   Col,
@@ -27,26 +27,26 @@ import {
   message,
   Slider,
   Checkbox,
-} from "antd";
-import CreateButtonTab from "../../components/sub/CreateButtonTab";
-import useWindowSize from "../../logics/useWindowSize";
-import shuffleArray from "../../logics/shuffleArray";
-import BingoCreateInformationPane from "../../components/BingoCreateInformationPane";
-import BingoCreateAchievementPane from "../../components/BingoCreateAchievementPane";
+} from 'antd';
+import CreateButtonTab from '../../components/sub/CreateButtonTab';
+import useWindowSize from '../../logics/useWindowSize';
+import shuffleArray from '../../logics/shuffleArray';
+import BingoCreateInformationPane from '../../components/BingoCreateInformationPane';
+import BingoCreateAchievementPane from '../../components/BingoCreateAchievementPane';
 const { TextArea } = Input;
 const { Option } = Select;
 
 const initialColorArray = [
-  "#f8bbd0",
-  "#e1bee7",
-  "#ffe0b2",
-  "#b2dfdb",
-  "#f06292",
-  "#fff9c4",
-  "#009688",
-  "#5d4037",
-  "#303f9f",
-  "#000000",
+  '#f8bbd0',
+  '#e1bee7',
+  '#ffe0b2',
+  '#b2dfdb',
+  '#f06292',
+  '#fff9c4',
+  '#009688',
+  '#5d4037',
+  '#303f9f',
+  '#000000',
 ];
 
 export default function BingoCreate() {
@@ -56,32 +56,32 @@ export default function BingoCreate() {
   const { categoryList } = useContext(InitialContents);
 
   const [selectedButton, setSelectedButton] = useState(0);
-  const [easyBingoEditCenterInput, setEasyBingoEditCenterInput] = useState("");
-  const [easyBingoEditInput, setEasyBingoEditInput] = useState("");
+  const [easyBingoEditCenterInput, setEasyBingoEditCenterInput] = useState('');
+  const [easyBingoEditInput, setEasyBingoEditInput] = useState('');
 
   const [bingoCategory, setBingoCategory] = useState<any>(1);
-  const [bingoTitle, setBingoTitle] = useState("");
-  const [bingoDescription, setBingoDescription] = useState("");
+  const [bingoTitle, setBingoTitle] = useState('');
+  const [bingoDescription, setBingoDescription] = useState('');
   const [bingoSize, setBingoSize] = useState(5);
   const [bingoArr, setBingoArr] = useState([]);
 
-  const [colorPickerKey, setColorPickerKey] = useState("");
+  const [colorPickerKey, setColorPickerKey] = useState('');
 
   const [bingoBgMainColor, setBingoBgMainColor] = useState(
     initialColorArray[Math.floor(Math.random() * initialColorArray.length)]
   );
   const [allowGradient, setAllowGradient] = useState(false);
-  const [bingoBgSubColor, setBingoBgSubColor] = useState("");
-  const [bingoFontColor, setBingoFontColor] = useState("#000000");
-  const [bingoLineColor, setBingoLineColor] = useState("#000000");
-  const [bingoCellColor, setBingoCellColor] = useState("#ffffff");
+  const [bingoBgSubColor, setBingoBgSubColor] = useState('');
+  const [bingoFontColor, setBingoFontColor] = useState('#000000');
+  const [bingoLineColor, setBingoLineColor] = useState('#000000');
+  const [bingoCellColor, setBingoCellColor] = useState('#ffffff');
 
   const [enableAchievement, setEnableAchievement] = useState(false);
   const [bingoAchievement, setBingoAchievement] = useState([]);
 
   const [disableSubmitButton, setDisableSubmitButton] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
-  const [modalWillChangeInput, setModalWillChangeInput] = useState("");
+  const [modalWillChangeInput, setModalWillChangeInput] = useState('');
   const [modalWillChangeIndex, setModalWillChangeIndex] = useState(0);
 
   const changeElement = useCallback(
@@ -102,7 +102,7 @@ export default function BingoCreate() {
 
   const insertEasyEdit = useCallback(() => {
     let tempArr = [];
-    for (let i = 0; i < bingoSize * bingoSize; i++) tempArr.push("");
+    for (let i = 0; i < bingoSize * bingoSize; i++) tempArr.push('');
 
     let linesArray = easyBingoEditInput.split(/\r|\r\n|\n/);
     // console.log(linesArray)
@@ -121,17 +121,17 @@ export default function BingoCreate() {
     let achievements = [];
 
     for (let i = 0; i < bingoSize * bingoSize; i++) {
-      elements.push("");
+      elements.push('');
     }
 
     achievements.push({
       breakPoint: 5, //0~5체크 이하, 노 빙고 6체크 이상
-      preBreakPoint: "",
-      postBreakPoint: "",
+      preBreakPoint: '',
+      postBreakPoint: '',
     });
 
     for (let i = 1; i < bingoSize * 2 + 2 + 1; i++) {
-      achievements.push("");
+      achievements.push('');
     }
 
     setBingoArr(elements);
@@ -142,15 +142,15 @@ export default function BingoCreate() {
     let blankError = []; //에러는 역순으로
     if (enableAchievement) {
       bingoAchievement.map((v) => {
-        if (v === "" || v === null)
-          blankError.push(t("CREATE_EMPTY_ALERT_ACCOMPLISHMENTS"));
+        if (v === '' || v === null)
+          blankError.push(t('CREATE_EMPTY_ALERT_ACCOMPLISHMENTS'));
       });
     } //else, Achievement is disabled so not to check blank
     bingoArr.map((v) => {
-      if (v === "" || v === null)
-        blankError.push(t("CREATE_EMPTY_ALERT_ELEMENT"));
+      if (v === '' || v === null)
+        blankError.push(t('CREATE_EMPTY_ALERT_ELEMENT'));
     });
-    if (bingoTitle === "") blankError.push(t("CREATE_EMPTY_ALERT_TITLE"));
+    if (bingoTitle === '') blankError.push(t('CREATE_EMPTY_ALERT_TITLE'));
 
     if (blankError.length !== 0) {
       message.error(blankError.pop());
@@ -158,10 +158,10 @@ export default function BingoCreate() {
       setDisableSubmitButton(true);
       let url = `${serverUrl}/api/bingos?lang=${i18n.language}`;
       const settings = {
-        method: "POST",
+        method: 'POST',
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           userId: (session.user as any).id,
@@ -182,8 +182,8 @@ export default function BingoCreate() {
         const fetchResponse = await fetch(url, settings);
         const data = await fetchResponse.json();
 
-        if (data.error === "duplicated") {
-          message.error(t("STATIC_ERROR_TRY_LATER"));
+        if (data.error === 'duplicated') {
+          message.error(t('STATIC_ERROR_TRY_LATER'));
           setDisableSubmitButton(false);
         } else if (data.insertResult.affectedRows === 1) {
           Router.push(`/bingo/${data.insertResult.insertId}`);
@@ -214,9 +214,9 @@ export default function BingoCreate() {
   }
 
   if (!loading && !session) {
-    Router.push("/auth/signin");
+    Router.push('/auth/signin');
     return (
-      <p style={{ fontSize: "1rem" }}>To make a bingo, You have to Sign in.</p>
+      <p style={{ fontSize: '1rem' }}>To make a bingo, You have to Sign in.</p>
     );
   }
 
@@ -228,17 +228,17 @@ export default function BingoCreate() {
       />
       <TopBar>
         <Link href="/">
-          <a style={{ fontSize: "1.1rem", color: "white" }}>
+          <a style={{ fontSize: '1.1rem', color: 'white' }}>
             <LeftOutlined /> Back
           </a>
         </Link>
       </TopBar>
-      <Row style={{ width: "100%" }}>
+      <Row style={{ width: '100%' }}>
         <Col
           style={{
             maxWidth: width < 768 ? width : 768,
-            display: "flex",
-            flexDirection: width < 768 ? "column" : "row",
+            display: 'flex',
+            flexDirection: width < 768 ? 'column' : 'row',
           }}
         >
           <CreateButtonTab
@@ -258,21 +258,21 @@ export default function BingoCreate() {
                   setBingoDescription={setBingoDescription}
                 />
 
-                <div style={{ margin: "1rem 0px" }}>
-                  <TextLabel>{t("CREATE_BINGO_SIZE")}</TextLabel>
+                <div style={{ margin: '1rem 0px' }}>
+                  <TextLabel>{t('CREATE_BINGO_SIZE')}</TextLabel>
                   <Radio.Group
                     defaultValue={bingoSize}
                     onChange={(e) => setBingoSize(e.target.value)}
                   >
                     <Radio.Button
                       value={3}
-                      style={{ width: 80, textAlign: "center" }}
+                      style={{ width: 80, textAlign: 'center' }}
                     >
                       3x3
                     </Radio.Button>
                     <Radio.Button
                       value={5}
-                      style={{ width: 80, textAlign: "center" }}
+                      style={{ width: 80, textAlign: 'center' }}
                     >
                       5x5
                     </Radio.Button>
@@ -283,38 +283,38 @@ export default function BingoCreate() {
             {selectedButton === 1 && (
               <>
                 <ColorTab>
-                  <TextLabel>{t("CREATE_LINE_COLOR")}</TextLabel>
+                  <TextLabel>{t('CREATE_LINE_COLOR')}</TextLabel>
                   <ColorSquare
                     color={bingoLineColor}
-                    onClick={() => setColorPickerKey("bingoLineColor")}
+                    onClick={() => setColorPickerKey('bingoLineColor')}
                   />
                 </ColorTab>
-                {colorPickerKey === "bingoLineColor" && (
+                {colorPickerKey === 'bingoLineColor' && (
                   <CenteredCol>
                     <SwatchesPicker
                       color={bingoLineColor}
                       onChangeComplete={(v) => {
                         setBingoLineColor(v.hex);
-                        setColorPickerKey("");
+                        setColorPickerKey('');
                       }}
                     />
                   </CenteredCol>
                 )}
 
                 <ColorTab>
-                  <TextLabel>{t("CREATE_FONT_COLOR")}</TextLabel>
+                  <TextLabel>{t('CREATE_FONT_COLOR')}</TextLabel>
                   <ColorSquare
                     color={bingoFontColor}
-                    onClick={() => setColorPickerKey("bingoFontColor")}
+                    onClick={() => setColorPickerKey('bingoFontColor')}
                   />
                 </ColorTab>
-                {colorPickerKey === "bingoFontColor" && (
+                {colorPickerKey === 'bingoFontColor' && (
                   <CenteredCol>
                     <SwatchesPicker
                       color={bingoFontColor}
                       onChangeComplete={(v) => {
                         setBingoFontColor(v.hex);
-                        setColorPickerKey("");
+                        setColorPickerKey('');
                       }}
                     />
                   </CenteredCol>
@@ -324,20 +324,20 @@ export default function BingoCreate() {
             {selectedButton === 2 && (
               <>
                 <ColorTab>
-                  <TextLabel>{t("CREATE_BACKGROUND_COLOR")}</TextLabel>
+                  <TextLabel>{t('CREATE_BACKGROUND_COLOR')}</TextLabel>
                   <ColorSquare
                     color={bingoBgMainColor}
-                    onClick={() => setColorPickerKey("bingoBgMainColor")}
+                    onClick={() => setColorPickerKey('bingoBgMainColor')}
                   />
                 </ColorTab>
-                {colorPickerKey === "bingoBgMainColor" && (
+                {colorPickerKey === 'bingoBgMainColor' && (
                   <CenteredCol>
                     <SwatchesPicker
                       color={bingoBgMainColor}
                       onChangeComplete={(v) => {
-                        if (!allowGradient) setBingoBgSubColor("");
+                        if (!allowGradient) setBingoBgSubColor('');
                         setBingoBgMainColor(v.hex);
-                        setColorPickerKey("");
+                        setColorPickerKey('');
                       }}
                     />
                   </CenteredCol>
@@ -345,30 +345,30 @@ export default function BingoCreate() {
 
                 <Checkbox
                   checked={allowGradient}
-                  style={{ color: "var(--mono-2)", marginBottom: 16 }}
+                  style={{ color: 'var(--mono-2)', marginBottom: 16 }}
                   onChange={(e) => {
-                    bingoBgSubColor !== "" && setBingoBgSubColor("");
+                    bingoBgSubColor !== '' && setBingoBgSubColor('');
                     setAllowGradient(e.target.checked);
                   }}
                 >
-                  {t("CREATE_ENABLE_GRADIENT")}
+                  {t('CREATE_ENABLE_GRADIENT')}
                 </Checkbox>
                 {allowGradient && (
                   <>
                     <ColorTab>
-                      <TextLabel>{t("CREATE_SUB_BACKGROUND_COLOR")}</TextLabel>
+                      <TextLabel>{t('CREATE_SUB_BACKGROUND_COLOR')}</TextLabel>
                       <ColorSquare
                         color={bingoBgSubColor}
-                        onClick={() => setColorPickerKey("bingoBgSubColor")}
+                        onClick={() => setColorPickerKey('bingoBgSubColor')}
                       />
                     </ColorTab>
-                    {colorPickerKey === "bingoBgSubColor" && (
+                    {colorPickerKey === 'bingoBgSubColor' && (
                       <CenteredCol>
                         <SwatchesPicker
                           color={bingoBgSubColor}
                           onChangeComplete={(v) => {
                             setBingoBgSubColor(v.hex);
-                            setColorPickerKey("");
+                            setColorPickerKey('');
                           }}
                         />
                       </CenteredCol>
@@ -377,27 +377,27 @@ export default function BingoCreate() {
                 )}
 
                 <ColorTab>
-                  <TextLabel>{t("CREATE_CELL_COLOR")}</TextLabel>
+                  <TextLabel>{t('CREATE_CELL_COLOR')}</TextLabel>
                   <ColorSquare
                     color={bingoCellColor}
-                    onClick={() => setColorPickerKey("bingoCellColor")}
+                    onClick={() => setColorPickerKey('bingoCellColor')}
                   />
                   <TransparentText
                     onClick={() => {
-                      setBingoCellColor("");
-                      setColorPickerKey("");
+                      setBingoCellColor('');
+                      setColorPickerKey('');
                     }}
                   >
-                    <BgColorsOutlined /> {t("CREATE_CELL_TRANSPARENT")}
+                    <BgColorsOutlined /> {t('CREATE_CELL_TRANSPARENT')}
                   </TransparentText>
                 </ColorTab>
-                {colorPickerKey === "bingoCellColor" && (
+                {colorPickerKey === 'bingoCellColor' && (
                   <CenteredCol>
                     <SwatchesPicker
                       color={bingoCellColor}
                       onChangeComplete={(v) => {
                         setBingoCellColor(v.hex);
-                        setColorPickerKey("");
+                        setColorPickerKey('');
                       }}
                     />
                   </CenteredCol>
@@ -406,10 +406,10 @@ export default function BingoCreate() {
             )}
             {selectedButton === 3 && (
               <>
-                <TextLabel>{t("CREATE_EDIT_EASY")}</TextLabel>
+                <TextLabel>{t('CREATE_EDIT_EASY')}</TextLabel>
                 <div>
                   <Input
-                    placeholder={t("CREATE_EDIT_EASY_CENTER_INPUT")}
+                    placeholder={t('CREATE_EDIT_EASY_CENTER_INPUT')}
                     value={easyBingoEditCenterInput}
                     onChange={(e) =>
                       setEasyBingoEditCenterInput(e.target.value)
@@ -417,14 +417,14 @@ export default function BingoCreate() {
                     style={{ marginBottom: 8 }}
                   />
                   <TextArea
-                    placeholder={t("CREATE_EDIT_EASY_INPUT")}
+                    placeholder={t('CREATE_EDIT_EASY_INPUT')}
                     value={easyBingoEditInput}
                     // autoSize={{ minRows: 3, maxRows: 10 }}
                     allowClear
                     // disabled={easyBingoEditInput.split(/\r|\r\n|\n/).length > bingoSize * bingoSize - 1}
                     onChange={(e) => setEasyBingoEditInput(e.target.value)}
                   />
-                  {easyBingoEditInput.split(/\r|\r\n|\n/).length} /{" "}
+                  {easyBingoEditInput.split(/\r|\r\n|\n/).length} /{' '}
                   {bingoSize * bingoSize - 1} Lines
                 </div>
                 <CenteredCol>
@@ -432,17 +432,17 @@ export default function BingoCreate() {
                     onClick={() => insertEasyEdit()}
                     style={{ width: 80 }}
                   >
-                    {t("STATIC_INSERT")}
+                    {t('STATIC_INSERT')}
                   </Button>
                 </CenteredCol>
-                <div style={{ marginTop: 32 }}>{t("CREATE_EDIT_EASY_TIP")}</div>
+                <div style={{ marginTop: 32 }}>{t('CREATE_EDIT_EASY_TIP')}</div>
               </>
             )}
             {selectedButton === 4 && (
               <>
                 <Checkbox
                   checked={enableAchievement}
-                  style={{ color: "var(--mono-2)", marginBottom: 8 }}
+                  style={{ color: 'var(--mono-2)', marginBottom: 8 }}
                   onChange={(e) => {
                     if (enableAchievement) {
                       //when becomes false
@@ -452,7 +452,7 @@ export default function BingoCreate() {
                   }}
                 >
                   <span style={{ marginLeft: 8 }}>
-                    {t("CREATE_BINGO_ACCOMPLISHMENTS")}
+                    {t('CREATE_BINGO_ACCOMPLISHMENTS')}
                   </span>
                 </Checkbox>
                 <BingoCreateAchievementPane
@@ -467,9 +467,9 @@ export default function BingoCreate() {
         </Col>
         <Col
           style={{
-            width: width < 768 ? "100%" : "calc(100% - 420px)",
-            padding: "1rem",
-            backgroundColor: "white",
+            width: width < 768 ? '100%' : 'calc(100% - 420px)',
+            padding: '1rem',
+            backgroundColor: 'white',
           }}
         >
           <BingoRenderer
@@ -487,7 +487,7 @@ export default function BingoCreate() {
             lineColor={bingoLineColor}
           />
           <Modal
-            title={t("CREATE_CHANGE_BINGO_ELEMENT")}
+            title={t('CREATE_CHANGE_BINGO_ELEMENT')}
             visible={modalOpened}
             onOk={() =>
               changeElement(modalWillChangeInput, modalWillChangeIndex)
@@ -511,14 +511,14 @@ export default function BingoCreate() {
                         onChange={e => console.log(e)}
                     /> */}
 
-          <CenteredCol style={{ margin: "2rem", marginBottom: "3rem" }}>
+          <CenteredCol style={{ margin: '2rem', marginBottom: '3rem' }}>
             <Button
               type="primary"
               onClick={handleSubmit}
               style={{ width: 300, height: 45, borderRadius: 8 }}
               disabled={disableSubmitButton}
             >
-              {t("STATIC_CREATE")}
+              {t('STATIC_CREATE')}
             </Button>
           </CenteredCol>
         </Col>
@@ -547,7 +547,7 @@ const ControllerPage = styled.div`
   background-color: #293039;
   color: white;
   /* border: 1px solid lightgray; */
-  width: ${(props) => (props.width < 768 ? "100%" : "350px")};
+  width: ${(props) => (props.width < 768 ? '100%' : '350px')};
   padding: 1rem;
 `;
 

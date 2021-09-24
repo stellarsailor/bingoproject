@@ -1,10 +1,10 @@
-import styled from "styled-components";
-import { Row, Col, BackTop } from "antd";
-import { Link, useTranslation } from "../i18n";
-import { useState, useContext, useEffect } from "react";
-import Sticky from "react-sticky-el";
+import styled from 'styled-components';
+import { Row, Col, BackTop } from 'antd';
+import { Link, useTranslation } from '../i18n';
+import { useState, useContext, useEffect } from 'react';
+import Sticky from 'react-sticky-el';
 
-import { InitialContents } from "../store/InitialContentsProvider";
+import { InitialContents } from '../store/InitialContentsProvider';
 
 import {
   ArrowRightOutlined,
@@ -12,12 +12,12 @@ import {
   ThunderboltFilled,
   MoreOutlined,
   RedoOutlined,
-} from "../assets/icons";
-import { CenteredRow, CenteredCol } from "../components/sub/styled";
-import BingoListContainer from "../components/BingoListContainer";
-import useIsMobile from "../logics/useIsMobile";
-import dynamicSort from "../logics/dynamicSort";
-import Adfit from "../components/sub/Adfit";
+} from '../assets/icons';
+import { CenteredRow, CenteredCol } from '../components/sub/styled';
+import BingoListContainer from '../components/BingoListContainer';
+import useIsMobile from '../logics/useIsMobile';
+import dynamicSort from '../logics/dynamicSort';
+import Adfit from '../components/sub/Adfit';
 
 export default function Home({}) {
   const { t, i18n } = useTranslation();
@@ -39,16 +39,15 @@ export default function Home({}) {
   } = useContext(InitialContents);
   const isMobile = useIsMobile();
 
-  const [mobileCategoryListVisible, setMobileCategoryListVisible] = useState(
-    false
-  );
+  const [mobileCategoryListVisible, setMobileCategoryListVisible] =
+    useState(false);
   const [sortedCategoryList, setSortedCategoryList] = useState([]);
 
   useEffect(() => {
     //when back to home from other routes, need to reset search options
-    setSearchBy("");
-    setSearchTarget("all");
-    setPeriod("all");
+    setSearchBy('');
+    setSearchTarget('all');
+    setPeriod('all');
   }, []);
 
   useEffect(() => {
@@ -74,32 +73,32 @@ export default function Home({}) {
 
   return (
     <>
-      <Row style={{ display: "flex" }}>
+      <Row style={{ display: 'flex' }}>
         <BackTop />
         <Col xs={24} sm={16} md={16} lg={16} xl={16}>
           <div
             style={{
-              width: "100%",
+              width: '100%',
               height: 50,
               marginBottom: 8,
-              backgroundColor: "white",
-              border: "1px solid lightgray",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
+              backgroundColor: 'white',
+              border: '1px solid lightgray',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
             }}
           >
             <CenteredRow>
               <a onClick={() => setSortBy(0)}>
                 <FilterButton selected={sortBy === 0}>
                   <FireFilled style={{ marginRight: 5 }} />
-                  {t("FILTER_BEST")}
+                  {t('FILTER_BEST')}
                 </FilterButton>
               </a>
               <a onClick={() => setSortBy(1)}>
                 <FilterButton selected={sortBy === 1}>
                   <ThunderboltFilled style={{ marginRight: 5 }} />
-                  {t("FILTER_RECENT")}
+                  {t('FILTER_RECENT')}
                 </FilterButton>
               </a>
             </CenteredRow>
@@ -117,7 +116,7 @@ export default function Home({}) {
                       mobileCategoryListVisible ? false : true
                     )
                   }
-                  style={{ fontSize: "1.4rem", marginRight: "1rem" }}
+                  style={{ fontSize: '1.4rem', marginRight: '1rem' }}
                 />
               )}
             </CenteredRow>
@@ -126,13 +125,13 @@ export default function Home({}) {
             <Row>
               <Col xs={24} sm={0} md={0} lg={0} xl={0}>
                 <Link href="/bingo/create">
-                  <a style={{ width: "100%" }}>
+                  <a style={{ width: '100%' }}>
                     <CreateBingoButton
                       style={{ marginTop: 0, marginBottom: 8 }}
                     >
                       <CenteredRow style={{ padding: 10 }}>
-                        <div style={{ margin: "0px 1rem" }}>
-                          {t("CREATE_SELFBINGO")}
+                        <div style={{ margin: '0px 1rem' }}>
+                          {t('CREATE_SELFBINGO')}
                         </div>
                         <ArrowRightOutlined />
                       </CenteredRow>
@@ -173,11 +172,11 @@ export default function Home({}) {
           <Sticky>
             <CenteredCol>
               <Link href="/bingo/create">
-                <a style={{ width: "100%" }}>
+                <a style={{ width: '100%' }}>
                   <CreateBingoButton>
                     <CenteredRow style={{ padding: 10 }}>
-                      <div style={{ margin: "0px 1rem" }}>
-                        {t("CREATE_SELFBINGO")}
+                      <div style={{ margin: '0px 1rem' }}>
+                        {t('CREATE_SELFBINGO')}
                       </div>
                       <ArrowRightOutlined />
                     </CenteredRow>
@@ -186,9 +185,9 @@ export default function Home({}) {
               </Link>
               <div
                 style={{
-                  width: "100%",
-                  border: "1px solid lightgray",
-                  borderBottom: "0px",
+                  width: '100%',
+                  border: '1px solid lightgray',
+                  borderBottom: '0px',
                   marginTop: 8,
                 }}
               >
@@ -212,15 +211,15 @@ export default function Home({}) {
                     ))}
               </div>
             </CenteredCol>
-            <div style={{ color: "gray", fontSize: "0.8rem", padding: "10px" }}>
+            <div style={{ color: 'gray', fontSize: '0.8rem', padding: '10px' }}>
               <Link href="/about">
-                <GrayLittleLink>{t("ETC_ABOUT")}</GrayLittleLink>
+                <GrayLittleLink>{t('ETC_ABOUT')}</GrayLittleLink>
               </Link>
               <Link href="/terms">
-                <GrayLittleLink>{t("ETC_TERMS_OF_SERVICE")}</GrayLittleLink>
+                <GrayLittleLink>{t('ETC_TERMS_OF_SERVICE')}</GrayLittleLink>
               </Link>
               <Link href="/privacy">
-                <GrayLittleLink>{t("ETC_PRIVACY_POLICY")}</GrayLittleLink>
+                <GrayLittleLink>{t('ETC_PRIVACY_POLICY')}</GrayLittleLink>
               </Link>
               <p>© 2020 SelfBingo</p>
             </div>
@@ -235,22 +234,22 @@ export default function Home({}) {
 const CategoryRenderer = styled.div`
   display: flex;
   align-items: center;
-  background-color: ${(props) => (props.selected ? "white" : "white")};
+  background-color: ${(props) => (props.selected ? 'white' : 'white')};
   border-left: ${(props) =>
     !props.color ? `5px solid black` : `5px solid ${props.color}`};
   border-bottom: 1px solid lightgray;
   padding: 0.5rem;
-  color: ${(props) => (props.selected ? "dodgerblue" : "gray")};
-  /* font-weight: ${(props) => (props.selected && "bold")} */
+  color: ${(props) => (props.selected ? 'dodgerblue' : 'gray')};
+  /* font-weight: ${(props) => props.selected && 'bold'} */
   :hover {
     background-color: var(--mono-1);
-    color: ${(props) => (props.selected ? "dodgerblue" : "var(--mono-7)")};
+    color: ${(props) => (props.selected ? 'dodgerblue' : 'var(--mono-7)')};
   }
 `;
 
 const FilterButton = styled.div`
   border-radius: 20px;
-  background-color: ${(props) => (props.selected ? "var(--mono-1)" : "white")};
+  background-color: ${(props) => (props.selected ? 'var(--mono-1)' : 'white')};
   height: 32px;
   display: flex;
   justify-content: center;
@@ -258,10 +257,10 @@ const FilterButton = styled.div`
   padding: 0px 16px;
   margin-left: 1rem;
   font-weight: bold;
-  color: ${(props) => (props.selected ? "dodgerblue" : "gray")};
+  color: ${(props) => (props.selected ? 'dodgerblue' : 'gray')};
   :hover {
     background-color: var(--mono-2);
-    color: ${(props) => (props.selected ? "dodgerblue" : "var(--mono-7)")};
+    color: ${(props) => (props.selected ? 'dodgerblue' : 'var(--mono-7)')};
   }
 `;
 

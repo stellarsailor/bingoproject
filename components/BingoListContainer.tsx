@@ -1,31 +1,26 @@
-import styled from "styled-components";
-import { useContext } from "react";
-import { Skeleton, Empty, Button } from "antd";
-import pickTextColorBasedOnBgColor from "../logics/pickTextColorBasedOnBgColor";
-import { Link, useTranslation, Router } from "../i18n";
-import { BarChartOutlined } from "../assets/icons";
-import numberToK from "../logics/numberToK";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { InitialContents } from "../store/InitialContentsProvider";
+import styled from 'styled-components';
+import { useContext } from 'react';
+import { Skeleton, Empty, Button } from 'antd';
+import pickTextColorBasedOnBgColor from '../logics/pickTextColorBasedOnBgColor';
+import { Link, useTranslation, Router } from '../i18n';
+import { BarChartOutlined } from '../assets/icons';
+import numberToK from '../logics/numberToK';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { InitialContents } from '../store/InitialContentsProvider';
 
 export default function BingoListContainer(props) {
   const { t, i18n } = useTranslation();
-  const {
-    bingoList,
-    bingoPage,
-    bingoLoading,
-    bingoHasMore,
-    fetchMainBingos,
-  } = useContext(InitialContents);
+  const { bingoList, bingoPage, bingoLoading, bingoHasMore, fetchMainBingos } =
+    useContext(InitialContents);
 
   const skeletonGroup = () => (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: '100%' }}>
       <BingoPane>
         <Skeleton.Avatar
           active={true}
           size={80}
           shape="square"
-          style={{ marginRight: "1rem" }}
+          style={{ marginRight: '1rem' }}
         />
         <Skeleton paragraph={{ rows: 1 }} />
       </BingoPane>
@@ -34,7 +29,7 @@ export default function BingoListContainer(props) {
           active={true}
           size={80}
           shape="square"
-          style={{ marginRight: "1rem" }}
+          style={{ marginRight: '1rem' }}
         />
         <Skeleton paragraph={{ rows: 1 }} />
       </BingoPane>
@@ -43,7 +38,7 @@ export default function BingoListContainer(props) {
           active={true}
           size={80}
           shape="square"
-          style={{ marginRight: "1rem" }}
+          style={{ marginRight: '1rem' }}
         />
         <Skeleton paragraph={{ rows: 1 }} />
       </BingoPane>
@@ -51,18 +46,18 @@ export default function BingoListContainer(props) {
   );
 
   const endMessage = () => (
-    <p style={{ textAlign: "center", marginTop: 16, color: "lightgray" }}>
-      <b>{t("EMPTY_NO_MORE")}</b>
+    <p style={{ textAlign: 'center', marginTop: 16, color: 'lightgray' }}>
+      <b>{t('EMPTY_NO_MORE')}</b>
     </p>
   );
 
   return (
     <div
       style={{
-        width: "100%",
+        width: '100%',
         minHeight: 1200,
-        backgroundColor: "white",
-        border: "1px solid lightgray",
+        backgroundColor: 'white',
+        border: '1px solid lightgray',
       }}
     >
       {bingoLoading ? (
@@ -74,12 +69,12 @@ export default function BingoListContainer(props) {
         >
           <Link href="/bingo/create">
             <a>
-              <Button type="primary" style={{ margin: "8px 0px" }}>
-                {t("CREATE_SELFBINGO")}
+              <Button type="primary" style={{ margin: '8px 0px' }}>
+                {t('CREATE_SELFBINGO')}
               </Button>
             </a>
           </Link>
-          <div>{t("EMPTY_TRY_OTHER")}</div>
+          <div>{t('EMPTY_TRY_OTHER')}</div>
         </Empty>
       ) : (
         <InfiniteScroll
@@ -102,8 +97,8 @@ export default function BingoListContainer(props) {
                     bgSubColor={v.bgSubColor}
                     fontColor={pickTextColorBasedOnBgColor(
                       v.bgMainColor,
-                      "#ffffff",
-                      "#000000"
+                      '#ffffff',
+                      '#000000'
                     )}
                   >
                     {v.size} X {v.size}
@@ -112,15 +107,15 @@ export default function BingoListContainer(props) {
                     <div>
                       <span
                         style={{
-                          fontWeight: "bold",
-                          fontSize: "1rem",
-                          marginRight: "1rem",
+                          fontWeight: 'bold',
+                          fontSize: '1rem',
+                          marginRight: '1rem',
                         }}
                       >
-                        {v.title}{" "}
+                        {v.title}{' '}
                         <span
                           style={{
-                            color: "dodgerblue",
+                            color: 'dodgerblue',
                             marginLeft: 10,
                             fontSize: 14,
                           }}
@@ -129,14 +124,14 @@ export default function BingoListContainer(props) {
                         </span>
                       </span>
                     </div>
-                    <span style={{ color: "var(--mono-4)" }}>
+                    <span style={{ color: 'var(--mono-4)' }}>
                       {v.description}
                     </span>
                     <div
                       style={{
-                        overflow: "hidden",
-                        color: "var(--mono-4)",
-                        fontSize: "0.8rem",
+                        overflow: 'hidden',
+                        color: 'var(--mono-4)',
+                        fontSize: '0.8rem',
                       }}
                     >
                       {JSON.parse(v.elements)

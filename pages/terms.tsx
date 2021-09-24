@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { useTranslation } from "../i18n";
-const ReactMarkdown = require("react-markdown");
+import styled from 'styled-components';
+import { useTranslation } from '../i18n';
+const ReactMarkdown = require('react-markdown');
 
 const input = {
   en: `
