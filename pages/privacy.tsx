@@ -1,15 +1,6 @@
-import styled from "styled-components";
-import { useTranslation } from "../i18n";
-const ReactMarkdown = require("react-markdown");
-
-const Container = styled.div`
-  border-radius: 3px;
-  background-color: white;
-  border: 1px solid lightgray;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-`;
+import styled from 'styled-components';
+import { useTranslation } from '../i18n';
+const ReactMarkdown = require('react-markdown');
 
 const input = {
   en: `
@@ -167,7 +158,7 @@ export default function Privacy() {
         <ReactMarkdown
           source={
             input[i18n.language] === undefined
-              ? input["en"]
+              ? input['en']
               : input[i18n.language]
           }
         />
@@ -175,3 +166,12 @@ export default function Privacy() {
     </>
   );
 }
+
+const Container = styled.div`
+  border-radius: 3px;
+  background-color: white;
+  border: 1px solid lightgray;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+`;

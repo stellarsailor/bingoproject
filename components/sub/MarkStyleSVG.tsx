@@ -1,9 +1,9 @@
 export default function MarkStyleSVG(props) {
   const { markStyle, markColor, markWidth } = props;
 
-  if (markStyle === "check") {
+  if (markStyle === 'check') {
     return (
-      <div style={{ position: "absolute", zIndex: 0 }}>
+      <div style={{ position: 'absolute', zIndex: 0 }}>
         <svg
           version="1.0"
           xmlns="http://www.w3.org/2000/svg"
@@ -28,9 +28,9 @@ export default function MarkStyleSVG(props) {
         </svg>
       </div>
     );
-  } else if (markStyle === "circle") {
+  } else if (markStyle === 'circle') {
     return (
-      <div style={{ position: "absolute", zIndex: 0 }}>
+      <div style={{ position: 'absolute', zIndex: 0 }}>
         <svg
           version="1.0"
           xmlns="http://www.w3.org/2000/svg"
@@ -76,9 +76,9 @@ export default function MarkStyleSVG(props) {
         </svg>
       </div>
     );
-  } else if (markStyle === "x") {
+  } else if (markStyle === 'x') {
     return (
-      <div style={{ position: "absolute", zIndex: 0 }}>
+      <div style={{ position: 'absolute', zIndex: 0 }}>
         <svg
           version="1.0"
           xmlns="http://www.w3.org/2000/svg"

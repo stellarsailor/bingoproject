@@ -1,23 +1,23 @@
-import App from "next/app";
-import type { AppProps /*, AppContext */ } from "next/app";
-import "../styles/style.css";
+import App from 'next/app';
+import type { AppProps /*, AppContext */ } from 'next/app';
+import '../styles/style.css';
 
-import { Provider } from "next-auth/client";
-import { providers, signIn } from "next-auth/client";
+import { Provider } from 'next-auth/client';
+import { providers, signIn } from 'next-auth/client';
 
-import { appWithTranslation } from "../i18n";
-import { DefaultSeo } from "next-seo";
+import { appWithTranslation } from '../i18n';
+import { DefaultSeo } from 'next-seo';
 
-import InitialContentsProvider from "../store/InitialContentsProvider";
-import Layout from "../components/Layout";
+import InitialContentsProvider from '../store/InitialContentsProvider';
+import Layout from '../components/Layout';
 
-import Router from "next/router";
-import NProgress from "nprogress";
-import "nprogress/nprogress.css";
+import Router from 'next/router';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
 
-Router.events.on("routeChangeStart", () => NProgress.start());
-Router.events.on("routeChangeComplete", () => NProgress.done());
-Router.events.on("routeChangeError", () => NProgress.done());
+Router.events.on('routeChangeStart', () => NProgress.start());
+Router.events.on('routeChangeComplete', () => NProgress.done());
+Router.events.on('routeChangeError', () => NProgress.done());
 NProgress.configure({ showSpinner: false });
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -28,15 +28,15 @@ function MyApp({ Component, pageProps }: AppProps) {
           title="SelfBingo"
           canonical="https://www.selfbingo.com/"
           openGraph={{
-            type: "website",
-            locale: "en_IE",
-            url: "https://www.selfbingo.com/",
-            site_name: "SelfBingo",
+            type: 'website',
+            locale: 'en_IE',
+            url: 'https://www.selfbingo.com/',
+            site_name: 'SelfBingo',
           }}
           twitter={{
-            handle: "@handle",
-            site: "@site",
-            cardType: "summary_large_image",
+            handle: '@handle',
+            site: '@site',
+            cardType: 'summary_large_image',
           }}
         />
         <Layout>

@@ -1,7 +1,7 @@
-import React, { createContext, useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/router";
-import { serverUrl } from "../lib/serverUrl";
-import { useTranslation } from "../i18n";
+import React, { createContext, useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { serverUrl } from '../lib/serverUrl';
+import { useTranslation } from '../i18n';
 
 export const InitialContents = createContext({
   //타입 표기, 최하단에 value 전달필요
@@ -16,11 +16,11 @@ export const InitialContents = createContext({
   setSelectedCategory: (category: number) => {},
   sortBy: 0,
   setSortBy: (sortBy: 0 | 1) => {},
-  searchBy: "",
+  searchBy: '',
   setSearchBy: (searchBy: string) => {},
-  searchTarget: "all",
+  searchTarget: 'all',
   setSearchTarget: (searchTarget: string) => {},
-  period: "all",
+  period: 'all',
   setPeriod: (period: string) => {},
   fetchMainBingos: (pageParam) => {},
 });
@@ -38,9 +38,9 @@ const InitialContentsProvider = (props) => {
 
   const [selectedCategory, setSelectedCategory] = useState(0);
   const [sortBy, setSortBy] = useState(0);
-  const [searchBy, setSearchBy] = useState("");
-  const [searchTarget, setSearchTarget] = useState("all");
-  const [period, setPeriod] = useState("all");
+  const [searchBy, setSearchBy] = useState('');
+  const [searchTarget, setSearchTarget] = useState('all');
+  const [period, setPeriod] = useState('all');
 
   async function fetchMainCategories() {
     let url = `${serverUrl}/api/categories?lang=${i18n.language}`;
@@ -72,23 +72,23 @@ const InitialContentsProvider = (props) => {
 
       url += `&sortBy=${sortBy}`;
 
-      if (searchBy === "") url += "";
+      if (searchBy === '') url += '';
       else {
-        let searchByChunks = searchBy.split(" ");
+        let searchByChunks = searchBy.split(' ');
         searchByChunks.map((v) => (url += `&searchBy=${v}`));
       }
 
-      if (period === "all") url += "";
-      else if (period === "month") url += "&period=month";
-      else if (period === "week") url += "&period=week";
-      else if (period === "today") url += "&period=today";
-      else url += "";
+      if (period === 'all') url += '';
+      else if (period === 'month') url += '&period=month';
+      else if (period === 'week') url += '&period=week';
+      else if (period === 'today') url += '&period=today';
+      else url += '';
 
-      if (searchTarget === "all") url += "";
-      else if (searchTarget === "title") url += "&searchTarget=title";
-      else if (searchTarget === "elements") url += "&searchTarget=elements";
-      else if (searchTarget === "author") url += "&searchTarget=author";
-      else url += "";
+      if (searchTarget === 'all') url += '';
+      else if (searchTarget === 'title') url += '&searchTarget=title';
+      else if (searchTarget === 'elements') url += '&searchTarget=elements';
+      else if (searchTarget === 'author') url += '&searchTarget=author';
+      else url += '';
 
       url += `&page=${pageParam}&limit=${bingoLimit}`;
 

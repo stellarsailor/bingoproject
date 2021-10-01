@@ -1,4 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+
+export default function Footer() {
+  return <FooterContainer>FOOOOOTER</FooterContainer>;
+}
 
 const FooterContainer = styled.div`
   width: 100%;
@@ -6,7 +10,3 @@ const FooterContainer = styled.div`
   border-top: 1px solid #eaeaea;
   background-color: #e0e0e0;
 `;
-
-export default function Footer() {
-  return <FooterContainer>FOOOOOTER</FooterContainer>;
-}

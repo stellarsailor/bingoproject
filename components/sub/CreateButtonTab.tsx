@@ -4,28 +4,9 @@ import {
   HighlightOutlined,
   InfoCircleOutlined,
   TrophyOutlined,
-} from "../../assets/icons";
-import styled from "styled-components";
-import useWindowSize from "../../logics/useWindowSize";
-
-const EachButton = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 70px;
-  height: 70px;
-  color: ${(props) => (props.isSelected ? "white" : "gray")};
-  background-color: ${(props) =>
-    props.isSelected ? "#293039" : "var(--mono-8)"};
-  font-size: 10px;
-  transition: 0.2s;
-  transition-timing-function: ease-in;
-  &:hover {
-    cursor: pointer;
-  }
-`;
+} from '../../assets/icons';
+import styled from 'styled-components';
+import useWindowSize from '../../logics/useWindowSize';
 
 export default function CreateButtonTab(props) {
   const [width, height] = useWindowSize();
@@ -34,11 +15,11 @@ export default function CreateButtonTab(props) {
     <div
       style={{
         width: width < 768 ? width : 70,
-        height: "100%",
-        backgroundColor: "var(--mono-8)",
-        color: "white",
-        display: "flex",
-        flexDirection: width < 768 ? "row" : "column",
+        height: '100%',
+        backgroundColor: 'var(--mono-8)',
+        color: 'white',
+        display: 'flex',
+        flexDirection: width < 768 ? 'row' : 'column',
       }}
     >
       <EachButton
@@ -79,3 +60,22 @@ export default function CreateButtonTab(props) {
     </div>
   );
 }
+
+const EachButton = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 70px;
+  height: 70px;
+  color: ${(props) => (props.isSelected ? 'white' : 'gray')};
+  background-color: ${(props) =>
+    props.isSelected ? '#293039' : 'var(--mono-8)'};
+  font-size: 10px;
+  transition: 0.2s;
+  transition-timing-function: ease-in;
+  &:hover {
+    cursor: pointer;
+  }
+`;
