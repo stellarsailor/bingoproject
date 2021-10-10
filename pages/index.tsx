@@ -148,6 +148,7 @@ export default function Home({}) {
                           onClick={() => {
                             setSelectedCategory(v.id);
                             setMobileCategoryListVisible(false);
+                            window.scrollTo(0, 0);
                           }}
                         >
                           <CategoryRenderer
@@ -199,6 +200,7 @@ export default function Home({}) {
                         key={v.id}
                         onClick={() => {
                           setSelectedCategory(v.id);
+                          window.scrollTo(0, 0);
                         }}
                       >
                         <CategoryRenderer
